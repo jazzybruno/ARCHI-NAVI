@@ -8,7 +8,7 @@ type Props = {
   title?: string;
 };
 
-const HomePage: NextPageWithLayout = (props: Props) => {
+const HomePage: NextPageWithLayout<Props> = (props) => {
   return (
     <>
       <h1>{ props.title }</h1>
