@@ -8,7 +8,7 @@ const nextConfig = {
     return config
   },
   experimental: {
-    optimizeFonts: true,
+    // optimizeFonts: true,
   },
   env: {
     GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY

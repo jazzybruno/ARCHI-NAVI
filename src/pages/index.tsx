@@ -2,6 +2,7 @@ import type { GetServerSideProps, NextPageWithLayout } from 'next'
 import Link from 'next/link'
 import { format } from 'date-fns'
 import { MainLayout } from 'src/layouts/main'
+import { httpClient } from 'src/services/httpClient'
 
 type Props = {
   title?: string;
@@ -21,16 +22,17 @@ const HomePage: NextPageWithLayout = (props: Props) => {
   )
 }
 
-HomePage.getLayout = (page) => <MainLayout>{page}</MainLayout>
-
 export const getServerSideProps: GetServerSideProps = async () => {
+  const res = await httpClient().get('http://127.0.0.1:8000/api/test')
   const props: Props = {
-    title: 'Home',
+    title: res.data,
   }
 
   return {
     props: props,
   }
 }
+
+HomePage.getLayout = (page) => <MainLayout>{page}</MainLayout>
 
 export default HomePage
