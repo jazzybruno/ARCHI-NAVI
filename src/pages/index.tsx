@@ -1,13 +1,36 @@
+import type { GetServerSideProps, NextPageWithLayout } from 'next'
 import Link from 'next/link'
-import Layout from '../components/Layout'
+import { format } from 'date-fns'
+import { MainLayout } from 'src/layouts/main'
 
-const IndexPage = () => (
-  <Layout title="Home | Next.js + TypeScript Example">
-    <h1>Hello Next.js 👋</h1>
-    <p>
-      <Link href="/about">About</Link>
-    </p>
-  </Layout>
-)
+type Props = {
+  title?: string;
+};
 
-export default IndexPage
+const HomePage: NextPageWithLayout = (props: Props) => {
+  return (
+    <>
+      <h1>{ props.title }</h1>
+      <p>
+        { format(new Date(), 'yyyy-MM-dd') }
+      </p>
+      <p>
+        <Link href="/about">About</Link>
+      </p>
+    </>
+  )
+}
+
+HomePage.getLayout = (page) => <MainLayout>{page}</MainLayout>
+
+export const getServerSideProps: GetServerSideProps = async () => {
+  const props: Props = {
+    title: 'Home',
+  }
+
+  return {
+    props: props,
+  }
+}
+
+export default HomePage

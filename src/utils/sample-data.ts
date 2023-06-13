@@ -1,4 +1,4 @@
-import { User } from '../src/interfaces'
+import { User } from '../types'
 
 /** Dummy user data. */
 export const sampleUserData: User[] = [
