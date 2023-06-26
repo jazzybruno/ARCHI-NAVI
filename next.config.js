@@ -1,10 +1,10 @@
-/** @type {import('next').NextConfig} */
-const path = require('path')
-require('dotenv').config()
+/** @type {import("next").NextConfig} */
+const path = require("path")
+require("dotenv").config()
 const nextConfig = {
   reactStrictMode: false,
   webpack(config, options) {
-    config.resolve.alias['@'] = path.join(__dirname, 'src')
+    config.resolve.alias["@"] = path.join(__dirname, "src")
     return config
   },
   experimental: {
@@ -12,6 +12,9 @@ const nextConfig = {
   },
   env: {
     GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY
+  },
+  sassOptions: {
+    includePaths: [path.join(__dirname, "styles")]
   }
 }
 

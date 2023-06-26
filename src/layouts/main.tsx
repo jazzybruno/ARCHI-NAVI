@@ -1,17 +1,23 @@
 import { ReactElement } from "react"
+import { fetcher } from "services/httpClient"
+import useSWR from "swr"
+import { User } from "types"
+import Header from "components/Header"
+import Footer from "components/Footer"
 
 type LayoutProps = {
   readonly children: ReactElement
 }
 
 export const MainLayout = ({ children }: LayoutProps) => {
+  const { data: user, error } = useSWR("api/user", fetcher<User>)
   return (
     <>
-      <header>建築学生のための就活情報サイト</header>
+      <Header></Header>
       <main>
         { children }
       </main>
-      <footer>Copyright xxxxxxxxx</footer>
+      <Footer></Footer>
     </>
   )
 }
