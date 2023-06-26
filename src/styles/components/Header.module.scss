@@ -12,3 +12,15 @@
   @include mq(md) {
   }
 }
+
+.logo {
+  position: absolute;
+  left: 1rem;
+}
+
+.actions {
+  position: absolute;
+  right: 1rem;
+  display: flex;
+  align-items: center;
+}

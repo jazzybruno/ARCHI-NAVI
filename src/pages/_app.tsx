@@ -1,9 +1,8 @@
-import Head from "next/head"
-import type { AppPropsWithLayout } from "next/app"
-import "styles/globals.scss"
+import type { AppPropsWithLayout } from 'next/app'
+import Head from 'next/head'
+import 'styles/globals.scss'
 
-interface MyAppProps extends AppPropsWithLayout {
-}
+interface MyAppProps extends AppPropsWithLayout {}
 
 function MyApp(props: MyAppProps) {
   const { Component, pageProps } = props
@@ -12,10 +11,10 @@ function MyApp(props: MyAppProps) {
     <>
       <Head>
         <title>建築学生のための就活情報サイト</title>
-        <meta name="viewport" content="initial-scale=1, width=device-width" />
+        <meta name='viewport' content='initial-scale=1, width=device-width' />
       </Head>
       <Component {...pageProps} />
-    </>
+    </>,
   )
 }
 
