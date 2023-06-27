@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import * as React from 'react'
 import useSWR from 'swr'
 import { fetcher } from 'services/httpClient'
@@ -9,7 +10,7 @@ const Header = () => {
   return (
     <div className={styles.header}>
       <div className={styles.logo}>
-        <a href='/'>建築学生のための就活情報サイト</a>
+        <Link href='/'>建築学生のための就活情報サイト</Link>
       </div>
       <div className={styles.actions}>
         {user ? (
@@ -18,12 +19,12 @@ const Header = () => {
           </p>
         ) : (
           <div>
-            <a className={styles.action} href='/signin'>
+            <Link className={styles.action} href='/signin'>
               ログイン
-            </a>
-            <a className={styles.action} href='/signup'>
+            </Link>
+            <Link className={styles.action} href='/signup'>
               新規登録
-            </a>
+            </Link>
           </div>
         )}
       </div>

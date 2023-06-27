@@ -1,6 +1,6 @@
 import type { NextPageWithLayout } from 'next'
-import { MainLayout } from 'layouts/main'
 import { useForm, SubmitHandler } from 'react-hook-form'
+import { MainLayout } from 'layouts/main'
 import { httpClient } from 'services/httpClient'
 
 type Inputs = {
@@ -18,8 +18,7 @@ const SigninPage: NextPageWithLayout = () => {
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
-      console.log(data)
-      await httpClient().post('api/authenticate', {
+      await httpClient().post('api/signin', {
         email: data.email,
         password: data.password,
       })

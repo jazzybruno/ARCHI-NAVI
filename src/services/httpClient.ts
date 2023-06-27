@@ -1,9 +1,7 @@
 import axios, { AxiosError } from 'axios'
 
 const getAuthHeader = () => {
-  return {
-    Authorization: `Bearer `,
-  }
+  return {}
 }
 
 axios.defaults.withCredentials = true
