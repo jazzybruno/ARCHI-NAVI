@@ -1,12 +1,24 @@
 import Link from 'next/link'
 import * as React from 'react'
 import useSWR from 'swr'
-import { fetcher } from 'services/httpClient'
+import { fetcher, httpClient } from 'services/httpClient'
 import styles from 'styles/components/Header.module.scss'
 import { User } from 'types'
+import Router from 'next/router'
 
 const Header = () => {
   const { data: user, error } = useSWR('api/user', fetcher<User>)
+
+  const signout = async () => {
+    try {
+      await httpClient().post('api/auth/signout')
+    } catch (error) {
+      console.log(error)
+    } finally {
+      Router.push('/')
+    }
+  }
+
   return (
     <div className={styles.header}>
       <div className={styles.logo}>
@@ -14,9 +26,12 @@ const Header = () => {
       </div>
       <div className={styles.actions}>
         {user ? (
-          <p>
+          <div>
             <span>{user.name}</span>
-          </p>
+            <button className={styles.action} onClick={signout}>
+              ログアウト
+            </button>
+          </div>
         ) : (
           <div>
             <Link className={styles.action} href='/signin'>

@@ -14,14 +14,13 @@ const SigninPage: NextPageWithLayout = () => {
     handleSubmit,
     // watch,
     formState: { errors },
-  } = useForm<Inputs>()
+  } = useForm<Inputs>({
+    mode: 'onChange',
+  })
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
-      await httpClient().post('api/signin', {
-        email: data.email,
-        password: data.password,
-      })
+      await httpClient().post('api/auth/signin', data)
     } catch (error) {
       console.log(error)
     }
