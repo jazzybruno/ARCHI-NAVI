@@ -11,3 +11,5 @@ export const ApiRoutes = {
     index: `${_BaseApiPath}/post`,
   },
 }
+
+export type UserRole = 'admin' | 'user' | 'company'

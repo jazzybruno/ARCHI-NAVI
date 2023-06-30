@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { useMe } from 'hooks/me'
+import { useMe } from 'hooks/auth'
 
 const MySection = () => {
   const { data: user, error } = useMe()

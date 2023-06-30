@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import Router from 'next/router'
 import * as React from 'react'
-import { useMe } from 'hooks/me'
+import { useMe } from 'hooks/auth'
 import { httpClient } from 'services/httpClient'
 import styles from 'styles/components/Header.module.scss'
 import { ApiRoutes } from 'utils/constant'
