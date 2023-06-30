@@ -9,5 +9,5 @@ export const ApiRoutes = {
   },
   post: {
     index: `${_BaseApiPath}/post`,
-  }
+  },
 }

@@ -1,9 +1,9 @@
 import Link from 'next/link'
+import Router from 'next/router'
 import * as React from 'react'
+import { useMe } from 'hooks/me'
 import { httpClient } from 'services/httpClient'
 import styles from 'styles/components/Header.module.scss'
-import Router from 'next/router'
-import { useMe } from 'hooks/me'
 import { ApiRoutes } from 'utils/constant'
 
 const Header = () => {

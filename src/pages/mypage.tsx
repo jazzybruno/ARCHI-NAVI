@@ -1,6 +1,6 @@
 import type { NextPageWithLayout } from 'next'
-import { MainLayout } from 'layouts/main'
 import MySection from 'components/MySection'
+import { MainLayout } from 'layouts/main'
 
 const MyPage: NextPageWithLayout = () => {
   return (

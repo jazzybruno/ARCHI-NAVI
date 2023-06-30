@@ -1,8 +1,8 @@
 import type { NextPageWithLayout } from 'next'
+import Router from 'next/router'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { MainLayout } from 'layouts/main'
 import { httpClient } from 'services/httpClient'
-import Router from 'next/router'
 import { ApiRoutes } from 'utils/constant'
 
 type Inputs = {

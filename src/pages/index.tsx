@@ -1,10 +1,10 @@
 import { format } from 'date-fns'
 import type { GetServerSideProps, NextPageWithLayout } from 'next'
 import { useEffect, useState } from 'react'
-import { MainLayout } from 'layouts/main'
-import { httpClient } from 'services/httpClient'
 import MySection from 'components/MySection'
 import Posts from 'components/Posts'
+import { MainLayout } from 'layouts/main'
+import { httpClient } from 'services/httpClient'
 
 type Props = {
   title?: string

@@ -10,9 +10,7 @@ const nextConfig = {
   experimental: {
     // optimizeFonts: true,
   },
-  env: {
-    GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY,
-  },
+  env: {},
   sassOptions: {
     includePaths: [path.join(__dirname, 'styles')],
   },
