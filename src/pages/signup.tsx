@@ -2,6 +2,7 @@ import type { NextPageWithLayout } from 'next'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { MainLayout } from 'layouts/main'
 import { httpClient } from 'services/httpClient'
+import { ApiRoutes } from 'utils/constant'
 
 type Inputs = {
   name: string
@@ -22,16 +23,15 @@ const SignupPage: NextPageWithLayout = () => {
   const {
     register,
     handleSubmit,
-    // watch,
     formState: { errors },
+    // watch,
   } = useForm<Inputs>({
     mode: 'onChange',
   })
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
-      console.log(data)
-      await httpClient().post('api/auth/signup', data)
+      await httpClient().post(ApiRoutes.auth.signup, data)
     } catch (error) {
       console.log(error)
     }

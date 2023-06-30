@@ -1,9 +1,10 @@
 import { format } from 'date-fns'
 import type { GetServerSideProps, NextPageWithLayout } from 'next'
-import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { MainLayout } from 'layouts/main'
-import { fetcher, httpClient } from 'services/httpClient'
+import { httpClient } from 'services/httpClient'
+import MySection from 'components/MySection'
+import Posts from 'components/Posts'
 
 type Props = {
   title?: string
@@ -17,9 +18,8 @@ const HomePage: NextPageWithLayout<Props> = (props) => {
     <>
       <h1>{props.title}</h1>
       <p>{isClient ? date : ''}</p>
-      <p>
-        <Link href='/about'>About</Link>
-      </p>
+      <MySection></MySection>
+      <Posts></Posts>
     </>
   )
 }

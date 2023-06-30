@@ -1,17 +1,17 @@
 import Link from 'next/link'
 import * as React from 'react'
-import useSWR from 'swr'
-import { fetcher, httpClient } from 'services/httpClient'
+import { httpClient } from 'services/httpClient'
 import styles from 'styles/components/Header.module.scss'
-import { User } from 'types'
 import Router from 'next/router'
+import { useMe } from 'hooks/me'
+import { ApiRoutes } from 'utils/constant'
 
 const Header = () => {
-  const { data: user, error } = useSWR('api/user', fetcher<User>)
+  const { data: user, error } = useMe()
 
   const signout = async () => {
     try {
-      await httpClient().post('api/auth/signout')
+      await httpClient().post(ApiRoutes.auth.signout)
     } catch (error) {
       console.log(error)
     } finally {
@@ -27,7 +27,9 @@ const Header = () => {
       <div className={styles.actions}>
         {user ? (
           <div>
-            <span>{user.name}</span>
+            <Link className={styles.action} href='/mypage'>
+              マイページ
+            </Link>
             <button className={styles.action} onClick={signout}>
               ログアウト
             </button>
