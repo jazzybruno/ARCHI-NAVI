@@ -25,9 +25,9 @@ const HomePage: NextPageWithLayout<Props> = (props) => {
 }
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const res = await httpClient().get('api/test')
+  // const res = await httpClient().get('api/test')
   const props: Props = {
-    title: res.data,
+    title: 'Hello World',
   }
 
   return {
