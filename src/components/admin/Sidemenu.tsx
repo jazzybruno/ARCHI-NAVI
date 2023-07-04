@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import * as React from 'react'
 
 const Sidemenu = () => {
@@ -10,7 +11,7 @@ const Sidemenu = () => {
       <div className='h-full overflow-y-auto bg-gray-50 px-3 py-4 dark:bg-gray-800'>
         <ul className='space-y-2 font-medium'>
           <li>
-            <a
+            <Link
               href='#'
               className='flex items-center rounded-lg p-2 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700'
             >
@@ -25,10 +26,10 @@ const Sidemenu = () => {
                 <path d='M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z'></path>
               </svg>
               <span className='ml-3'>Dashboard</span>
-            </a>
+            </Link>
           </li>
           <li>
-            <a
+            <Link
               href='#'
               className='flex items-center rounded-lg p-2 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700'
             >
@@ -45,10 +46,10 @@ const Sidemenu = () => {
               <span className='ml-3 inline-flex items-center justify-center rounded-full bg-gray-200 px-2 text-sm font-medium text-gray-800 dark:bg-gray-700 dark:text-gray-300'>
                 Pro
               </span>
-            </a>
+            </Link>
           </li>
           <li>
-            <a
+            <Link
               href='#'
               className='flex items-center rounded-lg p-2 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700'
             >
@@ -66,10 +67,10 @@ const Sidemenu = () => {
               <span className='ml-3 inline-flex h-3 w-3 items-center justify-center rounded-full bg-blue-100 p-3 text-sm font-medium text-blue-800 dark:bg-blue-900 dark:text-blue-300'>
                 3
               </span>
-            </a>
+            </Link>
           </li>
           <li>
-            <a
+            <Link
               href='#'
               className='flex items-center rounded-lg p-2 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700'
             >
@@ -87,10 +88,10 @@ const Sidemenu = () => {
                 ></path>
               </svg>
               <span className='ml-3 flex-1 whitespace-nowrap'>Users</span>
-            </a>
+            </Link>
           </li>
           <li>
-            <a
+            <Link
               href='#'
               className='flex items-center rounded-lg p-2 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700'
             >
@@ -108,10 +109,10 @@ const Sidemenu = () => {
                 ></path>
               </svg>
               <span className='ml-3 flex-1 whitespace-nowrap'>Products</span>
-            </a>
+            </Link>
           </li>
           <li>
-            <a
+            <Link
               href='/admin/signin'
               className='flex items-center rounded-lg p-2 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700'
             >
@@ -129,10 +130,10 @@ const Sidemenu = () => {
                 ></path>
               </svg>
               <span className='ml-3 flex-1 whitespace-nowrap'>Sign In</span>
-            </a>
+            </Link>
           </li>
           <li>
-            <a
+            <Link
               href='/admin/signup'
               className='flex items-center rounded-lg p-2 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700'
             >
@@ -150,7 +151,7 @@ const Sidemenu = () => {
                 ></path>
               </svg>
               <span className='ml-3 flex-1 whitespace-nowrap'>Sign Up</span>
-            </a>
+            </Link>
           </li>
         </ul>
       </div>
