@@ -1,6 +1,6 @@
 import type { AppPropsWithLayout } from 'next/app'
 import Head from 'next/head'
-import 'styles/globals.scss'
+// import 'styles/globals.scss'
 
 interface MyAppProps extends AppPropsWithLayout {}
 
