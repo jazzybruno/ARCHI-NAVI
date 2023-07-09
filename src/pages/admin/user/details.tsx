@@ -2,17 +2,10 @@ import type { NextPageWithLayout } from 'next'
 import { PlusOutlined } from '@ant-design/icons'
 import {
   Button,
-  Cascader,
-  Checkbox,
   DatePicker,
   Form,
   Input,
-  InputNumber,
-  Radio,
   Select,
-  Slider,
-  Switch,
-  TreeSelect,
   Upload,
   Typography,
   Space,
@@ -21,8 +14,6 @@ import React, { useState } from 'react'
 import { AdminLayout } from 'layouts/admin'
 
 const { Title } = Typography
-const { RangePicker } = DatePicker
-const { TextArea } = Input
 
 const normFile = (e: any) => {
   if (Array.isArray(e)) {
