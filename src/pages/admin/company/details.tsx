@@ -3,16 +3,16 @@ import { AdminLayout } from 'layouts/admin'
 import { Typography } from 'antd'
 const { Title } = Typography
 
-const AdminDashboardPage: NextPageWithLayout = () => {
+const AdminCompanyDetailsPage: NextPageWithLayout = () => {
   return (
     <>
       <Title level={2} style={{ textAlign: 'center' }}>
-        ダッシュボード
+        企業情報詳細
       </Title>
     </>
   )
 }
 
-AdminDashboardPage.getLayout = (page) => <AdminLayout>{page}</AdminLayout>
+AdminCompanyDetailsPage.getLayout = (page) => <AdminLayout>{page}</AdminLayout>
 
-export default AdminDashboardPage
+export default AdminCompanyDetailsPage
