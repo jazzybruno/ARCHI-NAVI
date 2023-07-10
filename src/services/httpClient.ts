@@ -17,5 +17,5 @@ export const httpClient = () =>
 export async function fetcher<T>(key: string, init?: RequestInit) {
   return httpClient()
     .get(key)
-    .then((res) => res.data.data as Promise<T | null>)
+    .then((res) => res.data as Promise<T | null>)
 }
