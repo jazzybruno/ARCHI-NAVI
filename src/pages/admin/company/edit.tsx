@@ -1,19 +1,10 @@
-import type { NextPageWithLayout } from 'next'
 import { PlusOutlined } from '@ant-design/icons'
-import {
-  Button,
-  DatePicker,
-  Form,
-  Input,
-  Select,
-  Upload,
-  Typography,
-  Space,
-} from 'antd'
+import { Button, DatePicker, Form, Input, Select, Upload, Typography, Space } from 'antd'
+import type { NextPageWithLayout } from 'next'
 import React, { useCallback, useState } from 'react'
+import { SimpleMdeReact } from 'react-simplemde-editor'
 import { AdminLayout } from 'layouts/admin'
-import { SimpleMdeReact } from "react-simplemde-editor";
-import "easymde/dist/easymde.min.css";
+import 'easymde/dist/easymde.min.css'
 
 const { Title } = Typography
 
@@ -25,20 +16,19 @@ const onFinishFailed = (errorInfo: any) => {
   console.log('Failed:', errorInfo)
 }
 
-
 const AdminCompanyEditPage: NextPageWithLayout = () => {
-  const [value, setValue] = useState("Initial value");
+  const [value, setValue] = useState('Initial value')
 
   const onChange = useCallback((value: string) => {
-    setValue(value);
-  }, []);
-  
+    setValue(value)
+  }, [])
+
   return (
     <>
       <Title level={2} style={{ textAlign: 'center' }}>
         企業情報変更
       </Title>
-      
+
       <Form
         labelCol={{ span: 4 }}
         wrapperCol={{ span: 12 }}
@@ -92,7 +82,7 @@ const AdminCompanyEditPage: NextPageWithLayout = () => {
         >
           <SimpleMdeReact value={value} onChange={onChange} />
         </Form.Item>
-        <Form.Item wrapperCol={{ span: 12, offset: 8 }} style={{paddingTop: '24px'}}>
+        <Form.Item wrapperCol={{ span: 12, offset: 8 }} style={{ paddingTop: '24px' }}>
           <Space>
             <Button type='primary' htmlType='submit'>
               変更する

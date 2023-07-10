@@ -1,15 +1,6 @@
-import type { NextPageWithLayout } from 'next'
 import { PlusOutlined } from '@ant-design/icons'
-import {
-  Button,
-  DatePicker,
-  Form,
-  Input,
-  Select,
-  Upload,
-  Typography,
-  Space,
-} from 'antd'
+import { Button, DatePicker, Form, Input, Select, Upload, Typography, Space } from 'antd'
+import type { NextPageWithLayout } from 'next'
 import React from 'react'
 import { AdminLayout } from 'layouts/admin'
 
