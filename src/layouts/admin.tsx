@@ -1,7 +1,6 @@
 import {
   SoundOutlined,
   CalendarOutlined,
-  LinkOutlined,
   MailOutlined,
   FileOutlined,
   UserOutlined,

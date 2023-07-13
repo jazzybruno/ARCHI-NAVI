@@ -6,7 +6,7 @@
     "start": "next start",
     "type-check": "tsc",
     "lint": "next lint --dir src",
-    "lint:fix": "yarn lint --fix",
+    "lint:fix": "npm run lint --fix",
     "format": "prettier --write --ignore-path .gitignore \"./**/*.{js,jsx,ts,tsx,json}\""
   },
   "dependencies": {
@@ -31,6 +31,7 @@
     "eslint": "^8.43.0",
     "eslint-config-next": "^13.4.7",
     "eslint-config-prettier": "^8.8.0",
+    "eslint-import-resolver-typescript": "^3.5.5",
     "eslint-plugin-tailwindcss": "^3.12.1",
     "postcss": "^8.4.24",
     "prettier": "^2.8.8",
