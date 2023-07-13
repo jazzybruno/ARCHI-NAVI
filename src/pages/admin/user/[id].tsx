@@ -35,23 +35,18 @@ const onFinishFailed = (errorInfo: any) => {
 }
 
 const AdminUserDetailsPage: NextPageWithLayout = () => {
-  const [userData, setUserData] = useState({});
-  const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
   const router = useRouter()
   const { id } = router.query
   useEffect(() => {
     if (id) {
-      setLoading(true)
       httpClient().get(`${ApiRoutes.user.index}/${id}`)
         .then((res) => {
           console.log(res.data)
-          setUserData(res.data);
-          setLoading(false);
           form.setFieldsValue({
             name: res.data.name,
             nameKana: res.data.nameKana,
-            gender: res.data.gender.toString(),
+            gender: res.data.gender?.toString(),
             birthday: dayjs(res.data.birthday),
             email: res.data.email,
             address: res.data.address,
@@ -73,7 +68,6 @@ const AdminUserDetailsPage: NextPageWithLayout = () => {
         layout='horizontal'
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
-      // initialValues={{ name: userData.name }}
       >
         <Form.Item label='プロフィール画像'>
           <Upload listType='picture-card' className='avatar-uploader' maxCount={1}>
