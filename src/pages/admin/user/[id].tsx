@@ -1,4 +1,3 @@
-import type { NextPageWithLayout } from 'next'
 import { PlusOutlined } from '@ant-design/icons'
 import {
   Button,
@@ -10,8 +9,12 @@ import {
   Typography,
   Space,
 } from 'antd'
-import React from 'react'
+import type { NextPageWithLayout } from 'next'
+import { useRouter } from 'next/router'
+import React, { useEffect, useState } from 'react'
 import { AdminLayout } from 'layouts/admin'
+import { httpClient } from 'services/httpClient'
+import { ApiRoutes } from 'utils/constant'
 
 const { Title } = Typography
 
@@ -31,17 +34,41 @@ const onFinishFailed = (errorInfo: any) => {
 }
 
 const AdminUserDetailsPage: NextPageWithLayout = () => {
+  const [userData, setUserData] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [form] = Form.useForm();
+  const router = useRouter()
+  const { id } = router.query
+  useEffect(() => {
+    if (id) {
+      setLoading(true)
+      httpClient().get(`${ApiRoutes.user.index}/${id}`)
+        .then((res) => {
+          setUserData(res.data);
+          setLoading(false);
+          form.setFieldsValue({
+            name: res.data.name,
+            nameKana: res.data.nameKana,
+            // birthday: res.data.birthday
+          });
+        })
+        .catch((err) => console.error(err))
+    }
+  }, [id]);
+
   return (
     <>
       <Title level={2} style={{ textAlign: 'center' }}>
         ユーザー情報詳細
       </Title>
       <Form
+        form={form}
         labelCol={{ span: 4 }}
         wrapperCol={{ span: 12 }}
         layout='horizontal'
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
+      // initialValues={{ name: userData.name }}
       >
         <Form.Item label='プロフィール画像'>
           <Upload listType='picture-card' className='avatar-uploader' maxCount={1}>
@@ -53,14 +80,14 @@ const AdminUserDetailsPage: NextPageWithLayout = () => {
         </Form.Item>
         <Form.Item
           label='氏名'
-          name='username'
+          name='name'
           rules={[{ required: true, message: 'このフィールドを入力してください' }]}
         >
           <Input />
         </Form.Item>
         <Form.Item
           label='氏名（カナ）'
-          name='furigana'
+          name='nameKana'
           rules={[{ required: true, message: 'このフィールドを入力してください' }]}
         >
           <Input />

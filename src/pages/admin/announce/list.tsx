@@ -1,6 +1,6 @@
+import { Typography } from 'antd'
 import type { NextPageWithLayout } from 'next'
 import { AdminLayout } from 'layouts/admin'
-import { Typography } from 'antd'
 const { Title } = Typography
 
 const AdminAnnounceListPage: NextPageWithLayout = () => {

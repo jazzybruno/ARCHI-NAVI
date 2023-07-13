@@ -1,4 +1,3 @@
-import type { NextPageWithLayout } from 'next'
 import { PlusOutlined } from '@ant-design/icons'
 import {
   Button,
@@ -10,9 +9,10 @@ import {
   Typography,
   Space,
 } from 'antd'
+import type { NextPageWithLayout } from 'next'
 import React, { useCallback, useState } from 'react'
-import { AdminLayout } from 'layouts/admin'
 import { SimpleMdeReact } from "react-simplemde-editor";
+import { AdminLayout } from 'layouts/admin'
 import "easymde/dist/easymde.min.css";
 
 const { Title } = Typography

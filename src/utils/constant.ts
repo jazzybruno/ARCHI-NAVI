@@ -10,6 +10,9 @@ export const ApiRoutes = {
   post: {
     index: `${_BaseApiPath}/post`,
   },
+  user: {
+    index: `${_BaseApiPath}/user`,
+  },
 }
 
 export type UserRole = 'admin' | 'user' | 'company'
