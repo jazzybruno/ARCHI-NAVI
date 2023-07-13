@@ -12,6 +12,7 @@ import {
 import type { NextPageWithLayout } from 'next'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
+import dayjs from 'dayjs';
 import { AdminLayout } from 'layouts/admin'
 import { httpClient } from 'services/httpClient'
 import { ApiRoutes } from 'utils/constant'
@@ -44,12 +45,16 @@ const AdminUserDetailsPage: NextPageWithLayout = () => {
       setLoading(true)
       httpClient().get(`${ApiRoutes.user.index}/${id}`)
         .then((res) => {
+          console.log(res.data)
           setUserData(res.data);
           setLoading(false);
           form.setFieldsValue({
             name: res.data.name,
             nameKana: res.data.nameKana,
-            // birthday: res.data.birthday
+            gender: res.data.gender.toString(),
+            birthday: dayjs(res.data.birthday),
+            email: res.data.email,
+            address: res.data.address,
           });
         })
         .catch((err) => console.error(err))
@@ -94,13 +99,13 @@ const AdminUserDetailsPage: NextPageWithLayout = () => {
         </Form.Item>
         <Form.Item
           label='性別'
-          name='sex'
+          name='gender'
           rules={[{ required: true, message: 'このフィールドを入力してください' }]}
         >
           <Select>
-            <Select.Option value='male'>男性</Select.Option>
-            <Select.Option value='female'>女性</Select.Option>
-            <Select.Option value='private'>非公開</Select.Option>
+            <Select.Option value='0'>男性</Select.Option>
+            <Select.Option value='1'>女性</Select.Option>
+            <Select.Option value='2'>非公開</Select.Option>
           </Select>
         </Form.Item>
         <Form.Item
@@ -123,13 +128,6 @@ const AdminUserDetailsPage: NextPageWithLayout = () => {
         <Form.Item
           label='住所'
           name='address'
-          rules={[{ required: true, message: 'このフィールドを入力してください' }]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          label='住所2'
-          name='address2'
           rules={[{ required: true, message: 'このフィールドを入力してください' }]}
         >
           <Input />
