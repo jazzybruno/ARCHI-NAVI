@@ -120,13 +120,6 @@ const AdminUserDetailsPage: NextPageWithLayout = () => {
           <Input />
         </Form.Item>
         <Form.Item
-          label='郵便番号'
-          name='postalCode'
-          rules={[{ required: true, message: 'このフィールドを入力してください' }]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
           label='住所'
           name='address'
           rules={[{ required: true, message: 'このフィールドを入力してください' }]}
@@ -135,7 +128,7 @@ const AdminUserDetailsPage: NextPageWithLayout = () => {
         </Form.Item>
         <Form.Item
           label='学校名'
-          name='schoolName'
+          name='school'
           rules={[{ required: true, message: 'このフィールドを入力してください' }]}
         >
           <Input />
@@ -160,9 +153,9 @@ const AdminUserDetailsPage: NextPageWithLayout = () => {
           rules={[{ required: true, message: 'このフィールドを入力してください' }]}
         >
           <Select>
-            <Select.Option value='1'>メール</Select.Option>
-            <Select.Option value='2'>LINE</Select.Option>
-            <Select.Option value='0'>受け取らない</Select.Option>
+            <Select.Option value='male'>メール</Select.Option>
+            <Select.Option value='female'>LINE</Select.Option>
+            <Select.Option value='private'>受け取らない</Select.Option>
           </Select>
         </Form.Item>
         <Form.Item wrapperCol={{ span: 12, offset: 9 }}>
