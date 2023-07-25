@@ -24,7 +24,7 @@ export const ApiRoutes = {
       index: `${_BaseApiPath}/event`,
    },
    message: {
-      index: `${_BaseApiPath}/message`,
+      index: `${_BaseApiPath}/mail`,
    },
    notification: {
       index: `${_BaseApiPath}/notification`,

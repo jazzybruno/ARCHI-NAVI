@@ -67,9 +67,6 @@ const AdminEventListPage: NextPageWithLayout = () => {
          }
       }
 
-
-      console.log(queryParams.toString())
-
       queryParams.set('page', page.toString())
 
 
@@ -88,7 +85,6 @@ const AdminEventListPage: NextPageWithLayout = () => {
    }
 
    const onFinish = (values: any) => {
-      console.log(values)
       fetchData(1, values)
    }
 

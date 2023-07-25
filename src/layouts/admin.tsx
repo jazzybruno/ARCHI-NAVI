@@ -54,11 +54,11 @@ const items: MenuItem[] = [
    ]),
    getItem('お知らせ情報照会', '5', <SoundOutlined />, [
       getItem(<Link href='/admin/announce/list'>お知らせ照会</Link>, '5-0'),
-      getItem(<Link href='/admin/announce/create'>お知らせ作成</Link>, '5-1'),
+      getItem(<Link href='/admin/announce/new'>お知らせ作成</Link>, '5-1'),
    ]),
    getItem('一斉メール・LINE配信情報照会', '6', <MailOutlined />, [
       getItem(<Link href='/admin/mail/list'>一斉メール・LINE配信</Link>, '6-0'),
-      getItem(<Link href='/admin/mail/create'>一斉メール・LINE作成</Link>, '6-1'),
+      getItem(<Link href='/admin/mail/new'>一斉メール・LINE作成</Link>, '6-1'),
       getItem(<Link href='/admin/mail/confirm'>一斉メール・LINE作成内容確認</Link>, '6-2'),
    ]),
 ]
