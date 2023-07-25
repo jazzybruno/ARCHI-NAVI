@@ -1,215 +1,160 @@
 import { Button, Form, Input, Typography, Space } from 'antd'
 import type { NextPageWithLayout } from 'next'
 import dynamic from 'next/dynamic'
-import React, { useCallback, useState, useEffect, ChangeEvent } from 'react'
+import React, { useCallback, useState, useEffect } from 'react'
 import { AdminLayout } from 'layouts/admin'
-import { httpClient, httpFormDataClient } from 'services/httpClient'
+import { httpClient } from 'services/httpClient'
 import { ApiRoutes } from 'utils/constant'
 import { useRouter } from 'next/router'
-const SimpleMDE = dynamic(() => import('react-simplemde-editor'), { ssr: false })
 import 'easymde/dist/easymde.min.css'
 
 const { Title } = Typography
+const { TextArea } = Input
 
-const AdminCompanyDetailsPage: NextPageWithLayout = () => {
-  const [value, setValue] = useState('Initial value')
-  const [form] = Form.useForm();
-  const router = useRouter()
-  const { id } = router.query
-  const [previewImage, setPreviewImage] = useState('');
+const AdminEventDetailsPage: NextPageWithLayout = () => {
+   const [form] = Form.useForm()
+   const router = useRouter()
+   const { id } = router.query
 
-  const [file, setFile] = useState<File>();
+   const onFinish = (values: any) => {
+      httpClient()
+         .put(`${ApiRoutes.event.index}/${id}`, values)
+         .then(() => {
+            console.log('success:', values)
+         })
+         .catch((err) => console.error(err))
+   }
 
-  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setFile(e.target.files[0]);
-      setPreviewImage(URL.createObjectURL(e.target.files[0]))
-    }
-  };
+   const onFinishFailed = (errorInfo: any) => {
+      console.log('Failed:', errorInfo)
+   }
 
-  const onChange = useCallback((value: string) => {
-    setValue(value)
-  }, [])
+   useEffect(() => {
+      if (id) {
+         httpClient()
+            .get(`${ApiRoutes.event.index}/${id}`)
+            .then((res) => {
+               form.setFieldsValue({
+                  title: res.data.title,
+                  cotent: res.data.content,
+                  type: res.data.type,
+                  // dateTime: res.data.dateTime.format('YYYY-MM-DD-hh-mm-ss'),
+                  prefecture: res.data.prefecture,
+                  postalCode: res.data.postalCode,
+                  address: res.data.address,
+                  numberOfRecruitment: res.data.numberOfRecruitment,
+                  applicationStartDateTime: res.data.applicationStartDateTime,
+                  applicationEndDateTime: res.data.applicationEndDateTime,
+                  recruitmentCondition: res.data.recruitmentCondition,
+               })
+            })
+            .catch((err) => console.error(err))
+      }
+   }, [id])
 
-  const onFinish = (values: any) => {
-    httpFormDataClient()
-      .post(`${ApiRoutes.attachment.upload}`, previewImage)
-      .then(res => {
-        const data = {
-          name: values.name,
-          link: values.link,
-          tel: values.tel.toString(),
-          managerName: values.managerName,
-          department: values.department,
-          recruitmentOccupation: values.recruitmentOccupation,
-          overview: values.overview,
-          feature: values.feature,
-          personality: values.personality,
-          numberOfEmployees: values.numberOfEmployees,
-          appealPoint: values.appealPoint,
-          other: values.other,
-          attachmentId: res.data.id
-        }
-        httpClient()
-          .put(`${ApiRoutes.company.index}/${id}`, data)
-          .then(() => {
-            console.log('success:', data)
-          })
-          .catch((err) => console.error(err))
-      })
-  }
+   return (
+      <>
+         <Title level={2} style={{ textAlign: 'center' }}>
+            インターン・イベント情報照会
+         </Title>
 
-  const onFinishFailed = (errorInfo: any) => {
-    console.log('Failed:', errorInfo)
-  }
-
-  useEffect(() => {
-    if (id) {
-      httpClient().get(`${ApiRoutes.company.index}/${id}`)
-        .then((res) => {
-          form.setFieldsValue({
-            name: res.data.name,
-            link: res.data.link,
-            tel: res.data.tel.toString(),
-            managerName: res.data.managerName,
-            department: res.data.department,
-            recruitmentOccupation: res.data.recruitmentOccupation,
-            overview: res.data.overview,
-            feature: res.data.feature,
-            personality: res.data.personality,
-            numberOfEmployees: res.data.numberOfEmployees,
-            appealPoint: res.data.appealPoint,
-            other: res.data.other,
-          });
-          console.log(form);
-        })
-        .catch((err) => console.error(err))
-    }
-  }, [id]);
-
-  return (
-    <>
-      <Title level={2} style={{ textAlign: 'center' }}>
-        企業情報変更
-      </Title>
-
-      <Form
-        form={form}
-        labelCol={{ span: 4 }}
-        wrapperCol={{ span: 12 }}
-        layout='horizontal'
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
-      >
-        <Form.Item
-          label='企業名'
-          name='name'
-          rules={[
-            { required: true, message: 'このフィールドを入力してください' },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          label='会社HPリンク'
-          name='link'
-          rules={[
-            { required: true, message: 'このフィールドを入力してください' },
-            { type: 'url', message: 'URL形式が正しくありません' },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          label='担当者'
-          name='managerName'
+         <Form
+            form={form}
+            labelCol={{ span: 4 }}
+            wrapperCol={{ span: 12 }}
+            layout='horizontal'
+            onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
+         >
+            <Form.Item
+               label='タイトル'
+               name='title'
+               rules={[{ required: true, message: 'このフィールドを入力してください' }]}
+            >
+               <Input />
+            </Form.Item>
+            <Form.Item
+               label='タイプ'
+               name='type'
+               rules={[{ required: true, message: 'このフィールドを入力してください' }]}
+            >
+               <Input />
+            </Form.Item>
+            <Form.Item
+               label='コンテンツ'
+               name='content'
+               rules={[{ required: true, message: 'このフィールドを入力してください' }]}
+            >
+               <TextArea />
+            </Form.Item>
+            {/* <Form.Item
+          label='日付時刻'
+          name='dateTime'
           rules={[{ required: true, message: 'このフィールドを入力してください' }]}
         >
           <Input />
-        </Form.Item>
-        <Form.Item
-          label='部門'
-          name='department'
-          rules={[{ required: true, message: 'このフィールドを入力してください' }]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          label='募集職種'
-          name='recruitmentOccupation'
-          rules={[{ required: true, message: 'このフィールドを入力してください' }]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          label='電話番号'
-          name='tel'
-          rules={[{ required: true, message: 'このフィールドを入力してください' }]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item label='プロフィール画像' name='avatar'>
-          <input type='file' onChange={handleFileChange} />
-          <img src={previewImage} alt="avatar-image" className='max-w-[150px]' />
-
-        </Form.Item>
-        <Form.Item
-          label='特徴'
-          name='feature'
-          rules={[{ required: true, message: 'このフィールドを入力してください' }]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          label='個性'
-          name='personality'
-          rules={[{ required: true, message: 'このフィールドを入力してください' }]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          label='従業員数'
-          name='numberOfEmployees'
-          rules={[{ required: true, message: 'このフィールドを入力してください' }]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          label='アピールポイント'
-          name='appealPoint'
-          rules={[{ required: true, message: 'このフィールドを入力してください' }]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          label='他の'
-          name='other'
-          rules={[{ required: false, message: 'このフィールドを入力してください' }]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          label='会社概要'
-          name='overview'
-          rules={[{ required: true, message: 'このフィールドを入力してください' }]}
-        >
-          <SimpleMDE value={value} onChange={onChange} />
-        </Form.Item>
-        <Form.Item wrapperCol={{ span: 12, offset: 8 }} style={{ paddingTop: '24px' }}>
-          <Space>
-            <Button type='primary' htmlType='submit'>
-              変更する
-            </Button>
-            <Button type='default' htmlType='submit'>
-              キャンセル
-            </Button>
-          </Space>
-        </Form.Item>
-      </Form>
-    </>
-  )
+        </Form.Item> */}
+            <Form.Item
+               label='県'
+               name='prefecture'
+               rules={[{ required: true, message: 'このフィールドを入力してください' }]}
+            >
+               <Input />
+            </Form.Item>
+            <Form.Item
+               label='郵便番号'
+               name='postalCode'
+               rules={[{ required: true, message: 'このフィールドを入力してください' }]}
+            >
+               <Input />
+            </Form.Item>
+            <Form.Item
+               label='住所'
+               name='address'
+               rules={[{ required: true, message: 'このフィールドを入力してください' }]}
+            >
+               <Input />
+            </Form.Item>
+            <Form.Item
+               label='募集人数'
+               name='numberOfRecruitment'
+               rules={[{ required: true, message: 'このフィールドを入力してください' }]}
+            >
+               <Input />
+            </Form.Item>
+            <Form.Item
+               label='アプリケーション開始日時'
+               name='applicationStartDateTime'
+               rules={[{ required: true, message: 'このフィールドを入力してください' }]}
+            >
+               <Input />
+            </Form.Item>
+            <Form.Item
+               label='アプリケーション終了日時'
+               name='applicationEndDateTime'
+               rules={[{ required: true, message: 'このフィールドを入力してください' }]}
+            >
+               <Input />
+            </Form.Item>
+            <Form.Item
+               label='募集条件'
+               name='recruitmentCondition'
+               rules={[{ required: true, message: 'このフィールドを入力してください' }]}
+            >
+               <TextArea />
+            </Form.Item>
+            <Form.Item wrapperCol={{ span: 12, offset: 8 }} style={{ paddingTop: '24px' }}>
+               <Space>
+                  <Button type='primary' htmlType='submit'>
+                     変更する
+                  </Button>
+               </Space>
+            </Form.Item>
+         </Form>
+      </>
+   )
 }
 
-AdminCompanyDetailsPage.getLayout = (page) => <AdminLayout>{page}</AdminLayout>
+AdminEventDetailsPage.getLayout = (page) => <AdminLayout>{page}</AdminLayout>
 
-export default AdminCompanyDetailsPage
+export default AdminEventDetailsPage
