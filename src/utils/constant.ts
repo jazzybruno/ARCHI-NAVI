@@ -13,6 +13,24 @@ export const ApiRoutes = {
   user: {
     index: `${_BaseApiPath}/user`,
   },
+  attachment: {
+    index: `${_BaseApiPath}/attachment`,
+  },
+  company: {
+    index: `${_BaseApiPath}/company`,
+  },
+  event: {
+    index: `${_BaseApiPath}/event`,
+  },
+  message: {
+    index: `${_BaseApiPath}/message`,
+  },
+  notification: {
+    index: `${_BaseApiPath}/notification`,
+  },
+  alumnus: {
+    index: `${_BaseApiPath}/alumnus`,
+  }
 }
 
 export type UserRole = 'admin' | 'user' | 'company'

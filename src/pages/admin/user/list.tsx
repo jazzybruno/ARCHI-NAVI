@@ -17,18 +17,11 @@ interface DataType {
   registeredAt: string
 }
 
-const onFinish = (values: any) => {
-  console.log('Success:', values)
-}
-
-const onFinishFailed = (errorInfo: any) => {
-  console.log('Failed:', errorInfo)
-}
-
 const AdminUserListPage: NextPageWithLayout = () => {
   const [dataSource, setDataSource] = useState([]);
   const [totalData, setTotalData] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchForm, setSearchForm] = useState(null);
   const [loading, setLoading] = useState(false);
   const router = useRouter()
 
@@ -36,15 +29,56 @@ const AdminUserListPage: NextPageWithLayout = () => {
     fetchData(1);
   }, []);
 
-  const fetchData = (page: number) => {
+  const [form] = Form.useForm();
+
+  const fetchData = (page: number, values: any = null) => {
+
     setLoading(true);
-    httpClient().get(`${ApiRoutes.user.index}?page=${page}`)
+    const queryParams = new URLSearchParams();
+    if (values) {
+      if (values.username) {
+        queryParams.append('name', values.username);
+      }
+      if (values.email) {
+        queryParams.append('email', values.email);
+      }
+      if (values.registeredAt) {
+        const [start, end] = values.registeredAt;
+        queryParams.append('start_date', start.format('YYYY-MM-DD'));
+        queryParams.append('end_date', end.format('YYYY-MM-DD'));
+      }
+    } else if (searchForm) {
+      if (searchForm.username) {
+        queryParams.append('name', searchForm.username);
+      }
+      if (searchForm.email) {
+        queryParams.append('email', searchForm.email);
+      }
+      if (searchForm.registeredAt) {
+        const [start, end] = searchForm.registeredAt;
+        queryParams.append('start_date', start.format('YYYY-MM-DD'));
+        queryParams.append('end_date', end.format('YYYY-MM-DD'));
+      }
+    }
+    queryParams.set('page', page.toString());
+    const queryString = queryParams.toString();
+    httpClient().get(`${ApiRoutes.user.index}?${queryString}`)
       .then((res) => {
         setDataSource(res.data.data);
         setTotalData(res.data.total);
-        setLoading(false);
+        setCurrentPage(page);
       })
-      .catch((err) => console.error(err))
+      .catch((err) => console.error(err));
+    setLoading(false);
+  }
+
+  const onFinish = (values: any) => {
+    setSearchForm(values);
+    fetchData(1, values);
+  };
+
+  const onFinishFailed = (errorInfo: any) => {
+    console.log('Failed:', errorInfo)
   }
 
   const confirmDelete = (id: number) => {
@@ -116,6 +150,7 @@ const AdminUserListPage: NextPageWithLayout = () => {
       <Space direction='vertical' size='middle' style={{ display: 'flex' }}>
         <Card>
           <Form
+            form={form}
             name='basic'
             initialValues={{ remember: true }}
             autoComplete='off'
@@ -160,10 +195,10 @@ const AdminUserListPage: NextPageWithLayout = () => {
             pagination={{
               total: totalData,
               defaultPageSize: 10,
+              current: currentPage,
               showSizeChanger: false,
               onChange: (page, _pageSize) => {
                 fetchData(page);
-                setCurrentPage(page);
               }
             }}
           />

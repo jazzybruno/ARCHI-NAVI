@@ -19,3 +19,12 @@ export async function fetcher<T>(key: string, init?: RequestInit) {
     .get(key)
     .then((res) => res.data as Promise<T | null>)
 }
+
+export const httpFormDataClient = () =>
+  axios.create({
+    baseURL: process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000',
+    headers: {
+      'content-type': 'multipart/form-data',
+    },
+    withCredentials: true,
+  })

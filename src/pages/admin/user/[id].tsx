@@ -1,20 +1,18 @@
-import { PlusOutlined } from '@ant-design/icons'
 import {
   Button,
   DatePicker,
   Form,
   Input,
   Select,
-  Upload,
   Typography,
   Space,
 } from 'antd'
 import dayjs from 'dayjs';
 import type { NextPageWithLayout } from 'next'
 import { useRouter } from 'next/router'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, ChangeEvent } from 'react'
 import { AdminLayout } from 'layouts/admin'
-import { httpClient } from 'services/httpClient'
+import { httpClient, httpFormDataClient } from 'services/httpClient'
 import { ApiRoutes } from 'utils/constant'
 
 const { Title } = Typography
@@ -26,23 +24,61 @@ const normFile = (e: any) => {
   return e?.fileList
 }
 
-const onFinish = (values: any) => {
-  console.log('Success:', values)
-}
-
-const onFinishFailed = (errorInfo: any) => {
-  console.log('Failed:', errorInfo)
-}
-
 const AdminUserDetailsPage: NextPageWithLayout = () => {
   const [form] = Form.useForm();
   const router = useRouter()
   const { id } = router.query
+  const [previewImage, setPreviewImage] = useState('');
+
+  const [file, setFile] = useState<File>();
+
+
+
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setFile(e.target.files[0]);
+      setPreviewImage(URL.createObjectURL(e.target.files[0]))
+    }
+  };
+
+
+  const onFinish = (values: any) => {
+    httpFormDataClient()
+      .post(`${ApiRoutes.attachment.index}`, previewImage)
+      .then(res => {
+        console.log(res.data.id)
+        const data = {
+          address: values.address,
+          name: values.name,
+          department: values.department,
+          email: values.email,
+          birthday: values.birthday.format("YYYY-MM-DD"),
+          schoolName: values.school,
+          faculty: values.faculty,
+          gender: values.gender,
+          receiveInformation: values.notification,
+          namekana: values.nameKana,
+          attachmentId: res.data.id
+        }
+        httpClient()
+          .put(`${ApiRoutes.user.index}/${id}`, data)
+          .then(() => {
+            console.log('success:', data)
+          })
+          .catch((err) => console.error(err))
+      })
+
+    // return;
+  }
+
+  const onFinishFailed = (errorInfo: any) => {
+    console.log('Failed:', errorInfo)
+  }
+
   useEffect(() => {
     if (id) {
       httpClient().get(`${ApiRoutes.user.index}/${id}`)
         .then((res) => {
-          console.log(res.data)
           form.setFieldsValue({
             name: res.data.name,
             nameKana: res.data.nameKana,
@@ -50,11 +86,17 @@ const AdminUserDetailsPage: NextPageWithLayout = () => {
             birthday: dayjs(res.data.birthday),
             email: res.data.email,
             address: res.data.address,
+            school: res.data.schoolName,
+            faculty: res.data.faculty,
+            department: res.data.department,
+            notification: res.data.receiveInformation?.toString(),
           });
         })
         .catch((err) => console.error(err))
     }
   }, [id]);
+
+
 
   return (
     <>
@@ -69,13 +111,10 @@ const AdminUserDetailsPage: NextPageWithLayout = () => {
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
       >
-        <Form.Item label='プロフィール画像'>
-          <Upload listType='picture-card' className='avatar-uploader' maxCount={1}>
-            <div>
-              <PlusOutlined />
-              <div style={{ marginTop: 8 }}>アップロード</div>
-            </div>
-          </Upload>
+        <Form.Item label='プロフィール画像' name='avatar'>
+          <input type='file' onChange={handleFileChange} />
+          <img src={previewImage} alt="avatar-image" className='max-w-[150px]' />
+
         </Form.Item>
         <Form.Item
           label='氏名'
@@ -153,9 +192,9 @@ const AdminUserDetailsPage: NextPageWithLayout = () => {
           rules={[{ required: true, message: 'このフィールドを入力してください' }]}
         >
           <Select>
-            <Select.Option value='male'>メール</Select.Option>
-            <Select.Option value='female'>LINE</Select.Option>
-            <Select.Option value='private'>受け取らない</Select.Option>
+            <Select.Option value='1'>メール</Select.Option>
+            <Select.Option value='2'>LINE</Select.Option>
+            <Select.Option value='0'>受け取らない</Select.Option>
           </Select>
         </Form.Item>
         <Form.Item wrapperCol={{ span: 12, offset: 9 }}>
