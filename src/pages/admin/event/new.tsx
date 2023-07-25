@@ -1,11 +1,9 @@
 import { Button, Form, Input, Typography, Space } from 'antd'
 import type { NextPageWithLayout } from 'next'
-import dynamic from 'next/dynamic'
-import React, { useCallback, useState, useEffect } from 'react'
+import React from 'react'
 import { AdminLayout } from 'layouts/admin'
 import { httpClient } from 'services/httpClient'
 import { ApiRoutes } from 'utils/constant'
-import { useRouter } from 'next/router'
 import 'easymde/dist/easymde.min.css'
 
 const { Title } = Typography
@@ -13,13 +11,13 @@ const { TextArea } = Input
 
 const AdminEventDetailsPage: NextPageWithLayout = () => {
     const [form] = Form.useForm()
-    const router = useRouter()
 
     const onFinish = (values: any) => {
+        console.log(values)
         httpClient()
-            .post(`${ApiRoutes.event.index}/new`, values)
+            .post(`${ApiRoutes.event.index}`, values)
             .then(() => {
-                console.log('success:', values)
+                alert('新しいユーザーが追加されました。')
             })
             .catch((err) => console.error(err))
     }
@@ -27,13 +25,6 @@ const AdminEventDetailsPage: NextPageWithLayout = () => {
     const onFinishFailed = (errorInfo: any) => {
         console.log('Failed:', errorInfo)
     }
-
-
-    const handleChange = (key, value) => {
-        form.setFieldValue([key], value)
-        console.log(form.getFieldValue('title'))
-    }
-
 
     return (
         <>
@@ -54,14 +45,14 @@ const AdminEventDetailsPage: NextPageWithLayout = () => {
                     name='title'
                     rules={[{ required: true, message: 'このフィールドを入力してください' }]}
                 >
-                    <Input onChange={(e) => handleChange('title', e.target.value)} />
+                    <Input />
                 </Form.Item>
                 <Form.Item
                     label='タイプ'
                     name='type'
                     rules={[{ required: true, message: 'このフィールドを入力してください' }]}
                 >
-                    <Input onChange={(e) => handleChange('title', e.target.value)} />
+                    <Input placeholder='other or seminar or intern' />
                 </Form.Item>
                 <Form.Item
                     label='コンテンツ'
@@ -70,13 +61,13 @@ const AdminEventDetailsPage: NextPageWithLayout = () => {
                 >
                     <TextArea />
                 </Form.Item>
-                {/* <Form.Item
-          label='日付時刻'
-          name='dateTime'
-          rules={[{ required: true, message: 'このフィールドを入力してください' }]}
-        >
-          <Input />
-        </Form.Item> */}
+                <Form.Item
+                    label='日付時刻'
+                    name='dateTime'
+                    rules={[{ required: true, message: 'このフィールドを入力してください' }]}
+                >
+                    <Input placeholder='2023-06-11 07:38:56' />
+                </Form.Item>
                 <Form.Item
                     label='県'
                     name='prefecture'
@@ -110,14 +101,14 @@ const AdminEventDetailsPage: NextPageWithLayout = () => {
                     name='applicationStartDateTime'
                     rules={[{ required: true, message: 'このフィールドを入力してください' }]}
                 >
-                    <Input />
+                    <Input placeholder='2023-06-11 07:38:56' />
                 </Form.Item>
                 <Form.Item
                     label='アプリケーション終了日時'
                     name='applicationEndDateTime'
                     rules={[{ required: true, message: 'このフィールドを入力してください' }]}
                 >
-                    <Input />
+                    <Input placeholder='2023-06-11 07:38:56' />
                 </Form.Item>
                 <Form.Item
                     label='募集条件'

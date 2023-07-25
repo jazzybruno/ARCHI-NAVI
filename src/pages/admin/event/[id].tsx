@@ -1,7 +1,6 @@
 import { Button, Form, Input, Typography, Space } from 'antd'
 import type { NextPageWithLayout } from 'next'
-import dynamic from 'next/dynamic'
-import React, { useCallback, useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { AdminLayout } from 'layouts/admin'
 import { httpClient } from 'services/httpClient'
 import { ApiRoutes } from 'utils/constant'
@@ -36,7 +35,7 @@ const AdminEventDetailsPage: NextPageWithLayout = () => {
             .then((res) => {
                form.setFieldsValue({
                   title: res.data.title,
-                  cotent: res.data.content,
+                  content: res.data.content,
                   type: res.data.type,
                   // dateTime: res.data.dateTime.format('YYYY-MM-DD-hh-mm-ss'),
                   prefecture: res.data.prefecture,
