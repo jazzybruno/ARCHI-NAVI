@@ -44,7 +44,7 @@ const AdminUserDetailsPage: NextPageWithLayout = () => {
 
   const onFinish = (values: any) => {
     httpFormDataClient()
-      .post(`${ApiRoutes.attachment.index}`, previewImage)
+      .post(`${ApiRoutes.attachment.upload}`, previewImage)
       .then(res => {
         console.log(res.data.id)
         const data = {

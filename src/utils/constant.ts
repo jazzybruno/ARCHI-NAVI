@@ -15,6 +15,7 @@ export const ApiRoutes = {
   },
   attachment: {
     index: `${_BaseApiPath}/attachment`,
+    upload: `/file`
   },
   company: {
     index: `${_BaseApiPath}/company`,
