@@ -53,7 +53,7 @@ const AdminCompanyDetailsPage: NextPageWithLayout = () => {
             httpClient()
                .put(`${ApiRoutes.company.index}/${id}`, data)
                .then(() => {
-                  console.log('success:', data)
+                  alert('正常に変更されました。');
                })
                .catch((err) => console.error(err))
          })
@@ -64,10 +64,12 @@ const AdminCompanyDetailsPage: NextPageWithLayout = () => {
    }
 
    useEffect(() => {
+      let attachmentId = 0;
       if (id) {
          httpClient()
             .get(`${ApiRoutes.company.index}/${id}`)
             .then((res) => {
+               attachmentId = res.data.attachmentId;
                form.setFieldsValue({
                   name: res.data.name,
                   link: res.data.link,
@@ -82,7 +84,11 @@ const AdminCompanyDetailsPage: NextPageWithLayout = () => {
                   appealPoint: res.data.appealPoint,
                   other: res.data.other,
                })
-               console.log(form)
+               httpClient()
+                  .get(`${ApiRoutes.attachment.index}/${attachmentId}`)
+                  .then((res) => {
+                     setPreviewImage(res.data.url)
+                  })
             })
             .catch((err) => console.error(err))
       }
@@ -149,7 +155,7 @@ const AdminCompanyDetailsPage: NextPageWithLayout = () => {
             </Form.Item>
             <Form.Item label='プロフィール画像' name='avatar'>
                <input type='file' onChange={handleFileChange} />
-               <img src={previewImage} alt='avatar-image' className='max-w-[150px]' />
+               <img src={previewImage} className='max-w-[150px]' />
             </Form.Item>
             <Form.Item
                label='特徴'
