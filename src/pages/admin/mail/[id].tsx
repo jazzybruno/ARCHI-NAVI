@@ -9,7 +9,7 @@ import { ApiRoutes } from 'utils/constant'
 
 const { Title } = Typography
 
-const AdminUserDetailsPage: NextPageWithLayout = () => {
+const AdminMailDetailsPage: NextPageWithLayout = () => {
    const [form] = Form.useForm()
    const router = useRouter()
    const { id } = router.query
@@ -91,8 +91,9 @@ const AdminUserDetailsPage: NextPageWithLayout = () => {
    return (
       <>
          <Title level={2} style={{ textAlign: 'center' }}>
-            ユーザー情報詳細
+            コラム・Blog情報変更
          </Title>
+
          <Form
             form={form}
             labelCol={{ span: 4 }}
@@ -212,6 +213,6 @@ const AdminUserDetailsPage: NextPageWithLayout = () => {
    )
 }
 
-AdminUserDetailsPage.getLayout = (page) => <AdminLayout>{page}</AdminLayout>
+AdminMailDetailsPage.getLayout = (page) => <AdminLayout>{page}</AdminLayout>
 
-export default AdminUserDetailsPage
+export default AdminMailDetailsPage

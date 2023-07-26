@@ -3,15 +3,15 @@ import Footer from 'components/Footer'
 import Header from 'components/Header'
 
 type LayoutProps = {
-  readonly children: ReactElement
+   readonly children: ReactElement
 }
 
 export const MainLayout = ({ children }: LayoutProps) => {
-  return (
-    <>
-      <Header></Header>
-      <main>{children}</main>
-      <Footer></Footer>
-    </>
-  )
+   return (
+      <>
+         <Header></Header>
+         <main>{children}</main>
+         <Footer></Footer>
+      </>
+   )
 }

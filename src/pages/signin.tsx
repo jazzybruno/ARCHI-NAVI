@@ -3,13 +3,13 @@ import SigninForm from 'components/SigninForm'
 import { MainLayout } from 'layouts/main'
 
 const SigninPage: NextPageWithLayout = () => {
-  return (
-    <>
-      <div className='flex items-center justify-center'>
-        <SigninForm role='user'></SigninForm>
-      </div>
-    </>
-  )
+   return (
+      <>
+         <div className='flex items-center justify-center'>
+            <SigninForm role='user'></SigninForm>
+         </div>
+      </>
+   )
 }
 
 SigninPage.getLayout = (page) => <MainLayout>{page}</MainLayout>
