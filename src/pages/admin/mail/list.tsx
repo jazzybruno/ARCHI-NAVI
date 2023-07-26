@@ -15,7 +15,6 @@ const AdminMailListPage: NextPageWithLayout = () => {
       key: React.Key
       title: string
       content: string
-      target: string
       registeredAt: string
    }
 
@@ -43,9 +42,6 @@ const AdminMailListPage: NextPageWithLayout = () => {
          if (values.content) {
             queryParams.append('content', values.content);
          }
-         if (values.target) {
-            queryParams.append('target', values.target);
-         }
          if (values.registeredAt) {
             const [start, end] = values.registeredAt;
             queryParams.append('start_date', start.format('YYYY-MM-DD'));
@@ -57,9 +53,6 @@ const AdminMailListPage: NextPageWithLayout = () => {
          }
          if (searchForm.content) {
             queryParams.append('content', searchForm.content);
-         }
-         if (searchForm.target) {
-            queryParams.append('target', searchForm.target);
          }
          if (searchForm.registeredAt) {
             const [start, end] = searchForm.registeredAt;
@@ -118,11 +111,6 @@ const AdminMailListPage: NextPageWithLayout = () => {
          key: 'content',
       },
       {
-         title: 'ターゲット',
-         dataIndex: 'target',
-         key: 'target',
-      },
-      {
          title: '登録日',
          dataIndex: 'createdAt',
          key: 'createdAt',
@@ -177,13 +165,6 @@ const AdminMailListPage: NextPageWithLayout = () => {
                   <Form.Item
                      label='コンテンツ'
                      name='content'
-                  >
-                     <Input />
-                  </Form.Item>
-
-                  <Form.Item
-                     label='ターゲット'
-                     name='target'
                   >
                      <Input />
                   </Form.Item>

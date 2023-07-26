@@ -19,7 +19,7 @@ const AdminBlogDetailsPage: NextPageWithLayout = () => {
       httpClient()
          .put(`${ApiRoutes.post.index}/${id}`, values)
          .then(() => {
-            console.log('success:', values)
+            alert('正常に変更されました。')
          })
          .catch((err) => console.error(err))
    }
@@ -32,10 +32,10 @@ const AdminBlogDetailsPage: NextPageWithLayout = () => {
                form.setFieldsValue({
                   title: res.data.title,
                   content: res.data.content,
-                  meta_title: res.data.meta_title,
+                  meta_title: res.data.metaTitle,
                   // dateTime: res.data.dateTime.format('YYYY-MM-DD-hh-mm-ss'),
-                  meta_keyword: res.data.meta_keyword,
-                  meta_description: res.data.meta_description,
+                  meta_keyword: res.data.metaKeyword,
+                  meta_description: res.data.metaDescription,
                })
             })
             .catch((err) => console.error(err))
@@ -101,6 +101,13 @@ const AdminBlogDetailsPage: NextPageWithLayout = () => {
                rules={[{ required: true, message: 'このフィールドを入力してください' }]}
             >
                <Input />
+            </Form.Item>
+            <Form.Item wrapperCol={{ span: 12, offset: 9 }}>
+               <Space>
+                  <Button type='primary' htmlType='submit'>
+                     変更する
+                  </Button>
+               </Space>
             </Form.Item>
          </Form>
       </>

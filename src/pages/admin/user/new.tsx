@@ -58,7 +58,7 @@ const AdminUserNewPage: NextPageWithLayout = () => {
     return (
         <>
             <Title level={2} style={{ textAlign: 'center' }}>
-                ユーザー情報詳細
+                ユーザー作成
             </Title>
             <Form
                 form={form}

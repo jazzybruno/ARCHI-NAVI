@@ -29,7 +29,7 @@ const AdminEventDetailsPage: NextPageWithLayout = () => {
    return (
       <>
          <Title level={2} style={{ textAlign: 'center' }}>
-            コラム・ブログ情報照会
+            コラム・ブログ作成
          </Title>
 
          <Form

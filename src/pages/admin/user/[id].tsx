@@ -25,32 +25,36 @@ const AdminUserDetailsPage: NextPageWithLayout = () => {
    }
 
    const onFinish = (values: any) => {
-      // httpFormDataClient()
-      //    .post(`${ApiRoutes.attachment.index}`, previewImage)
-      //    .then((res) => {
-      const data = {
-         name: values.name,
-         nameKana: values.nameKana,
-         gender: values.gender?.toString(),
-         birthday: values.birthday.format('YYYY-MM-DD'),
-         email: values.email,
-         address: values.address,
-         schoolName: values.school,
-         faculty: values.faculty,
-         department: values.department,
-         receiveInformation: values.notification?.toString(),
-         tel: values.tel,
-         postalCode: values.postalCode,
-         password: values.password,
-         // attachmentId: res.data.id,
-      }
-      httpClient()
-         .put(`${ApiRoutes.user.index}/${id}`, data)
-         .then(() => {
-            alert('正常に変更されました。');
+
+      const formData = new FormData()
+      formData.append('upload_file', file)
+
+      httpFormDataClient()
+         .post(`${ApiRoutes.attachment.index}`, formData)
+         .then((res) => {
+            const data = {
+               name: values.name,
+               nameKana: values.nameKana,
+               gender: values.gender?.toString(),
+               birthday: values.birthday.format('YYYY-MM-DD'),
+               email: values.email,
+               address: values.address,
+               schoolName: values.school,
+               faculty: values.faculty,
+               department: values.department,
+               receiveInformation: values.notification?.toString(),
+               tel: values.tel,
+               postalCode: values.postalCode,
+               password: values.password,
+               attachmentId: res.data.id,
+            }
+            httpClient()
+               .put(`${ApiRoutes.user.index}/${id}`, data)
+               .then(() => {
+                  alert('正常に変更されました。');
+               })
+               .catch((err) => console.error(err))
          })
-         .catch((err) => console.error(err))
-      // })
    }
 
    const onFinishFailed = (errorInfo: any) => {

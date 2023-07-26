@@ -15,7 +15,7 @@ const AdminMailNewPage: NextPageWithLayout = () => {
    const onFinish = (values: any) => {
       console.log(values)
       httpClient()
-         .post(`${ApiRoutes.notification.index}`, values)
+         .post(`${ApiRoutes.message.index}`, values)
          .then(() => {
             alert('新しいユーザーが追加されました。')
          })
@@ -60,13 +60,6 @@ const AdminMailNewPage: NextPageWithLayout = () => {
                rules={[{ required: true, message: 'このフィールドを入力してください' }]}
             >
                <Input placeholder='2023-06-11 07:38:56' />
-            </Form.Item>
-            <Form.Item
-               label='ターゲット'
-               name='target'
-               rules={[{ required: true, message: 'このフィールドを入力してください' }]}
-            >
-               <Input />
             </Form.Item>
             <Form.Item
                label='方法'

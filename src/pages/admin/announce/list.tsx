@@ -98,7 +98,7 @@ const AdminAnnounceListPage: NextPageWithLayout = () => {
    };
 
    const goEdit = (id: number) => {
-      router.push(`/admin/notification/${id}`);
+      router.push(`/admin/announce/${id}`);
    }
 
    const columns: ColumnsType<DataType> = [
