@@ -20,6 +20,7 @@ const AdminMailDetailsPage: NextPageWithLayout = () => {
    const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
       if (e.target.files) {
          setFile(e.target.files[0])
+
          setPreviewImage(URL.createObjectURL(e.target.files[0]))
       }
    }

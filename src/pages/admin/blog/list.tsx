@@ -98,7 +98,7 @@ const AdminBlogListPage: NextPageWithLayout = () => {
    }
 
    const goEdit = (id: number) => {
-      router.push(`/admin/post/${id}`)
+      router.push(`/admin/blog/${id}`)
    }
 
    const columns: ColumnsType<DataType> = [

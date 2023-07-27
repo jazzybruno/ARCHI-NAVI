@@ -63,7 +63,7 @@ const AdminCompanyNewPage: NextPageWithLayout = () => {
     return (
         <>
             <Title level={2} style={{ textAlign: 'center' }}>
-                企業情報変更
+                企業作成
             </Title>
 
             <Form

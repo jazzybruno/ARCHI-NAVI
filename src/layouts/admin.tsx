@@ -38,15 +38,15 @@ const items: MenuItem[] = [
    getItem(<Link href='/admin'>ダッシュボード</Link>, '0', <DashboardOutlined />),
    getItem('ユーザー情報照会', '1', <UserOutlined />, [
       getItem(<Link href='/admin/user/list'>ユーザー情報照会</Link>, '1-0'),
-      getItem(<Link href='/admin/user/new'>ユーザー情報詳細</Link>, '1-1'),
+      getItem(<Link href='/admin/user/new'>ユーザー作成</Link>, '1-1'),
    ]),
    getItem('企業情報照会', '2', <BankOutlined />, [
       getItem(<Link href='/admin/company/list'>企業情報照会</Link>, '2-0'),
-      getItem(<Link href='/admin/company/new'>企業情報詳細</Link>, '2-1'),
+      getItem(<Link href='/admin/company/new'>企業作成</Link>, '2-1'),
    ]),
    getItem('インターン・イベント情報照会', '3', <CalendarOutlined />, [
       getItem(<Link href='/admin/event/list'>インターン・イベント情報照会</Link>, '3-0'),
-      getItem(<Link href='/admin/event/new'>インターン・イベント情報詳細</Link>, '3-1'),
+      getItem(<Link href='/admin/event/new'>インターン・イベント作成</Link>, '3-1'),
    ]),
    getItem('コラム・Blog情報照会', '4', <FileOutlined />, [
       getItem(<Link href='/admin/blog/list'>コラム・Blog情報照会</Link>, '4-0'),
@@ -59,7 +59,6 @@ const items: MenuItem[] = [
    getItem('一斉メール・LINE配信情報照会', '6', <MailOutlined />, [
       getItem(<Link href='/admin/mail/list'>一斉メール・LINE配信</Link>, '6-0'),
       getItem(<Link href='/admin/mail/new'>一斉メール・LINE作成</Link>, '6-1'),
-      getItem(<Link href='/admin/mail/confirm'>一斉メール・LINE作成内容確認</Link>, '6-2'),
    ]),
 ]
 

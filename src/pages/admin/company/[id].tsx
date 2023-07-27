@@ -32,8 +32,10 @@ const AdminCompanyDetailsPage: NextPageWithLayout = () => {
    }, [])
 
    const onFinish = (values: any) => {
+      const formData = new FormData;
+      formData.append('upload_file', file)
       httpFormDataClient()
-         .post(`${ApiRoutes.attachment.upload}`, previewImage)
+         .post(`${ApiRoutes.attachment.index}`, formData)
          .then((res) => {
             const data = {
                name: values.name,
