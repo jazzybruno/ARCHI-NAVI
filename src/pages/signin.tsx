@@ -1,11 +1,9 @@
 import type { NextPageWithLayout } from 'next'
+import { useState } from 'react'
 import SigninForm from 'components/SigninForm'
 import { MainLayout } from 'layouts/main'
-import { useState } from 'react'
 
 const SigninPage: NextPageWithLayout = () => {
-
-   const [role, setRole] = useState(String);
 
    return (
       <>
