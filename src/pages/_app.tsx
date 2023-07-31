@@ -1,7 +1,7 @@
 import type { AppPropsWithLayout } from 'next/app'
 import Head from 'next/head'
-import { useEffect } from 'react';
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 import 'styles/globals.scss'
 
 interface MyAppProps extends AppPropsWithLayout { }
