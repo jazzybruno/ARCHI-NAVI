@@ -1,10 +1,11 @@
-import { Button, Form, Input, Typography, Space } from 'antd'
+import { Button, Form, Input, Typography, Space, DatePicker } from 'antd'
 import type { NextPageWithLayout } from 'next'
-import React from 'react'
+import React, { useState, ChangeEvent } from 'react'
 import { AdminLayout } from 'layouts/admin'
-import { httpClient } from 'services/httpClient'
+import { httpClient, httpFormDataClient } from 'services/httpClient'
 import { ApiRoutes } from 'utils/constant'
 import 'easymde/dist/easymde.min.css'
+
 
 const { Title } = Typography
 const { TextArea } = Input
@@ -12,8 +13,52 @@ const { TextArea } = Input
 const AdminEventDetailsPage: NextPageWithLayout = () => {
    const [form] = Form.useForm()
 
+   const [previewImage, setPreviewImage] = useState('')
+
+   const [file, setFile] = useState<File>()
+
+   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+      if (e.target.files) {
+         setFile(e.target.files[0])
+         setPreviewImage(URL.createObjectURL(e.target.files[0]))
+      }
+   }
+
    const onFinish = (values: any) => {
-      console.log(values)
+      const formData = new FormData;
+      formData.append('upload_file', file)
+
+      httpFormDataClient()
+         .post(`${ApiRoutes.attachment.index}`, formData)
+         .then((res) => {
+            const data = {
+               title: values.title,
+               content: values.content,
+               dateTime: values.dateTime.format('YYYY-MM-DD'),
+               attachmentId: res.data.id,
+               status: values.status?.toString(),
+               metaTitle: values.metaTitle,
+               metaKeyword: values.metaKeyword,
+               metaDescription: values.metaDescription
+            }
+            httpClient()
+               .post(`${ApiRoutes.post.index}`, data)
+               .then(() => {
+                  alert('正常に変更されました。');
+                  form.setFieldsValue({
+                     title: null,
+                     content: null,
+                     dateTime: null,
+                     attachmentId: null,
+                     status: null,
+                     metaTitle: null,
+                     metaKeyword: null,
+                     metaDescription: null
+                  })
+                  setPreviewImage(form.getFieldValue('attachmentId'))
+               })
+               .catch((err) => console.error(err))
+         })
       httpClient()
          .post(`${ApiRoutes.post.index}`, values)
          .then(() => {
@@ -29,7 +74,7 @@ const AdminEventDetailsPage: NextPageWithLayout = () => {
    return (
       <>
          <Title level={2} style={{ textAlign: 'center' }}>
-            コラム・ブログ作成
+            コラム・記事　新規作成
          </Title>
 
          <Form
@@ -47,42 +92,46 @@ const AdminEventDetailsPage: NextPageWithLayout = () => {
             >
                <Input />
             </Form.Item>
-            <Form.Item
-               label='コンテンツ'
-               name='content'
-               rules={[{ required: true, message: 'このフィールドを入力してください' }]}
-            >
-               <TextArea />
-            </Form.Item>
-            <Form.Item
-               label='日付時刻'
-               name='dateTime'
-               rules={[{ required: true, message: 'このフィールドを入力してください' }]}
-            >
-               <Input placeholder='2023-06-11 07:38:56' />
+            <Form.Item label='画像' name='avatar'>
+               <input className='avatar-upload' type='file' onChange={handleFileChange} />
+               <img src={previewImage} className='w-[150px] avatar-image' />
             </Form.Item>
             <Form.Item
                label='メタタイトル'
-               name='meta_title'
+               name='metaTitle'
                rules={[{ required: true, message: 'このフィールドを入力してください' }]}
             >
                <Input />
             </Form.Item>
             <Form.Item
                label='メタキーワード'
-               name='meta_keyword'
+               name='metaKeyword'
                rules={[{ required: true, message: 'このフィールドを入力してください' }]}
             >
                <Input />
             </Form.Item>
             <Form.Item
                label='メタ記述'
-               name='meta_description'
+               name='metaDescription'
                rules={[{ required: true, message: 'このフィールドを入力してください' }]}
             >
                <Input />
             </Form.Item>
-            <Form.Item wrapperCol={{ span: 12, offset: 8 }} style={{ paddingTop: '24px' }}>
+            <Form.Item
+               label='本文'
+               name='content'
+               rules={[{ required: true, message: 'このフィールドを入力してください' }]}
+            >
+               <TextArea />
+            </Form.Item>
+            <Form.Item
+               label='投稿日'
+               name='dateTime'
+               rules={[{ required: true, message: 'このフィールドを入力してください' }]}
+            >
+               <DatePicker />
+            </Form.Item>
+            <Form.Item wrapperCol={{ span: 12, offset: 9 }}>
                <Space>
                   <Button type='primary' htmlType='submit'>
                      変更する

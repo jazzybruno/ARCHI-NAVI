@@ -1,11 +1,11 @@
-import { Button, DatePicker, Form, Input, Select, Typography, Space } from 'antd'
-import dayjs from 'dayjs'
+import { Button, DatePicker, Form, Input, Typography, Space, TimePicker } from 'antd'
 import type { NextPageWithLayout } from 'next'
 import { useRouter } from 'next/router'
-import React, { useEffect, useState, ChangeEvent } from 'react'
+import React, { useEffect, useState } from 'react'
 import { AdminLayout } from 'layouts/admin'
-import { httpClient, httpFormDataClient } from 'services/httpClient'
+import { httpClient } from 'services/httpClient'
 import { ApiRoutes } from 'utils/constant'
+import moment from 'moment';
 
 const { Title } = Typography
 const { TextArea } = Input
@@ -14,10 +14,18 @@ const AdminUserDetailsPage: NextPageWithLayout = () => {
    const [form] = Form.useForm()
    const router = useRouter()
    const { id } = router.query
-
+   const [dateTimeMoment, setDateTimeMoment] = useState(null);
    const onFinish = (values: any) => {
+      const dateTime = moment(values.dateTime).format('YYYY-MM-DD HH:mm:ss');
+      const data = {
+         title: values.title,
+         content: values.content,
+         dateTime: dateTime,
+         target: values.target,
+         method: values.method,
+      }
       httpClient()
-         .put(`${ApiRoutes.notification.index}/${id}`, values)
+         .put(`${ApiRoutes.notification.index}/${id}`, data)
          .then(() => {
             alert('正常に変更されました。');
          })
@@ -38,8 +46,8 @@ const AdminUserDetailsPage: NextPageWithLayout = () => {
                   content: res.data.content,
                   target: res.data.target,
                   method: res.data.method,
-                  dateTime: res.data.dateTime
                })
+               setDateTimeMoment(moment(res.data.dateTime));
             })
             .catch((err) => console.error(err))
       }
@@ -73,13 +81,6 @@ const AdminUserDetailsPage: NextPageWithLayout = () => {
                <TextArea />
             </Form.Item>
             <Form.Item
-               label='日付時刻'
-               name='dateTime'
-               rules={[{ required: true, message: 'このフィールドを入力してください' }]}
-            >
-               <Input placeholder='2023-06-11 07:38:56' />
-            </Form.Item>
-            <Form.Item
                label='ターゲット'
                name='target'
                rules={[{ required: true, message: 'このフィールドを入力してください' }]}
@@ -92,6 +93,14 @@ const AdminUserDetailsPage: NextPageWithLayout = () => {
                rules={[{ required: true, message: 'このフィールドを入力してください' }]}
             >
                <Input />
+            </Form.Item>
+            <Form.Item
+               label='送信日'
+               name='dateTime'
+            // rules={[{ required: true, message: 'このフィールドを入力してください' }]}
+            >
+               <DatePicker value={dateTimeMoment} />
+               <TimePicker value={dateTimeMoment} className='ms-2' />
             </Form.Item>
             <Form.Item wrapperCol={{ span: 12, offset: 8 }} style={{ paddingTop: '24px' }}>
                <Space>

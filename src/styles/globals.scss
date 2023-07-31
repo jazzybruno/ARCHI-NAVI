@@ -8,6 +8,19 @@ body {
   margin: 0;
   font-family: Noto Sans JP, Asap Condensed, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
     Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+    :where(.css-dev-only-do-not-override-14wwjjs).ant-btn-primary {
+      background-color: #1677ff!important;
+    }
+    .avatar-upload {
+      opacity: 0;
+      height: 150px;
+    }
+    .avatar-image {
+      margin-top: -150px;
+    }
+    .delete-button {
+      background-color: #ff4d4f!important;
+    }
 }
 
 * {

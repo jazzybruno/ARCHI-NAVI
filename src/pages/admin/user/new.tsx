@@ -21,34 +21,53 @@ const AdminUserNewPage: NextPageWithLayout = () => {
     }
 
     const onFinish = (values: any) => {
-        // let attachmentId = 0;
-        // httpFormDataClient()
-        //     .post(`${ApiRoutes.attachment.index}`, previewImage)
-        //     .then((res) => {
-        //         attachmentId = res.data.attachmentId;
-        //     })
-        const data = {
-            name: values.name,
-            nameKana: values.nameKana,
-            gender: values.gender?.toString(),
-            birthday: values.birthday.format('YYYY-MM-DD'),
-            email: values.email,
-            address: values.address,
-            schoolName: values.school,
-            faculty: values.faculty,
-            department: values.department,
-            receiveInformation: values.notification?.toString(),
-            tel: values.tel,
-            postalCode: values.postalCode,
-            password: values.password,
-            // attachmentId: attachmentId
-        }
-        httpClient()
-            .post(`${ApiRoutes.user.index}`, data)
-            .then(() => {
-                alert('新しいユーザーが追加されました。')
+
+        const formData = new FormData()
+        formData.append('upload_file', file)
+
+        httpFormDataClient()
+            .post(`${ApiRoutes.attachment.index}`, formData)
+            .then((res) => {
+                const data = {
+                    name: values.name,
+                    nameKana: values.nameKana,
+                    gender: values.gender?.toString(),
+                    birthday: values.birthday.format('YYYY-MM-DD'),
+                    email: values.email,
+                    address: values.address,
+                    schoolName: values.school,
+                    faculty: values.faculty,
+                    department: values.department,
+                    receiveInformation: values.notification?.toString(),
+                    tel: values.tel,
+                    postalCode: values.postalCode,
+                    password: values.password,
+                    attachmentId: res.data.id
+                }
+                httpClient()
+                    .post(`${ApiRoutes.user.index}`, data)
+                    .then(() => {
+                        alert('新しいユーザーが追加されました。')
+                        form.setFieldsValue({
+                            name: null,
+                            nameKana: null,
+                            gender: null,
+                            birthday: null,
+                            email: null,
+                            address: null,
+                            school: null,
+                            faculty: null,
+                            department: null,
+                            notification: null,
+                            tel: null,
+                            postalCode: null,
+                            password: null,
+                            attachmentId: null
+                        })
+                        setPreviewImage(form.getFieldValue('attachmentId'))
+                    })
+                    .catch((err) => console.error(err))
             })
-            .catch((err) => console.error(err))
     }
 
     const onFinishFailed = (errorInfo: any) => {
@@ -69,8 +88,10 @@ const AdminUserNewPage: NextPageWithLayout = () => {
                 onFinishFailed={onFinishFailed}
             >
                 <Form.Item label='プロフィール画像' name='avatar'>
-                    <input type='file' onChange={handleFileChange} />
-                    <img src={previewImage} className='max-w-[150px]' />
+                    <div className='w-[150px] h-[150px]'>
+                        <input className='avatar-upload' type='file' onChange={handleFileChange} required />
+                    </div>
+                    <img src={previewImage} className='w-[150px] avatar-image' />
                 </Form.Item>
                 <Form.Item
                     label='氏名'

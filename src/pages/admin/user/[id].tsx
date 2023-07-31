@@ -62,7 +62,7 @@ const AdminUserDetailsPage: NextPageWithLayout = () => {
    }
 
    useEffect(() => {
-      let attachmentId = 0;
+      let attachmentId = null;
       if (id) {
          httpClient()
             .get(`${ApiRoutes.user.index}/${id}`)
@@ -106,8 +106,8 @@ const AdminUserDetailsPage: NextPageWithLayout = () => {
             onFinishFailed={onFinishFailed}
          >
             <Form.Item label='プロフィール画像' name='avatar'>
-               <input type='file' onChange={handleFileChange} />
-               <img src={previewImage} className='max-w-[150px]' />
+               <input className='avatar-upload' type='file' onChange={handleFileChange} />
+               <img src={previewImage} className='w-[150px] avatar-image border' />
             </Form.Item>
             <Form.Item
                label='氏名'

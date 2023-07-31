@@ -17,6 +17,9 @@ import { useEffect, useState } from 'react'
 import { AdminLayout } from 'layouts/admin'
 import { httpClient } from 'services/httpClient'
 import { ApiRoutes } from 'utils/constant'
+import { Calendar, theme } from 'antd';
+import type { CalendarMode } from 'antd/es/calendar/generateCalendar';
+import type { Dayjs } from 'dayjs';
 
 const { Title } = Typography
 const { RangePicker } = DatePicker
@@ -84,6 +87,10 @@ const AdminEventListPage: NextPageWithLayout = () => {
       setLoading(false)
    }
 
+   const onChange = (value: Dayjs) => {
+      console.log(value.format('YYYY-MM-DD'));
+   };
+
    const onFinish = (values: any) => {
       fetchData(1, values)
    }
@@ -145,7 +152,7 @@ const AdminEventListPage: NextPageWithLayout = () => {
                   okText='はい'
                   cancelText='いいえ'
                >
-                  <Button type='primary' size='small' danger>
+                  <Button className='delete-button' type='primary' size='small' danger>
                      削除
                   </Button>
                </Popconfirm>
@@ -187,6 +194,7 @@ const AdminEventListPage: NextPageWithLayout = () => {
 
                   <Form.Item label='登録日' name='registeredAt'>
                      <RangePicker />
+                     <Calendar fullscreen={false} onChange={onChange} />
                   </Form.Item>
 
                   <Form.Item>
@@ -198,7 +206,7 @@ const AdminEventListPage: NextPageWithLayout = () => {
             </Card>
             <Card>
                <Title level={3} style={{ textAlign: 'center' }}>
-                  会員情報一覧
+                  インターン・イベント情報一覧
                </Title>
                <Table
                   loading={loading}

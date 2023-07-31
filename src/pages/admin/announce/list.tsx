@@ -118,11 +118,6 @@ const AdminAnnounceListPage: NextPageWithLayout = () => {
          key: 'content',
       },
       {
-         title: 'ターゲット',
-         dataIndex: 'target',
-         key: 'target',
-      },
-      {
          title: '登録日',
          dataIndex: 'createdAt',
          key: 'createdAt',
@@ -140,7 +135,7 @@ const AdminAnnounceListPage: NextPageWithLayout = () => {
                   okText="はい"
                   cancelText="いいえ"
                >
-                  <Button type='primary' size='small' danger>
+                  <Button className='delete-button' type='primary' size='small' danger>
                      削除
                   </Button>
                </Popconfirm>
@@ -161,48 +156,6 @@ const AdminAnnounceListPage: NextPageWithLayout = () => {
          </Title>
          <Space direction='vertical' size='middle' style={{ display: 'flex' }}>
             <Card>
-               <Form
-                  form={form}
-                  name='basic'
-                  initialValues={{ remember: true }}
-                  autoComplete='off'
-                  layout='vertical'
-                  onFinish={onFinish}
-                  onFinishFailed={onFinishFailed}
-               >
-                  <Form.Item label='タイトル' name='title'>
-                     <Input />
-                  </Form.Item>
-
-                  <Form.Item
-                     label='コンテンツ'
-                     name='content'
-                  >
-                     <Input />
-                  </Form.Item>
-
-                  <Form.Item
-                     label='ターゲット'
-                     name='target'
-                  >
-                     <Input />
-                  </Form.Item>
-
-                  <Form.Item label='登録日' name='registeredAt'>
-                     <RangePicker />
-                  </Form.Item>
-
-                  <Form.Item>
-                     <Button type='primary' htmlType='submit'>
-                        この条件で検索
-                     </Button>
-                  </Form.Item>
-               </Form>
-            </Card>
-            <Card>
-               <Title level={3} style={{ textAlign: 'center' }}>
-                  会員情報一覧
-               </Title>
                <Table
                   loading={loading}
                   columns={columns}

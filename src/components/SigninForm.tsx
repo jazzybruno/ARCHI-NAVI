@@ -27,7 +27,7 @@ const SigninForm = ({ role }: Props) => {
       try {
          const res = await signin({ ...data, role: role })
          if (res) {
-            Router.push('/')
+            Router.push('/admin')
          }
       } catch (error) {
          console.log(error)
@@ -38,46 +38,48 @@ const SigninForm = ({ role }: Props) => {
 
    return (
       <>
-         <div className='mx-auto w-full max-w-xs'>
-            <div className='py-6'>
-               <h1 className='text-3xl font-bold'>
-                  {role === 'user'
-                     ? '会員ログイン'
-                     : role === 'admin'
-                     ? '管理画面ログイン'
-                     : '企業ログイン'}
-               </h1>
+         <div className='min-h-screen w-[500px]'>
+            <div className='mx-auto w-[500px] m-[250px] border py-[20px] px-[80px]'>
+               <div className='py-6'>
+                  <h1 className='text-3xl font-bold text-center'>
+                     {role === 'user'
+                        ? '会員ログイン'
+                        : role === 'admin'
+                           ? '管理者ログイン'
+                           : '企業ログイン'}
+                  </h1>
+               </div>
+               <form onSubmit={handleSubmit(onSubmit)}>
+                  <div className='py-3'>
+                     <label htmlFor='email'>メールアドレス</label>
+                     <div>
+                        <input
+                           type='email'
+                           name='email'
+                           placeholder='example@example.com'
+                           className='ipt'
+                           {...register('email', { required: true })}
+                        />
+                     </div>
+                     {errors.email && <span>メールアドレスは必須です</span>}
+                  </div>
+                  <div className='py-3'>
+                     <label htmlFor='email'>パスワード</label>
+                     <div>
+                        <input
+                           type='password'
+                           name='password'
+                           className='ipt'
+                           {...register('password', { required: true })}
+                        />
+                     </div>
+                     {errors.password && <span>パスワードは必須です</span>}
+                  </div>
+                  <div className='py-3'>
+                     <input type='submit' className='btn' value='ログイン' />
+                  </div>
+               </form>
             </div>
-            <form onSubmit={handleSubmit(onSubmit)}>
-               <div className='py-3'>
-                  <label htmlFor='email'>メールアドレス</label>
-                  <div>
-                     <input
-                        type='text'
-                        name='email'
-                        placeholder='example@example.com'
-                        className='ipt'
-                        {...register('email', { required: true })}
-                     />
-                  </div>
-                  {errors.email && <span>メールアドレスは必須です</span>}
-               </div>
-               <div className='py-3'>
-                  <label htmlFor='email'>パスワード</label>
-                  <div>
-                     <input
-                        type='password'
-                        name='password'
-                        className='ipt'
-                        {...register('password', { required: true })}
-                     />
-                  </div>
-                  {errors.password && <span>パスワードは必須です</span>}
-               </div>
-               <div className='py-3'>
-                  <input type='submit' className='btn' />
-               </div>
-            </form>
          </div>
       </>
    )

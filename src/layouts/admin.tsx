@@ -50,7 +50,7 @@ const items: MenuItem[] = [
    ]),
    getItem('コラム・Blog情報照会', '4', <FileOutlined />, [
       getItem(<Link href='/admin/blog/list'>コラム・Blog情報照会</Link>, '4-0'),
-      getItem(<Link href='/admin/blog/new'>コラム・Blog作成</Link>, '4-1'),
+      getItem(<Link href='/admin/blog/new'>コラム・記事　新規作成</Link>, '4-1'),
    ]),
    getItem('お知らせ情報照会', '5', <SoundOutlined />, [
       getItem(<Link href='/admin/announce/list'>お知らせ照会</Link>, '5-0'),
