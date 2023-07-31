@@ -38,7 +38,7 @@ const AdminBlogDetailsPage: NextPageWithLayout = () => {
                content: values.content,
                dateTime: values.dateTime.format('YYYY-MM-DD'),
                attachmentId: res.data.id,
-               status: values.status.toString(),
+               status: values.status?.toString(),
                metaTitle: values.metaTitle,
                metaKeyword: values.metaKeyword,
                metaDescription: values.metaDescription
@@ -64,7 +64,7 @@ const AdminBlogDetailsPage: NextPageWithLayout = () => {
                   title: res.data.title,
                   content: res.data.content,
                   dateTime: dayjs(res.data.dateTime),
-                  status: res.data.status?.toString(),
+                  status: res.data.status.toString(),
                   metaTitle: res.data.metaTitle,
                   metaKeyword: res.data.metaKeyword,
                   metaDescription: res.data.metaDescription,

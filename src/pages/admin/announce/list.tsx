@@ -1,4 +1,4 @@
-import { Typography, Button, DatePicker, Form, Input, Card, Space, Table, Popconfirm, message } from 'antd'
+import { Typography, Button, DatePicker, Form, Card, Space, Table, Popconfirm } from 'antd'
 import type { ColumnsType } from 'antd/es/table'
 import type { NextPageWithLayout } from 'next'
 import { useRouter } from 'next/navigation'
@@ -8,7 +8,6 @@ import { httpClient } from 'services/httpClient'
 import { ApiRoutes } from 'utils/constant'
 
 const { Title } = Typography
-const { RangePicker } = DatePicker
 
 const AdminAnnounceListPage: NextPageWithLayout = () => {
    interface DataType {
@@ -36,37 +35,6 @@ const AdminAnnounceListPage: NextPageWithLayout = () => {
 
       setLoading(true);
       const queryParams = new URLSearchParams();
-      if (values) {
-         if (values.title) {
-            queryParams.append('title', values.title);
-         }
-         if (values.content) {
-            queryParams.append('content', values.content);
-         }
-         if (values.target) {
-            queryParams.append('target', values.target);
-         }
-         if (values.registeredAt) {
-            const [start, end] = values.registeredAt;
-            queryParams.append('start_date', start.format('YYYY-MM-DD'));
-            queryParams.append('end_date', end.format('YYYY-MM-DD'));
-         }
-      } else if (searchForm) {
-         if (searchForm.title) {
-            queryParams.append('title', searchForm.title);
-         }
-         if (searchForm.content) {
-            queryParams.append('content', searchForm.content);
-         }
-         if (searchForm.target) {
-            queryParams.append('target', searchForm.target);
-         }
-         if (searchForm.registeredAt) {
-            const [start, end] = searchForm.registeredAt;
-            queryParams.append('start_date', start.format('YYYY-MM-DD'));
-            queryParams.append('end_date', end.format('YYYY-MM-DD'));
-         }
-      }
       queryParams.set('page', page.toString());
       const queryString = queryParams.toString();
       httpClient().get(`${ApiRoutes.notification.index}?${queryString}`)
@@ -77,15 +45,6 @@ const AdminAnnounceListPage: NextPageWithLayout = () => {
          })
          .catch((err) => console.error(err));
       setLoading(false);
-   }
-
-   const onFinish = (values: any) => {
-      setSearchForm(values);
-      fetchData(1, values);
-   };
-
-   const onFinishFailed = (errorInfo: any) => {
-      console.log('Failed:', errorInfo)
    }
 
    const confirmDelete = (id: number) => {

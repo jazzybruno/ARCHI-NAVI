@@ -10,19 +10,6 @@ function MyApp(props: MyAppProps) {
    const { Component, pageProps } = props
    const getLayout = Component.getLayout ?? ((page) => page)
 
-   const router = useRouter();
-   useEffect(() => {
-      const handleRouteChange = url => {
-         window.gtag('config', process.env.NEXT_PUBLIC_GA_ID as string, {
-            page_path: url,
-         });
-      }
-      router.events.on('routeChangeComplete', handleRouteChange);
-      return () => {
-         router.events.off('routeChangeComplete', handleRouteChange);
-      }
-   }, [router.events]);
-
    return getLayout(
       <>
          <Head>
