@@ -29,8 +29,11 @@ const AdminCompanyNewPage: NextPageWithLayout = () => {
     }, [])
 
     const onFinish = (values: any) => {
+        const formData = new FormData;
+        formData.append('upload_file', file)
+
         httpFormDataClient()
-            .post(`${ApiRoutes.attachment.upload}`, previewImage)
+            .post(`${ApiRoutes.attachment.index}`, formData)
             .then((res) => {
                 const data = {
                     name: values.name,
@@ -45,12 +48,30 @@ const AdminCompanyNewPage: NextPageWithLayout = () => {
                     numberOfEmployees: values.numberOfEmployees,
                     appealPoint: values.appealPoint,
                     other: values.other,
+                    email: values.email,
                     attachmentId: res.data.id,
                 }
                 httpClient()
                     .post(`${ApiRoutes.company.index}`, data)
                     .then(() => {
                         alert('新しいユーザーが追加されました。')
+                        form.setFieldsValue({
+                            name: null,
+                            link: null,
+                            tel: null,
+                            managerName: null,
+                            department: null,
+                            recruitmentOccupation: null,
+                            overview: null,
+                            feature: null,
+                            personality: null,
+                            numberOfEmployees: null,
+                            appealPoint: null,
+                            other: null,
+                            attachmentId: null,
+                            email: null,
+                        })
+                        setPreviewImage(form.getFieldValue('attachmentId'))
                     })
                     .catch((err) => console.error(err))
             })
@@ -81,19 +102,23 @@ const AdminCompanyNewPage: NextPageWithLayout = () => {
                 >
                     <Input />
                 </Form.Item>
+                <Form.Item label='ロゴ' name='avatar'>
+                    <input className='avatar-upload' type='file' onChange={handleFileChange} />
+                    <img src={previewImage} className='w-[150px] avatar-image' />
+                </Form.Item>
                 <Form.Item
-                    label='会社HPリンク'
+                    label='会社HP'
                     name='link'
                     rules={[
                         { required: true, message: 'このフィールドを入力してください' },
                         { type: 'url', message: 'URL形式が正しくありません' },
                     ]}
                 >
-                    <Input />
+                    <Input placeholder='URL' />
                 </Form.Item>
                 <Form.Item
-                    label='担当者'
-                    name='managerName'
+                    label='電話番号'
+                    name='tel'
                     rules={[{ required: true, message: 'このフィールドを入力してください' }]}
                 >
                     <Input />
@@ -111,17 +136,6 @@ const AdminCompanyNewPage: NextPageWithLayout = () => {
                     rules={[{ required: true, message: 'このフィールドを入力してください' }]}
                 >
                     <Input />
-                </Form.Item>
-                <Form.Item
-                    label='電話番号'
-                    name='tel'
-                    rules={[{ required: true, message: 'このフィールドを入力してください' }]}
-                >
-                    <Input />
-                </Form.Item>
-                <Form.Item label='プロフィール画像' name='avatar'>
-                    <input type='file' onChange={handleFileChange} />
-                    <img src={previewImage} className='max-w-[150px]' />
                 </Form.Item>
                 <Form.Item
                     label='特徴'
@@ -155,6 +169,23 @@ const AdminCompanyNewPage: NextPageWithLayout = () => {
                     label='他の'
                     name='other'
                     rules={[{ required: false, message: 'このフィールドを入力してください' }]}
+                >
+                    <Input />
+                </Form.Item>
+                <Form.Item
+                    label='担当者'
+                    name='managerName'
+                    rules={[{ required: true, message: 'このフィールドを入力してください' }]}
+                >
+                    <Input />
+                </Form.Item>
+                <Form.Item
+                    label='担当者メールアドレス：'
+                    name='email'
+                    rules={[
+                        { required: true, message: 'このフィールドを入力してください' },
+                        { type: 'email', message: 'メール形式が正しくありません' },
+                    ]}
                 >
                     <Input />
                 </Form.Item>

@@ -128,7 +128,7 @@ const AdminUserListPage: NextPageWithLayout = () => {
                   okText="はい"
                   cancelText="いいえ"
                >
-                  <Button type='primary' size='small' danger>
+                  <Button className='delete-button' type='primary' size='small' danger>
                      削除
                   </Button>
                </Popconfirm>

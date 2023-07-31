@@ -13,7 +13,6 @@ const AdminMailNewPage: NextPageWithLayout = () => {
    const [form] = Form.useForm()
 
    const onFinish = (values: any) => {
-      console.log(values)
       httpClient()
          .post(`${ApiRoutes.message.index}`, values)
          .then(() => {

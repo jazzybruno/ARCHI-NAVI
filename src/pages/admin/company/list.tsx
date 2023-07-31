@@ -140,7 +140,7 @@ const AdminCompanyListPage: NextPageWithLayout = () => {
                   okText='はい'
                   cancelText='いいえ'
                >
-                  <Button type='primary' size='small' danger>
+                  <Button className='delete-button' type='primary' size='small' danger>
                      削除
                   </Button>
                </Popconfirm>
@@ -193,7 +193,7 @@ const AdminCompanyListPage: NextPageWithLayout = () => {
             </Card>
             <Card>
                <Title level={3} style={{ textAlign: 'center' }}>
-                  会員情報一覧
+                  企業情報一覧
                </Title>
                <Table
                   loading={loading}

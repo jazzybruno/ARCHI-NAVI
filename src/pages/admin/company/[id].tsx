@@ -34,6 +34,7 @@ const AdminCompanyDetailsPage: NextPageWithLayout = () => {
    const onFinish = (values: any) => {
       const formData = new FormData;
       formData.append('upload_file', file)
+
       httpFormDataClient()
          .post(`${ApiRoutes.attachment.index}`, formData)
          .then((res) => {
@@ -51,6 +52,7 @@ const AdminCompanyDetailsPage: NextPageWithLayout = () => {
                appealPoint: values.appealPoint,
                other: values.other,
                attachmentId: res.data.id,
+               email: res.data.email
             }
             httpClient()
                .put(`${ApiRoutes.company.index}/${id}`, data)
@@ -66,7 +68,7 @@ const AdminCompanyDetailsPage: NextPageWithLayout = () => {
    }
 
    useEffect(() => {
-      let attachmentId = 0;
+      let attachmentId = null;
       if (id) {
          httpClient()
             .get(`${ApiRoutes.company.index}/${id}`)
@@ -85,6 +87,7 @@ const AdminCompanyDetailsPage: NextPageWithLayout = () => {
                   numberOfEmployees: res.data.numberOfEmployees,
                   appealPoint: res.data.appealPoint,
                   other: res.data.other,
+                  email: res.data.email
                })
                httpClient()
                   .get(`${ApiRoutes.attachment.index}/${attachmentId}`)
@@ -117,19 +120,23 @@ const AdminCompanyDetailsPage: NextPageWithLayout = () => {
             >
                <Input />
             </Form.Item>
+            <Form.Item label='ロゴ' name='avatar'>
+               <input className='avatar-upload' type='file' onChange={handleFileChange} />
+               <img src={previewImage} className='w-[150px] avatar-image' />
+            </Form.Item>
             <Form.Item
-               label='会社HPリンク'
+               label='会社HP'
                name='link'
                rules={[
                   { required: true, message: 'このフィールドを入力してください' },
                   { type: 'url', message: 'URL形式が正しくありません' },
                ]}
             >
-               <Input />
+               <Input placeholder='URL' />
             </Form.Item>
             <Form.Item
-               label='担当者'
-               name='managerName'
+               label='電話番号'
+               name='tel'
                rules={[{ required: true, message: 'このフィールドを入力してください' }]}
             >
                <Input />
@@ -147,17 +154,6 @@ const AdminCompanyDetailsPage: NextPageWithLayout = () => {
                rules={[{ required: true, message: 'このフィールドを入力してください' }]}
             >
                <Input />
-            </Form.Item>
-            <Form.Item
-               label='電話番号'
-               name='tel'
-               rules={[{ required: true, message: 'このフィールドを入力してください' }]}
-            >
-               <Input />
-            </Form.Item>
-            <Form.Item label='プロフィール画像' name='avatar'>
-               <input type='file' onChange={handleFileChange} />
-               <img src={previewImage} className='max-w-[150px]' />
             </Form.Item>
             <Form.Item
                label='特徴'
@@ -191,6 +187,23 @@ const AdminCompanyDetailsPage: NextPageWithLayout = () => {
                label='他の'
                name='other'
                rules={[{ required: false, message: 'このフィールドを入力してください' }]}
+            >
+               <Input />
+            </Form.Item>
+            <Form.Item
+               label='担当者'
+               name='managerName'
+               rules={[{ required: true, message: 'このフィールドを入力してください' }]}
+            >
+               <Input />
+            </Form.Item>
+            <Form.Item
+               label='担当者メールアドレス：'
+               name='email'
+               rules={[
+                  { required: true, message: 'このフィールドを入力してください' },
+                  { type: 'email', message: 'メール形式が正しくありません' },
+               ]}
             >
                <Input />
             </Form.Item>
