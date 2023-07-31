@@ -6,6 +6,7 @@ const SocialPage: NextPageWithLayout = () => {
   const router = useRouter()
 
   async function signin(provider: string) {
+    // リダイレクト先を指定可能
     router.push(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/redirect/${provider}?redirect_url=${process.env.NEXT_PUBLIC_APP_URL}/mypage`)
   }
 
