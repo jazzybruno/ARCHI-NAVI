@@ -1,6 +1,6 @@
 import type { NextPageWithLayout } from 'next'
+import { useRouter } from 'next/router'
 import { MainLayout } from 'layouts/main'
-import { Router, useRouter } from 'next/router'
 
 const SocialPage: NextPageWithLayout = () => {
   const router = useRouter()
