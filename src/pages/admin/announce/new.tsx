@@ -1,7 +1,6 @@
 import { Button, Form, DatePicker, TimePicker, Input, Typography, Space } from 'antd'
-import moment from 'moment';
 import type { NextPageWithLayout } from 'next'
-import React, { useState } from 'react'
+import React from 'react'
 import { AdminLayout } from 'layouts/admin'
 import { httpClient } from 'services/httpClient'
 import { ApiRoutes } from 'utils/constant'
@@ -14,7 +13,7 @@ const AdminAnnounceNewPage: NextPageWithLayout = () => {
    const [form] = Form.useForm()
 
    const onFinish = (values: any) => {
-      const dateTime = moment(values.dateTime).format('YYYY-MM-DD HH:mm:ss');
+      const dateTime = values.dateTime.date.format('YYYY-MM-DD') + " " + values.dateTime.time.format('HH-mm-ss');
       const data = {
          title: values.title,
          content: values.content,
@@ -28,9 +27,12 @@ const AdminAnnounceNewPage: NextPageWithLayout = () => {
             form.setFieldsValue({
                title: null,
                content: null,
-               dateTime: null,
                target: null,
-               method: null
+               method: null,
+               dateTime: {
+                  date: null,
+                  time: null
+               }
             })
             alert('正常に変更されました。');
          })
@@ -83,13 +85,21 @@ const AdminAnnounceNewPage: NextPageWithLayout = () => {
             >
                <Input />
             </Form.Item>
-            <Form.Item
-               label='送信日'
-               name='dateTime'
-            // rules={[{ required: true, message: 'このフィールドを入力してください' }]}
-            >
-               <DatePicker />
-               <TimePicker className='ms-2' />
+            <Form.Item label='送信日' name={'dateTime'}>
+               <Space.Compact>
+                  <Form.Item
+                     name={['dateTime', 'date']}
+                     rules={[{ required: true, message: 'このフィールドを入力してください' }]}
+                  >
+                     <DatePicker />
+                  </Form.Item>
+                  <Form.Item
+                     name={['dateTime', 'time']}
+                     rules={[{ required: true, message: 'このフィールドを入力してください' }]}
+                  >
+                     <TimePicker className='ms-2' />
+                  </Form.Item>
+               </Space.Compact>
             </Form.Item>
             <Form.Item wrapperCol={{ span: 12, offset: 8 }} style={{ paddingTop: '24px' }}>
                <Space>

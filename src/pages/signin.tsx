@@ -5,8 +5,6 @@ import { MainLayout } from 'layouts/main'
 
 const SigninPage: NextPageWithLayout = () => {
 
-   const [role, setRole] = useState(String);
-
    return (
       <>
          <div className='flex items-center justify-center'>

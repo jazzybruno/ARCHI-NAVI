@@ -1,20 +1,20 @@
-import { Button, Form, Input, Typography, Space, DatePicker } from 'antd'
+import { Button, Form, Input, Typography, Space, DatePicker, Select } from 'antd'
 import type { NextPageWithLayout } from 'next'
-import React, { useState, ChangeEvent } from 'react'
+import React, { useCallback, useState, ChangeEvent } from 'react'
 import { AdminLayout } from 'layouts/admin'
 import { httpClient, httpFormDataClient } from 'services/httpClient'
 import { ApiRoutes } from 'utils/constant'
+import dynamic from 'next/dynamic'
 import 'easymde/dist/easymde.min.css'
 
 
 const { Title } = Typography
-const { TextArea } = Input
+const SimpleMDE = dynamic(() => import('react-simplemde-editor'), { ssr: false })
 
 const AdminEventDetailsPage: NextPageWithLayout = () => {
    const [form] = Form.useForm()
-
+   const [value, setValue] = useState('Initial value')
    const [previewImage, setPreviewImage] = useState('')
-
    const [file, setFile] = useState<File>()
 
    const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -23,6 +23,10 @@ const AdminEventDetailsPage: NextPageWithLayout = () => {
          setPreviewImage(URL.createObjectURL(e.target.files[0]))
       }
    }
+
+   const onChange = useCallback((value: string) => {
+      setValue(value)
+   }, [])
 
    const onFinish = (values: any) => {
       const formData = new FormData;
@@ -122,7 +126,7 @@ const AdminEventDetailsPage: NextPageWithLayout = () => {
                name='content'
                rules={[{ required: true, message: 'このフィールドを入力してください' }]}
             >
-               <TextArea />
+               <SimpleMDE value={value} onChange={onChange} />
             </Form.Item>
             <Form.Item
                label='投稿日'
@@ -130,6 +134,17 @@ const AdminEventDetailsPage: NextPageWithLayout = () => {
                rules={[{ required: true, message: 'このフィールドを入力してください' }]}
             >
                <DatePicker />
+            </Form.Item>
+            <Form.Item
+               label='ステータス'
+               name='status'
+               rules={[{ required: true, message: 'このフィールドを入力してください' }]}
+            >
+               <Select>
+                  <Select.Option value='1'>公開</Select.Option>
+                  <Select.Option value='0'>非公開</Select.Option>
+                  <Select.Option value='2'>下書き</Select.Option>
+               </Select>
             </Form.Item>
             <Form.Item wrapperCol={{ span: 12, offset: 9 }}>
                <Space>

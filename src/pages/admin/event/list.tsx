@@ -8,7 +8,6 @@ import {
    Space,
    Table,
    Popconfirm,
-   message,
 } from 'antd'
 import { Calendar, theme } from 'antd';
 import type { CalendarMode } from 'antd/es/calendar/generateCalendar';
@@ -86,10 +85,6 @@ const AdminEventListPage: NextPageWithLayout = () => {
          .catch((err) => console.error(err))
       setLoading(false)
    }
-
-   const onChange = (value: Dayjs) => {
-      console.log(value.format('YYYY-MM-DD'));
-   };
 
    const onFinish = (values: any) => {
       fetchData(1, values)
@@ -194,7 +189,6 @@ const AdminEventListPage: NextPageWithLayout = () => {
 
                   <Form.Item label='登録日' name='registeredAt'>
                      <RangePicker />
-                     <Calendar fullscreen={false} onChange={onChange} />
                   </Form.Item>
 
                   <Form.Item>

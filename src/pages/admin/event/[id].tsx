@@ -193,7 +193,7 @@ const AdminEventDetailsPage: NextPageWithLayout = () => {
             </Form.Item>
             <Form.Item
                label='掲載日'
-               name='dateTime'
+               name='dateime'
                rules={[{ required: true, message: 'このフィールドを入力してください' }]}
             >
                <DatePicker />

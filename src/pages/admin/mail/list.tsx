@@ -35,31 +35,6 @@ const AdminMailListPage: NextPageWithLayout = () => {
 
       setLoading(true);
       const queryParams = new URLSearchParams();
-      if (values) {
-         if (values.title) {
-            queryParams.append('title', values.title);
-         }
-         if (values.content) {
-            queryParams.append('content', values.content);
-         }
-         if (values.registeredAt) {
-            const [start, end] = values.registeredAt;
-            queryParams.append('start_date', start.format('YYYY-MM-DD'));
-            queryParams.append('end_date', end.format('YYYY-MM-DD'));
-         }
-      } else if (searchForm) {
-         if (searchForm.title) {
-            queryParams.append('title', searchForm.title);
-         }
-         if (searchForm.content) {
-            queryParams.append('content', searchForm.content);
-         }
-         if (searchForm.registeredAt) {
-            const [start, end] = searchForm.registeredAt;
-            queryParams.append('start_date', start.format('YYYY-MM-DD'));
-            queryParams.append('end_date', end.format('YYYY-MM-DD'));
-         }
-      }
       queryParams.set('page', page.toString());
       const queryString = queryParams.toString();
       httpClient().get(`${ApiRoutes.message.index}?${queryString}`)
@@ -70,15 +45,6 @@ const AdminMailListPage: NextPageWithLayout = () => {
          })
          .catch((err) => console.error(err));
       setLoading(false);
-   }
-
-   const onFinish = (values: any) => {
-      setSearchForm(values);
-      fetchData(1, values);
-   };
-
-   const onFinishFailed = (errorInfo: any) => {
-      console.log('Failed:', errorInfo)
    }
 
    const confirmDelete = (id: number) => {
@@ -149,41 +115,6 @@ const AdminMailListPage: NextPageWithLayout = () => {
          </Title>
          <Space direction='vertical' size='middle' style={{ display: 'flex' }}>
             <Card>
-               <Form
-                  form={form}
-                  name='basic'
-                  initialValues={{ remember: true }}
-                  autoComplete='off'
-                  layout='vertical'
-                  onFinish={onFinish}
-                  onFinishFailed={onFinishFailed}
-               >
-                  <Form.Item label='タイトル' name='title'>
-                     <Input />
-                  </Form.Item>
-
-                  <Form.Item
-                     label='コンテンツ'
-                     name='content'
-                  >
-                     <Input />
-                  </Form.Item>
-
-                  <Form.Item label='登録日' name='registeredAt'>
-                     <RangePicker />
-                  </Form.Item>
-
-                  <Form.Item>
-                     <Button type='primary' htmlType='submit'>
-                        この条件で検索
-                     </Button>
-                  </Form.Item>
-               </Form>
-            </Card>
-            <Card>
-               <Title level={3} style={{ textAlign: 'center' }}>
-                  会員情報一覧
-               </Title>
                <Table
                   loading={loading}
                   columns={columns}

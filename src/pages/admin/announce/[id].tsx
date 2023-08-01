@@ -1,11 +1,11 @@
 import { Button, DatePicker, Form, Input, Typography, Space, TimePicker } from 'antd'
-import moment from 'moment';
 import type { NextPageWithLayout } from 'next'
 import { useRouter } from 'next/router'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { AdminLayout } from 'layouts/admin'
 import { httpClient } from 'services/httpClient'
 import { ApiRoutes } from 'utils/constant'
+import dayjs from 'dayjs';
 
 const { Title } = Typography
 const { TextArea } = Input
@@ -14,9 +14,8 @@ const AdminUserDetailsPage: NextPageWithLayout = () => {
    const [form] = Form.useForm()
    const router = useRouter()
    const { id } = router.query
-   const [dateTimeMoment, setDateTimeMoment] = useState(null);
    const onFinish = (values: any) => {
-      const dateTime = moment(values.dateTime).format('YYYY-MM-DD HH:mm:ss');
+      const dateTime = values.dateTime.date.format('YYYY-MM-DD') + " " + values.dateTime.time.format('HH-mm-ss');
       const data = {
          title: values.title,
          content: values.content,
@@ -24,6 +23,7 @@ const AdminUserDetailsPage: NextPageWithLayout = () => {
          target: values.target,
          method: values.method,
       }
+      console.log(dateTime)
       httpClient()
          .put(`${ApiRoutes.notification.index}/${id}`, data)
          .then(() => {
@@ -46,8 +46,11 @@ const AdminUserDetailsPage: NextPageWithLayout = () => {
                   content: res.data.content,
                   target: res.data.target,
                   method: res.data.method,
+                  dateTime: {
+                     date: dayjs(res.data.dateTime),
+                     time: dayjs(res.data.dateTime)
+                  }
                })
-               setDateTimeMoment(moment(res.data.dateTime));
             })
             .catch((err) => console.error(err))
       }
@@ -56,7 +59,7 @@ const AdminUserDetailsPage: NextPageWithLayout = () => {
    return (
       <>
          <Title level={2} style={{ textAlign: 'center' }}>
-            ユーザー情報詳細
+            お知らせ情報詳細
          </Title>
          <Form
             form={form}
@@ -94,13 +97,21 @@ const AdminUserDetailsPage: NextPageWithLayout = () => {
             >
                <Input />
             </Form.Item>
-            <Form.Item
-               label='送信日'
-               name='dateTime'
-            // rules={[{ required: true, message: 'このフィールドを入力してください' }]}
-            >
-               <DatePicker value={dateTimeMoment} />
-               <TimePicker value={dateTimeMoment} className='ms-2' />
+            <Form.Item label='送信日' name={'dateTime'}>
+               <Space.Compact>
+                  <Form.Item
+                     name={['dateTime', 'date']}
+                     rules={[{ required: true, message: 'このフィールドを入力してください' }]}
+                  >
+                     <DatePicker />
+                  </Form.Item>
+                  <Form.Item
+                     name={['dateTime', 'time']}
+                     rules={[{ required: true, message: 'このフィールドを入力してください' }]}
+                  >
+                     <TimePicker className='ms-2' />
+                  </Form.Item>
+               </Space.Compact>
             </Form.Item>
             <Form.Item wrapperCol={{ span: 12, offset: 8 }} style={{ paddingTop: '24px' }}>
                <Space>

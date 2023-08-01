@@ -2,16 +2,18 @@ import { Button, Form, Input, Typography, Space, DatePicker, Select } from 'antd
 import dayjs from 'dayjs';
 import type { NextPageWithLayout } from 'next'
 import { useRouter } from 'next/router'
-import React, { useEffect, useState, ChangeEvent } from 'react'
+import dynamic from 'next/dynamic'
+import React, { useCallback, useEffect, useState, ChangeEvent } from 'react'
 import { AdminLayout } from 'layouts/admin'
 import { httpClient, httpFormDataClient } from 'services/httpClient'
 import { ApiRoutes } from 'utils/constant'
 import 'easymde/dist/easymde.min.css'
 
 const { Title } = Typography
-const { TextArea } = Input
+const SimpleMDE = dynamic(() => import('react-simplemde-editor'), { ssr: false })
 
 const AdminBlogDetailsPage: NextPageWithLayout = () => {
+   const [value, setValue] = useState('Initial value')
    const [form] = Form.useForm()
    const router = useRouter()
    const { id } = router.query
@@ -26,6 +28,10 @@ const AdminBlogDetailsPage: NextPageWithLayout = () => {
       }
    }
 
+   const onChange = useCallback((value: string) => {
+      setValue(value)
+   }, [])
+
    const onFinish = (values: any) => {
       const formData = new FormData;
       formData.append('upload_file', file)
@@ -38,7 +44,7 @@ const AdminBlogDetailsPage: NextPageWithLayout = () => {
                content: values.content,
                dateTime: values.dateTime.format('YYYY-MM-DD'),
                attachmentId: res.data.id,
-               status: values.status.toString(),
+               status: values.status?.toString(),
                metaTitle: values.metaTitle,
                metaKeyword: values.metaKeyword,
                metaDescription: values.metaDescription
@@ -64,7 +70,7 @@ const AdminBlogDetailsPage: NextPageWithLayout = () => {
                   title: res.data.title,
                   content: res.data.content,
                   dateTime: dayjs(res.data.dateTime),
-                  status: res.data.status?.toString(),
+                  status: res.data.status.toString(),
                   metaTitle: res.data.metaTitle,
                   metaKeyword: res.data.metaKeyword,
                   metaDescription: res.data.metaDescription,
@@ -134,7 +140,7 @@ const AdminBlogDetailsPage: NextPageWithLayout = () => {
                name='content'
                rules={[{ required: true, message: 'このフィールドを入力してください' }]}
             >
-               <TextArea />
+               <SimpleMDE value={value} onChange={onChange} />
             </Form.Item>
             <Form.Item
                label='投稿日'
@@ -151,6 +157,7 @@ const AdminBlogDetailsPage: NextPageWithLayout = () => {
                <Select>
                   <Select.Option value='1'>公開</Select.Option>
                   <Select.Option value='0'>非公開</Select.Option>
+                  <Select.Option value='2'>下書き</Select.Option>
                </Select>
             </Form.Item>
             <Form.Item wrapperCol={{ span: 12, offset: 9 }}>
