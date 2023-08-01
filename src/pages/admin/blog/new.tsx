@@ -1,10 +1,10 @@
 import { Button, Form, Input, Typography, Space, DatePicker, Select } from 'antd'
 import type { NextPageWithLayout } from 'next'
+import dynamic from 'next/dynamic'
 import React, { useCallback, useState, ChangeEvent } from 'react'
 import { AdminLayout } from 'layouts/admin'
 import { httpClient, httpFormDataClient } from 'services/httpClient'
 import { ApiRoutes } from 'utils/constant'
-import dynamic from 'next/dynamic'
 import 'easymde/dist/easymde.min.css'
 
 
