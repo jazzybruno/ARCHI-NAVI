@@ -24,7 +24,7 @@ const { RangePicker } = DatePicker
 interface DataType {
    key: React.Key
    companyname: string
-   emailOfPersonInCharge: string
+   link: string
    registeredAt: string
 }
 
@@ -49,8 +49,8 @@ const AdminCompanyListPage: NextPageWithLayout = () => {
          if (values.companyname) {
             queryParams.append('name', values.companyname)
          }
-         if (values.emailOfPersonInCharge) {
-            queryParams.append('email', values.emailOfPersonInCharge)
+         if (values.link) {
+            queryParams.append('link', values.link)
          }
          if (values.registeredAt) {
             const [start, end] = values.registeredAt
@@ -61,8 +61,8 @@ const AdminCompanyListPage: NextPageWithLayout = () => {
          if (searchForm.companyname) {
             queryParams.append('name', searchForm.companyname)
          }
-         if (searchForm.emailOfPersonInCharge) {
-            queryParams.append('email', searchForm.emailOfPersonInCharge)
+         if (searchForm.link) {
+            queryParams.append('link', searchForm.link)
          }
          if (searchForm.registeredAt) {
             const [start, end] = searchForm.registeredAt
@@ -92,21 +92,6 @@ const AdminCompanyListPage: NextPageWithLayout = () => {
       console.log('Failed:', errorInfo)
    }
 
-   const resetButtonClick = () => {
-      const values = {
-         name: null,
-         emailOfPersonInCharge: null,
-         start_date: null,
-         end_date: null
-      }
-      form.setFieldsValue({
-         companyname: values.name,
-         emailOfPersonInCharge: values.emailOfPersonInCharge,
-         registeredAt: null,
-      })
-      fetchData(1, values);
-   }
-
    const confirmDelete = (id: number) => {
       setLoading(true)
       httpClient()
@@ -133,9 +118,9 @@ const AdminCompanyListPage: NextPageWithLayout = () => {
          key: 'name',
       },
       {
-         title: '担当者メールアドレス',
-         dataIndex: 'emailOfPersonInCharge',
-         key: 'emailOfPersonInCharge',
+         title: 'URL',
+         dataIndex: 'link',
+         key: 'link',
       },
       {
          title: '登録日',
@@ -188,8 +173,9 @@ const AdminCompanyListPage: NextPageWithLayout = () => {
                   </Form.Item>
 
                   <Form.Item
-                     label='担当者メールアドレス'
-                     name='emailOfPersonInCharge'
+                     label='URL'
+                     name='link'
+                     rules={[{ type: 'url', message: 'URL形式が正しくありません' }]}
                   >
                      <Input />
                   </Form.Item>
@@ -201,9 +187,6 @@ const AdminCompanyListPage: NextPageWithLayout = () => {
                   <Form.Item>
                      <Button type='primary' htmlType='submit'>
                         この条件で検索
-                     </Button>
-                     <Button type='primary' className='ms-2 !bg-red-500' onClick={resetButtonClick}>
-                        検索条件をリセット
                      </Button>
                   </Form.Item>
                </Form>

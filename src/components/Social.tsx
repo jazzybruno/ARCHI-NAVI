@@ -16,7 +16,7 @@ const SocialPage: NextPageWithLayout = () => {
       <div>
         <div>
           <Button
-            className="bg-red-500 p-2 font-semibold text-white inline-flex items-center space-x-2 rounded w-[340px] h-[40px] flex justify-center mb-[10px] mt-[50px]"
+            className="bg-red-500 p-2 font-semibold text-white items-center space-x-2 rounded w-[340px] h-[40px] flex justify-center mb-[10px] mt-[50px]"
             onClick={() => signin('google')}
           >
             <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" className="w-5" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24">
@@ -34,7 +34,7 @@ const SocialPage: NextPageWithLayout = () => {
         </div>
         <div>
           <Button
-            className="bg-green-500 p-2 font-semibold text-white inline-flex items-center space-x-2 rounded w-[340px] h-[40px] flex justify-center"
+            className="bg-green-500 p-2 font-semibold text-white items-center space-x-2 rounded w-[340px] h-[40px] flex justify-center"
             style={{ 'backgroundColor': '#00b900' }}
             onClick={() => signin('line')}
           >

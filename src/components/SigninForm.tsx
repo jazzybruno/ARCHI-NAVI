@@ -1,8 +1,8 @@
 import Router from 'next/router'
 import { useForm, SubmitHandler } from 'react-hook-form'
+import SocialPage from 'components/Social'
 import { useSignin } from 'hooks/auth'
 import { UserRole } from 'utils/constant'
-import SocialPage from 'components/social'
 
 type Props = {
    role: UserRole

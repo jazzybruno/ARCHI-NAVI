@@ -1,10 +1,10 @@
+import { Button, Input, Form, Select, DatePicker, Space, Radio, Typography } from 'antd'
 import type { NextPageWithLayout } from 'next'
+import dynamic from 'next/dynamic'
+import React, { useCallback, useState, ChangeEvent } from 'react'
 import { MainLayout } from 'layouts/main'
 import { httpClient, httpFormDataClient } from 'services/httpClient'
 import { ApiRoutes } from 'utils/constant'
-import React, { useCallback, useState, ChangeEvent } from 'react'
-import { Button, Input, Form, Select, DatePicker, Space, Radio, Typography } from 'antd'
-import dynamic from 'next/dynamic'
 const SimpleMDE = dynamic(() => import('react-simplemde-editor'), { ssr: false })
 import 'easymde/dist/easymde.min.css'
 
@@ -24,7 +24,7 @@ const SignupPage: NextPageWithLayout = () => {
       }
    }
 
-   const handleRoleChange = (e: ChangeEvent<HTMLInputElement>) => {
+   const handleRoleChange = (e) => {
       setRole(e.target.value)
    }
    const onChange = useCallback((value: string) => {
