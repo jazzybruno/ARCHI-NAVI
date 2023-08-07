@@ -1,11 +1,11 @@
 import { Button, DatePicker, Form, Input, Typography, Space, TimePicker } from 'antd'
+import dayjs from 'dayjs';
 import type { NextPageWithLayout } from 'next'
 import { useRouter } from 'next/router'
 import React, { useEffect } from 'react'
 import { AdminLayout } from 'layouts/admin'
 import { httpClient } from 'services/httpClient'
 import { ApiRoutes } from 'utils/constant'
-import dayjs from 'dayjs';
 
 const { Title } = Typography
 const { TextArea } = Input
@@ -106,7 +106,7 @@ const AdminUserDetailsPage: NextPageWithLayout = () => {
                   </Form.Item>
                </Space.Compact>
             </Form.Item>
-            <Form.Item wrapperCol={{ span: 12, offset: 8 }} style={{ paddingTop: '24px' }}>
+            <Form.Item wrapperCol={{ span: 12, offset: 11 }} style={{ paddingTop: '24px' }}>
                <Space>
                   <Button type='primary' htmlType='submit'>
                      送信

@@ -232,7 +232,7 @@ const AdminUserDetailsPage: NextPageWithLayout = () => {
                   <Select.Option value='0'>受け取らない</Select.Option>
                </Select>
             </Form.Item>
-            <Form.Item wrapperCol={{ span: 12, offset: 9 }}>
+            <Form.Item wrapperCol={{ span: 12, offset: 11 }}>
                <Space>
                   <Button type='primary' htmlType='submit'>
                      変更する

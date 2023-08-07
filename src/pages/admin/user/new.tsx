@@ -238,7 +238,7 @@ const AdminUserNewPage: NextPageWithLayout = () => {
                 >
                     <Input.Password />
                 </Form.Item>
-                <Form.Item wrapperCol={{ span: 12, offset: 9 }}>
+                <Form.Item wrapperCol={{ span: 12, offset: 11 }}>
                     <Space>
                         <Button type='primary' htmlType='submit'>
                             変更する

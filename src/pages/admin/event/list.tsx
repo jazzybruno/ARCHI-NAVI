@@ -187,7 +187,7 @@ const AdminEventListPage: NextPageWithLayout = () => {
                   onFinish={onFinish}
                   onFinishFailed={onFinishFailed}
                >
-                  <Form.Item label='タイトル' name='title'>
+                  <Form.Item label='企業名' name='title'>
                      <Input />
                   </Form.Item>
 

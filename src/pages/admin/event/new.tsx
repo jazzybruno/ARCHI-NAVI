@@ -352,7 +352,7 @@ const AdminEventDetailsPage: NextPageWithLayout = () => {
                         <Select.Option value='2'>下書き</Select.Option>
                     </Select>
                 </Form.Item>
-                <Form.Item wrapperCol={{ span: 12, offset: 8 }} style={{ paddingTop: '24px' }}>
+                <Form.Item wrapperCol={{ span: 12, offset: 11 }} style={{ paddingTop: '24px' }}>
                     <Space>
                         <Button type='primary' htmlType='submit'>
                             変更する

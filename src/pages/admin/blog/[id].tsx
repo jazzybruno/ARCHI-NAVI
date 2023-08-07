@@ -1,8 +1,8 @@
 import { Button, Form, Input, Typography, Space, DatePicker, Select } from 'antd'
 import dayjs from 'dayjs';
 import type { NextPageWithLayout } from 'next'
-import { useRouter } from 'next/router'
 import dynamic from 'next/dynamic'
+import { useRouter } from 'next/router'
 import React, { useCallback, useEffect, useState, ChangeEvent } from 'react'
 import { AdminLayout } from 'layouts/admin'
 import { httpClient, httpFormDataClient } from 'services/httpClient'
@@ -270,7 +270,7 @@ const AdminBlogDetailsPage: NextPageWithLayout = () => {
                   <Select.Option value='2'>下書き</Select.Option>
                </Select>
             </Form.Item>
-            <Form.Item wrapperCol={{ span: 12, offset: 9 }}>
+            <Form.Item wrapperCol={{ span: 12, offset: 11 }}>
                <Space>
                   <Button type='primary' htmlType='submit'>
                      変更する
