@@ -1,6 +1,6 @@
 import type { NextPageWithLayout } from 'next'
 import SigninForm from 'components/SigninForm'
-import { AdminLayout } from 'layouts/admin'
+import { MainLayout } from 'layouts/main'
 
 const AdminSigninPage: NextPageWithLayout = () => {
    return (
@@ -12,6 +12,6 @@ const AdminSigninPage: NextPageWithLayout = () => {
    )
 }
 
-AdminSigninPage.getLayout = (page) => <AdminLayout>{page}</AdminLayout>
+AdminSigninPage.getLayout = (page) => <MainLayout>{page}</MainLayout>
 
 export default AdminSigninPage

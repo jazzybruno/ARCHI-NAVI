@@ -9,10 +9,7 @@ import {
    Table,
    Popconfirm,
 } from 'antd'
-import { Calendar, theme } from 'antd';
-import type { CalendarMode } from 'antd/es/calendar/generateCalendar';
 import type { ColumnsType } from 'antd/es/table'
-import type { Dayjs } from 'dayjs';
 import type { NextPageWithLayout } from 'next'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
@@ -26,7 +23,7 @@ const { RangePicker } = DatePicker
 interface DataType {
    key: React.Key
    title: string
-   category: string
+   type: string
    content: string
    registeredAt: string
 }
@@ -49,8 +46,6 @@ const AdminEventListPage: NextPageWithLayout = () => {
       setLoading(true)
 
       const queryParams = new URLSearchParams()
-
-      console.log(values)
 
       if (values) {
          if (values.title) {
@@ -92,6 +87,23 @@ const AdminEventListPage: NextPageWithLayout = () => {
 
    const onFinishFailed = (errorInfo: any) => {
       console.log('Failed:', errorInfo)
+   }
+
+   const resetButtonClick = () => {
+      const values = {
+         title: null,
+         type: null,
+         content: null,
+         start_date: null,
+         end_date: null
+      }
+      form.setFieldsValue({
+         title: values.title,
+         type: values.type,
+         content: values.content,
+         registeredAt: null,
+      })
+      fetchData(1, values);
    }
 
    const confirmDelete = (id: number) => {
@@ -179,7 +191,7 @@ const AdminEventListPage: NextPageWithLayout = () => {
                      <Input />
                   </Form.Item>
 
-                  <Form.Item label='コンテンツ' name='content'>
+                  <Form.Item label='キーワード' name='content'>
                      <Input />
                   </Form.Item>
 
@@ -194,6 +206,9 @@ const AdminEventListPage: NextPageWithLayout = () => {
                   <Form.Item>
                      <Button type='primary' htmlType='submit'>
                         この条件で検索
+                     </Button>
+                     <Button type='primary' className='ms-2 !bg-red-500' onClick={resetButtonClick}>
+                        検索条件をリセット
                      </Button>
                   </Form.Item>
                </Form>

@@ -90,6 +90,21 @@ const AdminUserListPage: NextPageWithLayout = () => {
          .catch((err) => console.error(err))
    };
 
+   const resetButtonClick = () => {
+      const values = {
+         name: null,
+         email: null,
+         start_date: null,
+         end_date: null
+      }
+      form.setFieldsValue({
+         username: values.name,
+         email: values.email,
+         registeredAt: null,
+      })
+      fetchData(1, values);
+   }
+
    const goEdit = (id: number) => {
       router.push(`/admin/user/${id}`);
    }
@@ -127,12 +142,13 @@ const AdminUserListPage: NextPageWithLayout = () => {
                   onConfirm={() => confirmDelete(record.id)}
                   okText="はい"
                   cancelText="いいえ"
+                  className='bg-blue-500'
                >
-                  <Button className='delete-button' type='primary' size='small' danger>
+                  <Button className='!bg-red-500' type='primary' size='small' danger>
                      削除
                   </Button>
                </Popconfirm>
-               <Button type='primary' size='small'
+               <Button type='primary' className='bg-blue-500' size='small'
                   onClick={() => goEdit(record.id)}
                >
                   編集
@@ -165,7 +181,6 @@ const AdminUserListPage: NextPageWithLayout = () => {
                   <Form.Item
                      label='メールアドレス'
                      name='email'
-                     rules={[{ type: 'email', message: 'メール形式が正しくありません' }]}
                   >
                      <Input />
                   </Form.Item>
@@ -175,8 +190,11 @@ const AdminUserListPage: NextPageWithLayout = () => {
                   </Form.Item>
 
                   <Form.Item>
-                     <Button type='primary' htmlType='submit'>
+                     <Button type='primary' className='bg-blue-500' htmlType='submit'>
                         この条件で検索
+                     </Button>
+                     <Button type='primary' className='ms-2 !bg-red-500' onClick={resetButtonClick}>
+                        検索条件をリセット
                      </Button>
                   </Form.Item>
                </Form>

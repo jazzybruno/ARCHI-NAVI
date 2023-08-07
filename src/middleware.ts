@@ -19,7 +19,6 @@ export function middleware(req: NextRequest) {
       return NextResponse.next();
     }
   }
-
   return new Response('Auth required', {
     status: 401,
     headers: {

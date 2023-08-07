@@ -16,7 +16,7 @@ const SocialPage: NextPageWithLayout = () => {
       <div>
         <div>
           <Button
-            className="bg-red-500 p-2 font-semibold text-white inline-flex items-center space-x-2 rounded"
+            className="bg-red-500 p-2 font-semibold text-white inline-flex items-center space-x-2 rounded w-[340px] h-[40px] flex justify-center mb-[10px] mt-[50px]"
             onClick={() => signin('google')}
           >
             <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" className="w-5" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24">
@@ -29,12 +29,12 @@ const SocialPage: NextPageWithLayout = () => {
                 />
               </g>
             </svg>
-            Googleでログイン
+            <span>Googleでログイン</span>
           </Button>
         </div>
         <div>
           <Button
-            className="bg-green-500 p-2 font-semibold text-white inline-flex items-center space-x-2 rounded"
+            className="bg-green-500 p-2 font-semibold text-white inline-flex items-center space-x-2 rounded w-[340px] h-[40px] flex justify-center"
             style={{ 'backgroundColor': '#00b900' }}
             onClick={() => signin('line')}
           >
@@ -47,7 +47,7 @@ const SocialPage: NextPageWithLayout = () => {
                 <path fill={'#00b900'} d="M89,50a.85.85,0,0,0,.85-.85V46.13a.85.85,0,0,0-.85-.85H76.7a.85.85,0,0,0-.59.24h0v0a.83.83,0,0,0-.24.59h0v19h0a.83.83,0,0,0,.24.59h0a.85.85,0,0,0,.59.24H89a.85.85,0,0,0,.85-.85V62.1a.85.85,0,0,0-.85-.85H80.62V58H89a.85.85,0,0,0,.85-.85V54.11a.85.85,0,0,0-.85-.85H80.62V50Z" />
               </g>
             </svg>
-            LINEでログイン
+            <span>LINEでログイン</span>
           </Button>
         </div>
       </div>

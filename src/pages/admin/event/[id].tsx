@@ -2,11 +2,12 @@ import { Button, Form, Input, Typography, DatePicker, Space, Select } from 'antd
 import dayjs from 'dayjs';
 import type { NextPageWithLayout } from 'next'
 import { useRouter } from 'next/router'
-import React, { useEffect } from 'react'
+import React, { useState, useEffect, ChangeEvent } from 'react'
 import { AdminLayout } from 'layouts/admin'
-import { httpClient } from 'services/httpClient'
+import { httpClient, httpFormDataClient } from 'services/httpClient'
 import { ApiRoutes } from 'utils/constant'
 import 'easymde/dist/easymde.min.css'
+import { FolderAddOutlined } from '@ant-design/icons';
 
 const { Title } = Typography
 const { TextArea } = Input
@@ -16,26 +17,153 @@ const AdminEventDetailsPage: NextPageWithLayout = () => {
    const [form] = Form.useForm()
    const router = useRouter()
    const { id } = router.query
+   const [previewImage, setPreviewImage] = useState('')
+   const [previewImage1, setPreviewImage1] = useState('')
+   const [previewImage2, setPreviewImage2] = useState('')
+   const [previewImage3, setPreviewImage3] = useState('')
+   const [file, setFile] = useState<File>()
+   const [file1, setFile1] = useState<File>()
+   const [file2, setFile2] = useState<File>()
+   const [file3, setFile3] = useState<File>()
 
-   const onFinish = (values: any) => {
+
+
+
+   useEffect(() => {
+      if (id) {
+         httpClient()
+            .get(`${ApiRoutes.event.index}/${id}`)
+            .then((res) => {
+               const [category, lineStatus] = res.data.type.split(',');
+               form.setFieldsValue({
+                  title: res.data.title,
+                  content: res.data.content,
+                  type: {
+                     category: category,
+                     lineStatus: lineStatus
+                  },
+                  applicationPeriod: [dayjs(res.data.startDate), dayjs(res.data.endDate)],
+                  prefecture: res.data.prefecture?.toString(),
+                  typeOfOccupation: res.data.typeOfOccupation?.toString(),
+                  recruitmentCondition: res.data.recruitmentCondition,
+                  compensation: res.data.compensation,
+                  applicationUrl: res.data.applicationUrl,
+                  publicationDate: [dayjs(res.data.publicationStartDate), dayjs(res.data.publicationEndDate)],
+                  status: res.data.status?.toString()
+               })
+               setPreviewImage(res.data.thumbnail.url)
+               setPreviewImage1(res.data.attachments[0].url)
+               setPreviewImage2(res.data.attachments[1].url)
+               setPreviewImage3(res.data.attachments[2].url)
+            })
+            .catch((err) => console.error(err))
+      }
+   }, [id])
+
+
+
+   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+      if (e.target.files) {
+         setFile(e.target.files[0])
+         setPreviewImage(URL.createObjectURL(e.target.files[0]))
+      }
+   }
+
+   const handleFileChange1 = (e: ChangeEvent<HTMLInputElement>) => {
+      if (e.target.files) {
+         setFile1(e.target.files[0])
+         setPreviewImage1(URL.createObjectURL(e.target.files[0]))
+      }
+   }
+
+   const handleFileChange2 = (e: ChangeEvent<HTMLInputElement>) => {
+      if (e.target.files) {
+         setFile2(e.target.files[0])
+         setPreviewImage2(URL.createObjectURL(e.target.files[0]))
+      }
+   }
+
+   const handleFileChange3 = (e: ChangeEvent<HTMLInputElement>) => {
+      if (e.target.files) {
+         setFile3(e.target.files[0])
+         setPreviewImage3(URL.createObjectURL(e.target.files[0]))
+      }
+   }
+
+   const onFinish = async (values: any) => {
       const [start, end] = values.applicationPeriod;
+      const [publicationStart, publicationEnd] = values.publicationDate;
+      const formData = new FormData;
+      const formData1 = new FormData;
+      const formData2 = new FormData;
+      const formData3 = new FormData;
+      formData.append('upload_file', file)
+      formData1.append('upload_file', file1)
+      formData2.append('upload_file', file2)
+      formData3.append('upload_file', file3)
+
+
+      let attachmentId, attachmentId1, attachmentId2, attachmentId3 = null;
+
+      if (file) {
+         let res = await httpFormDataClient().post(`${ApiRoutes.attachment.index}`, formData)
+         if (res.status > 400) {
+            return
+         } else if (res.status == 201) {
+            attachmentId = res.data.id
+         }
+      }
+
+      if (file1) {
+         let res = await httpFormDataClient().post(`${ApiRoutes.attachment.index}`, formData1)
+         if (res.status > 400) {
+            return
+         } else if (res.status == 201) {
+            attachmentId1 = res.data.id
+         }
+      }
+
+      if (file2) {
+         let res = await httpFormDataClient().post(`${ApiRoutes.attachment.index}`, formData2)
+         if (res.status > 400) {
+            return
+         } else if (res.status == 201) {
+            attachmentId2 = res.data.id
+         }
+      }
+
+
+      if (file3) {
+         let res = await httpFormDataClient().post(`${ApiRoutes.attachment.index}`, formData3)
+         if (res.status > 400) {
+            return
+         } else if (res.status == 201) {
+            attachmentId3 = res.data.id
+         }
+      }
+
       const data = {
          title: values.title,
          content: values.content,
-         type: values.type,
+         type: values.type.category,
+         startDate: start.format('YYYY-MM-DD'),
+         endDate: end.format('YYYY-MM-DD'),
          prefecture: values.prefecture?.toString(),
-         postalCode: values.postalCode,
-         address: values.address,
-         numberOfRecruitment: values.numberOfRecruitment,
+         typeOfOccupation: values.typeOfOccupation?.toString(),
          recruitmentCondition: values.recruitmentCondition,
-         applicationStartDateTime: start.format('YYYY-MM-DD'),
-         applicationEndDateTime: end.format('YYYY-MM-DD'),
-         dateTime: values.dateTime.format('YYYY-MM-DD'),
+         compensation: values.compensation,
+         attachmentId: attachmentId,
+         attachments: [attachmentId1, attachmentId2, attachmentId3],
+         applicationUrl: values.applicationUrl,
+         publicationStartDate: publicationStart.format('YYYY-MM-DD'),
+         publicationEndDate: publicationEnd.format('YYYY-MM-DD'),
+         status: values.status?.toString(),
       }
       httpClient()
          .put(`${ApiRoutes.event.index}/${id}`, data)
          .then(() => {
             alert('正常に変更されました。');
+            router.push('/admin/event/list');
          })
          .catch((err) => console.error(err))
    }
@@ -44,37 +172,19 @@ const AdminEventDetailsPage: NextPageWithLayout = () => {
       console.log('Failed:', errorInfo)
    }
 
-   useEffect(() => {
-      if (id) {
-         httpClient()
-            .get(`${ApiRoutes.event.index}/${id}`)
-            .then((res) => {
-               form.setFieldsValue({
-                  title: res.data.title,
-                  content: res.data.content,
-                  type: res.data.type,
-                  prefecture: res.data.prefecture?.toString(),
-                  postalCode: res.data.postalCode,
-                  address: res.data.address,
-                  numberOfRecruitment: res.data.numberOfRecruitment,
-                  recruitmentCondition: res.data.recruitmentCondition,
-                  applicationPeriod: [dayjs(res.data.applicationStartDateTime), dayjs(res.data.applicationEndDateTime)],
-                  dateTime: dayjs(res.data.dateTime)
-               })
-            })
-            .catch((err) => console.error(err))
-      }
-   }, [id])
+   const onCancel = () => {
+      router.push('admin/event/list');
+   }
 
    return (
       <>
          <Title level={2} style={{ textAlign: 'center' }}>
-            インターン・イベント情報変更
+            イベント詳細
          </Title>
 
          <Form
             form={form}
-            labelCol={{ span: 4 }}
+            labelCol={{ span: 6 }}
             wrapperCol={{ span: 12 }}
             layout='horizontal'
             onFinish={onFinish}
@@ -88,34 +198,44 @@ const AdminEventDetailsPage: NextPageWithLayout = () => {
                <Input />
             </Form.Item>
             <Form.Item
-               label='タイプ'
+               label='種別'
                name='type'
-               rules={[{ required: true, message: 'このフィールドを入力してください' }]}
             >
-               <Input />
+               <Form.Item
+                  name={['type', 'category']}
+                  rules={[{ required: true, message: 'このフィールドを入力してください' }]}
+               >
+                  <Select>
+                     <Select.Option value='intern'>インターン</Select.Option>
+                     <Select.Option value='seminar'>説明会</Select.Option>
+                     <Select.Option value='other'>その他</Select.Option>
+                  </Select>
+               </Form.Item>
+               <Form.Item
+                  name={['type', 'lineStatus']}
+                  rules={[{ required: true, message: 'このフィールドを入力してください' }]}
+               >
+                  <Select>
+                     <Select.Option value='オンライン'>オンライン</Select.Option>
+                     <Select.Option value='オフライン'>オフライン</Select.Option>
+                  </Select>
+               </Form.Item>
             </Form.Item>
             <Form.Item
                label='開催期間'
                name='applicationPeriod'
                rules={[{ required: true, message: 'このフィールドを入力してください' }]}
             >
-               <RangePicker />
+               <RangePicker className='w-full' />
             </Form.Item>
             <Form.Item
-               label='募集条件'
-               name='recruitmentCondition'
-               rules={[{ required: true, message: 'このフィールドを入力してください' }]}
-            >
-               <TextArea />
-            </Form.Item>
-            <Form.Item
-               label='県'
+               label='会場'
                name='prefecture'
                rules={[{ required: true, message: 'このフィールドを入力してください' }]}
             >
                <Select>
-                  <Select.Option value='1'>愛知県</Select.Option>
-                  <Select.Option value='2'>秋田県</Select.Option>
+                  <Select.Option value='愛知県'>愛知県</Select.Option>
+                  <Select.Option value='秋田県'>秋田県</Select.Option>
                   <Select.Option value='3'>青森県</Select.Option>
                   <Select.Option value='4'>千葉県</Select.Option>
                   <Select.Option value='5'>愛媛県</Select.Option>
@@ -164,45 +284,114 @@ const AdminEventDetailsPage: NextPageWithLayout = () => {
                </Select>
             </Form.Item>
             <Form.Item
-               label='郵便番号'
-               name='postalCode'
+               label='対象職種'
+               name='typeOfOccupation'
                rules={[{ required: true, message: 'このフィールドを入力してください' }]}
             >
-               <Input />
+               <Select>
+                  <Select.Option value='1'>意匠設計</Select.Option>
+                  <Select.Option value='2'>構造設計</Select.Option>
+                  <Select.Option value='3'>設備設計</Select.Option>
+                  <Select.Option value='4'>環境設計（省エネ計算）</Select.Option>
+                  <Select.Option value='5'>施工管理</Select.Option>
+                  <Select.Option value='6'>都市計画</Select.Option>
+                  <Select.Option value='7'>建設コンサルタント</Select.Option>
+                  <Select.Option value='8'>その他</Select.Option>
+               </Select>
             </Form.Item>
             <Form.Item
-               label='住所'
-               name='address'
+               label='応募条件'
+               name='recruitmentCondition'
                rules={[{ required: true, message: 'このフィールドを入力してください' }]}
             >
-               <Input />
+               <TextArea rows={5} />
             </Form.Item>
             <Form.Item
-               label='募集人数'
-               name='numberOfRecruitment'
+               label='報酬・手当'
+               name='compensation'
                rules={[{ required: true, message: 'このフィールドを入力してください' }]}
             >
-               <Input />
+               <TextArea rows={5} />
+            </Form.Item>
+            <Form.Item
+               label='アイキャッチ画像'
+               name='logo'
+            >
+               <div className='avatar-upload w-[150px] h-[150px] border' >
+                  <div className='opacity-0 absolute z-10 left-[75px] translate-x-[-50%] translate-y-[-50%] top-[50%]'>
+                     <FolderAddOutlined style={{ fontSize: '40px' }} ></FolderAddOutlined>
+                  </div>
+                  <input className='w-[150px] h-[150px] opacity-0 avatar-input' type='file' onChange={handleFileChange} />
+                  <img src={previewImage} className='w-[150px] mt-[-150px] avatar-image' />
+               </div>
+            </Form.Item>
+            <Form.Item
+               label='その他画像'
+               name='attachments'
+            >
+               <div className="flex">
+                  <div className='avatar-upload w-[150px] h-[150px] border' >
+                     <div className='opacity-0 absolute z-10 left-[75px] translate-x-[-50%] translate-y-[-50%] top-[50%]'>
+                        <FolderAddOutlined style={{ fontSize: '30px' }} ></FolderAddOutlined>
+                     </div>
+                     <input className='w-[150px] h-[150px] opacity-0 avatar-input' type='file' onChange={handleFileChange1} />
+                     <img src={previewImage1} className='w-[150px] mt-[-150px] avatar-image' />
+                  </div>
+                  <div className='avatar-upload w-[150px] h-[150px] border mx-[20px]' >
+                     <div className='opacity-0 absolute z-10 left-[245px] translate-x-[-50%] translate-y-[-50%] top-[50%]'>
+                        <FolderAddOutlined style={{ fontSize: '30px' }} ></FolderAddOutlined>
+                     </div>
+                     <input className='w-[150px] h-[150px] opacity-0 avatar-input' type='file' onChange={handleFileChange2} />
+                     <img src={previewImage2} className='w-[150px] mt-[-150px] avatar-image' />
+                  </div>
+                  <div className='avatar-upload w-[150px] h-[150px] border' >
+                     <div className='opacity-0 absolute z-10 left-[415px] translate-x-[-50%] translate-y-[-50%] top-[50%]'>
+                        <FolderAddOutlined style={{ fontSize: '30px' }} ></FolderAddOutlined>
+                     </div>
+                     <input className='w-[150px] h-[150px] opacity-0 avatar-input' type='file' onChange={handleFileChange3} />
+                     <img src={previewImage3} className='w-[150px] mt-[-150px] avatar-image' />
+                  </div>
+               </div>
             </Form.Item>
             <Form.Item
                label='本文'
                name='content'
                rules={[{ required: true, message: 'このフィールドを入力してください' }]}
             >
-               <TextArea />
+               <TextArea rows={12} />
             </Form.Item>
             <Form.Item
-               label='掲載日'
-               name='dateime'
+               label='申し込みURL'
+               name='applicationUrl'
+            >
+               <Input />
+            </Form.Item>
+            <Form.Item
+               label='表示期間'
+               name='publicationDate'
+               className='pt-[60px]'
                rules={[{ required: true, message: 'このフィールドを入力してください' }]}
             >
-               <DatePicker />
-               <a className='ms-3' href="http://www.google.com/calendar/event?action=TEMPLATE" target="_blank">イベント登録</a>
+               <RangePicker className='w-full' />
+            </Form.Item>
+            <Form.Item
+               label='ステータス'
+               name='status'
+               rules={[{ required: true, message: 'このフィールドを入力してください' }]}
+            >
+               <Select>
+                  <Select.Option value='0'>表示</Select.Option>
+                  <Select.Option value='1'>非表示</Select.Option>
+                  <Select.Option value='2'>下書き</Select.Option>
+               </Select>
             </Form.Item>
             <Form.Item wrapperCol={{ span: 12, offset: 8 }} style={{ paddingTop: '24px' }}>
                <Space>
                   <Button type='primary' htmlType='submit'>
                      変更する
+                  </Button>
+                  <Button type='primary' className='!bg-red-500' onClick={onCancel}>
+                     キャンセル
                   </Button>
                </Space>
             </Form.Item>

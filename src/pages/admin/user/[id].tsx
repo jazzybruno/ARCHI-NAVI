@@ -1,4 +1,4 @@
-import { Button, DatePicker, Form, Input, Select, Typography, Space } from 'antd'
+import { Button, DatePicker, Form, Input, Select, Typography, Space, message } from 'antd'
 import dayjs from 'dayjs'
 import type { NextPageWithLayout } from 'next'
 import { useRouter } from 'next/router'
@@ -6,6 +6,7 @@ import React, { useEffect, useState, ChangeEvent } from 'react'
 import { AdminLayout } from 'layouts/admin'
 import { httpClient, httpFormDataClient } from 'services/httpClient'
 import { ApiRoutes } from 'utils/constant'
+import { FolderAddOutlined } from '@ant-design/icons';
 
 const { Title } = Typography
 
@@ -14,8 +15,15 @@ const AdminUserDetailsPage: NextPageWithLayout = () => {
    const router = useRouter()
    const { id } = router.query
    const [previewImage, setPreviewImage] = useState('')
-
    const [file, setFile] = useState<File>()
+   const [messageApi, contextHolder] = message.useMessage();
+
+   const success = () => {
+      messageApi.open({
+         type: 'success',
+         content: 'ユーザー情報が変更されました',
+      });
+   };
 
    const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
       if (e.target.files) {
@@ -42,6 +50,7 @@ const AdminUserDetailsPage: NextPageWithLayout = () => {
                schoolName: values.school,
                faculty: values.faculty,
                department: values.department,
+               expectedGraduationDate: values.expectedGraduationDate.format('YYYY-MM-DD'),
                receiveInformation: values.notification?.toString(),
                tel: values.tel,
                postalCode: values.postalCode,
@@ -51,7 +60,8 @@ const AdminUserDetailsPage: NextPageWithLayout = () => {
             httpClient()
                .put(`${ApiRoutes.user.index}/${id}`, data)
                .then(() => {
-                  alert('正常に変更されました。');
+                  router.push('/admin/user/list');
+                  alert('ユーザー情報が変更されました');
                })
                .catch((err) => console.error(err))
          })
@@ -59,6 +69,10 @@ const AdminUserDetailsPage: NextPageWithLayout = () => {
 
    const onFinishFailed = (errorInfo: any) => {
       console.log('Failed:', errorInfo)
+   }
+
+   const onCancel = () => {
+      router.push('/admin/user/list');
    }
 
    useEffect(() => {
@@ -81,6 +95,7 @@ const AdminUserDetailsPage: NextPageWithLayout = () => {
                   notification: res.data.receiveInformation?.toString(),
                   tel: res.data.tel,
                   postalCode: res.data.postalCode,
+                  expectedGraduationDate: dayjs(res.data.expectedGraduationDate)
                })
                httpClient()
                   .get(`${ApiRoutes.attachment.index}/${attachmentId}`)
@@ -94,20 +109,26 @@ const AdminUserDetailsPage: NextPageWithLayout = () => {
 
    return (
       <>
+         {contextHolder}
          <Title level={2} style={{ textAlign: 'center' }}>
             ユーザー情報詳細
          </Title>
          <Form
             form={form}
-            labelCol={{ span: 4 }}
+            labelCol={{ span: 7 }}
             wrapperCol={{ span: 12 }}
             layout='horizontal'
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
          >
             <Form.Item label='プロフィール画像' name='avatar'>
-               <input className='avatar-upload' type='file' onChange={handleFileChange} />
-               <img src={previewImage} className='w-[150px] avatar-image border' />
+               <div className='avatar-upload w-[150px] h-[150px] border' >
+                  <div className='opacity-0 absolute z-10 left-[75px] translate-x-[-50%] translate-y-[-50%] top-[50%]'>
+                     <FolderAddOutlined style={{ fontSize: '30px' }} ></FolderAddOutlined>
+                  </div>
+                  <input className='w-[150px] h-[150px] opacity-0 avatar-input' type='file' onChange={handleFileChange} />
+                  <img src={previewImage} className='w-[150px] mt-[-150px] avatar-image' />
+               </div>
             </Form.Item>
             <Form.Item
                label='氏名'
@@ -139,7 +160,7 @@ const AdminUserDetailsPage: NextPageWithLayout = () => {
                name='birthday'
                rules={[{ required: true, message: 'このフィールドを入力してください' }]}
             >
-               <DatePicker />
+               <DatePicker className='w-full' allowClear={false} />
             </Form.Item>
             <Form.Item
                label='メールアドレス'
@@ -194,6 +215,13 @@ const AdminUserDetailsPage: NextPageWithLayout = () => {
                <Input />
             </Form.Item>
             <Form.Item
+               label='卒業予定日'
+               name='expectedGraduationDate'
+               rules={[{ required: true, message: 'このフィールドを入力してください' }]}
+            >
+               <DatePicker className='w-full' allowClear={false} />
+            </Form.Item>
+            <Form.Item
                label='企業情報の受信設定'
                name='notification'
                rules={[{ required: true, message: 'このフィールドを入力してください' }]}
@@ -208,6 +236,9 @@ const AdminUserDetailsPage: NextPageWithLayout = () => {
                <Space>
                   <Button type='primary' htmlType='submit'>
                      変更する
+                  </Button>
+                  <Button type='primary' className='!bg-red-500' onClick={onCancel}>
+                     キャンセル
                   </Button>
                </Space>
             </Form.Item>

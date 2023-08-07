@@ -8,6 +8,7 @@ import {
    Space,
    Table,
    Popconfirm,
+   Select,
 } from 'antd'
 import type { ColumnsType } from 'antd/es/table'
 import type { NextPageWithLayout } from 'next'
@@ -22,8 +23,9 @@ const { RangePicker } = DatePicker
 
 interface DataType {
    key: React.Key
-   title: string
-   content: string
+   keword: string
+   category: string
+   name: string
    registeredAt: string
 }
 
@@ -46,14 +48,15 @@ const AdminBlogListPage: NextPageWithLayout = () => {
 
       const queryParams = new URLSearchParams()
 
-      console.log(values)
-
       if (values) {
          if (values.title) {
-            queryParams.append('title', values.title)
+            queryParams.append('keyword', values.keyword)
          }
          if (values.content) {
-            queryParams.append('description', values.content)
+            queryParams.append('category', values.category)
+         }
+         if (values.content) {
+            queryParams.append('name', values.name)
          }
          if (values.registeredAt) {
             const [start, end] = values.registeredAt
@@ -101,6 +104,23 @@ const AdminBlogListPage: NextPageWithLayout = () => {
       router.push(`/admin/blog/${id}`)
    }
 
+   const resetButtonClick = () => {
+      const values = {
+         name: null,
+         keyword: null,
+         category: null,
+         start_date: null,
+         end_date: null
+      }
+      form.setFieldsValue({
+         name: values.name,
+         keyword: values.keyword,
+         category: values.category,
+         registeredAt: null,
+      })
+      fetchData(1, values);
+   }
+
    const columns: ColumnsType<DataType> = [
       {
          title: 'ID',
@@ -108,14 +128,19 @@ const AdminBlogListPage: NextPageWithLayout = () => {
          key: `id`,
       },
       {
+         title: '作成者',
+         dataIndex: 'name',
+         key: 'name',
+      },
+      {
          title: 'タイトル',
          dataIndex: 'title',
          key: 'title',
       },
       {
-         title: 'コンテンツ',
-         dataIndex: 'content',
-         key: 'content',
+         title: 'カテゴリ',
+         dataIndex: 'category',
+         key: 'category',
       },
       {
          title: '登録日',
@@ -163,11 +188,15 @@ const AdminBlogListPage: NextPageWithLayout = () => {
                   onFinish={onFinish}
                   onFinishFailed={onFinishFailed}
                >
-                  <Form.Item label='タイトル' name='title'>
+                  <Form.Item label='作成者' name='name'>
                      <Input />
                   </Form.Item>
 
-                  <Form.Item label='コンテンツ' name='content'>
+                  <Form.Item label='キーワード' name='keyword'>
+                     <Input />
+                  </Form.Item>
+
+                  <Form.Item label='カテゴリ' name='category'>
                      <Input />
                   </Form.Item>
 
@@ -178,6 +207,9 @@ const AdminBlogListPage: NextPageWithLayout = () => {
                   <Form.Item>
                      <Button type='primary' htmlType='submit'>
                         この条件で検索
+                     </Button>
+                     <Button type='primary' className='ms-2 !bg-red-500' onClick={resetButtonClick}>
+                        検索条件をリセット
                      </Button>
                   </Form.Item>
                </Form>

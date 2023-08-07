@@ -18,6 +18,10 @@ const Header = () => {
          Router.push('/')
       }
    }
+   const handleSelectChange = (e: any) => {
+      const selectedOption = e.target.value;
+      Router.push(`/${selectedOption}/signin`);
+   }
 
    return (
       <div className={styles.header}>
@@ -27,7 +31,7 @@ const Header = () => {
          <div className={styles.actions}>
             {user ? (
                <div>
-                  <Link className={styles.action} href='/mypage'>
+                  <Link className={styles.action} href={user.role === 'admin' ? '/admin' : '/mypage'}>
                      マイページ
                   </Link>
                   <button className={styles.action} onClick={signout}>
@@ -36,6 +40,11 @@ const Header = () => {
                </div>
             ) : (
                <div>
+                  {/* <select className='select-bg px-2 py-2 text-center' onChange={handleSelectChange}>
+                     <option className='p-1 text-center' value="user">ユーザーログイン</option>
+                     <option className='p-1 text-center' value="company">企業ログイン</option>
+                     <option className='p-1 text-center' value="admin">管理者ログイン</option>
+                  </select> */}
                   <Link className={styles.action} href='/signin'>
                      ログイン
                   </Link>

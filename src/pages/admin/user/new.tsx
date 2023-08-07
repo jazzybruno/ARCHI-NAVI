@@ -4,6 +4,7 @@ import React, { useState, ChangeEvent } from 'react'
 import { AdminLayout } from 'layouts/admin'
 import { httpClient, httpFormDataClient } from 'services/httpClient'
 import { ApiRoutes } from 'utils/constant'
+import { FolderAddOutlined } from '@ant-design/icons';
 
 const { Title } = Typography
 
@@ -42,7 +43,8 @@ const AdminUserNewPage: NextPageWithLayout = () => {
                     tel: values.tel,
                     postalCode: values.postalCode,
                     password: values.password,
-                    attachmentId: res.data.id
+                    attachmentId: res.data.id,
+                    expectedGraduationDate: values.expectedGraduationDate.format('YYYY-MM-DD'),
                 }
                 httpClient()
                     .post(`${ApiRoutes.user.index}`, data)
@@ -62,7 +64,9 @@ const AdminUserNewPage: NextPageWithLayout = () => {
                             tel: null,
                             postalCode: null,
                             password: null,
-                            attachmentId: null
+                            attachmentId: null,
+                            expectedGraduationDate: null,
+                            confirm: null,
                         })
                         setPreviewImage(form.getFieldValue('attachmentId'))
                     })
@@ -81,17 +85,20 @@ const AdminUserNewPage: NextPageWithLayout = () => {
             </Title>
             <Form
                 form={form}
-                labelCol={{ span: 4 }}
+                labelCol={{ span: 7 }}
                 wrapperCol={{ span: 12 }}
                 layout='horizontal'
                 onFinish={onFinish}
                 onFinishFailed={onFinishFailed}
             >
                 <Form.Item label='プロフィール画像' name='avatar'>
-                    <div className='w-[150px] h-[150px]'>
-                        <input className='avatar-upload' type='file' onChange={handleFileChange} required />
+                    <div className='avatar-upload w-[150px] h-[150px] border' >
+                        <div className='opacity-0 absolute z-10 left-[75px] translate-x-[-50%] translate-y-[-50%] top-[50%]'>
+                            <FolderAddOutlined style={{ fontSize: '30px' }} ></FolderAddOutlined>
+                        </div>
+                        <input className='w-[150px] h-[150px] opacity-0 avatar-input' type='file' onChange={handleFileChange} />
+                        <img src={previewImage} className='w-[150px] mt-[-150px] avatar-image' />
                     </div>
-                    <img src={previewImage} className='w-[150px] avatar-image' />
                 </Form.Item>
                 <Form.Item
                     label='氏名'
@@ -123,7 +130,7 @@ const AdminUserNewPage: NextPageWithLayout = () => {
                     name='birthday'
                     rules={[{ required: true, message: 'このフィールドを入力してください' }]}
                 >
-                    <DatePicker />
+                    <DatePicker className='w-full' />
                 </Form.Item>
                 <Form.Item
                     label='メールアドレス'
@@ -157,13 +164,6 @@ const AdminUserNewPage: NextPageWithLayout = () => {
                     <Input />
                 </Form.Item>
                 <Form.Item
-                    label='パスワード'
-                    name='password'
-                    rules={[{ required: true, message: 'このフィールドを入力してください' }]}
-                >
-                    <Input />
-                </Form.Item>
-                <Form.Item
                     label='学校名'
                     name='school'
                     rules={[{ required: true, message: 'このフィールドを入力してください' }]}
@@ -185,6 +185,13 @@ const AdminUserNewPage: NextPageWithLayout = () => {
                     <Input />
                 </Form.Item>
                 <Form.Item
+                    label='卒業予定日'
+                    name='expectedGraduationDate'
+                    rules={[{ required: true, message: 'このフィールドを入力してください' }]}
+                >
+                    <DatePicker className='w-full' allowClear={false} />
+                </Form.Item>
+                <Form.Item
                     label='企業情報の受信設定'
                     name='notification'
                     rules={[{ required: true, message: 'このフィールドを入力してください' }]}
@@ -195,10 +202,49 @@ const AdminUserNewPage: NextPageWithLayout = () => {
                         <Select.Option value='0'>受け取らない</Select.Option>
                     </Select>
                 </Form.Item>
+                <Form.Item
+                    name="password"
+                    label="パスワード"
+                    rules={[
+                        {
+                            required: true,
+                            message: 'このフィールドを入力してください',
+                        },
+                    ]}
+                    hasFeedback
+                >
+                    <Input.Password />
+                </Form.Item>
+
+                <Form.Item
+                    name="confirm"
+                    label="パスワードの確認"
+                    dependencies={['password']}
+                    hasFeedback
+                    rules={[
+                        {
+                            required: true,
+                            message: 'このフィールドを入力してください',
+                        },
+                        ({ getFieldValue }) => ({
+                            validator(_, value) {
+                                if (!value || getFieldValue('password') === value) {
+                                    return Promise.resolve();
+                                }
+                                return Promise.reject(new Error('入力した新しいパスワードが一致しません。'));
+                            },
+                        }),
+                    ]}
+                >
+                    <Input.Password />
+                </Form.Item>
                 <Form.Item wrapperCol={{ span: 12, offset: 9 }}>
                     <Space>
                         <Button type='primary' htmlType='submit'>
                             変更する
+                        </Button>
+                        <Button type='primary' className='!bg-red-500' htmlType='submit'>
+                            キャンセル
                         </Button>
                     </Space>
                 </Form.Item>

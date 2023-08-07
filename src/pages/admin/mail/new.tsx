@@ -5,42 +5,45 @@ import { AdminLayout } from 'layouts/admin'
 import { httpClient } from 'services/httpClient'
 import { ApiRoutes } from 'utils/constant'
 import 'easymde/dist/easymde.min.css'
+import { useRouter } from 'next/router'
 
 const { Title } = Typography
 const { TextArea } = Input
 
 const AdminMailNewPage: NextPageWithLayout = () => {
    const [form] = Form.useForm()
-
+   const router = useRouter()
+   let file: File
    const onFinish = (values: any) => {
-      const dateTime = values.dateTime.date.format('YYYY-MM-DD') + " " + values.dateTime.time.format('HH-mm-ss');
+      // const formData = new FormData;
+      // formData.append('upload_file', file)
+      // httpFormDataClient()
+      //    .post(`${ApiRoutes.attachment.index}`, formData)
+      //    .then((res) => {
+
+      //    })
       const data = {
          title: values.title,
          content: values.content,
-         dateTime: dateTime,
-         targetId: values.targetId?.toString(),
-         method: values.method,
+         dateTime: values.dateTime.format('YYYY-MM-DD'),
+         method: values.method?.toString(),
+         attachments: [1]
       }
       httpClient()
          .post(`${ApiRoutes.message.index}`, data)
          .then(() => {
-            form.setFieldsValue({
-               title: null,
-               content: null,
-               targetId: null,
-               method: null,
-               dateTime: {
-                  date: null,
-                  time: null
-               }
-            })
-            alert('正常に変更されました。');
+            alert('正常に変更されました。')
+            router.push('/admin/mail/list')
          })
          .catch((err) => console.error(err))
    }
 
    const onFinishFailed = (errorInfo: any) => {
       console.log('Failed:', errorInfo)
+   }
+
+   const onCancel = () => {
+      router.push('/admin/mail/list')
    }
 
    return (
@@ -51,7 +54,7 @@ const AdminMailNewPage: NextPageWithLayout = () => {
 
          <Form
             form={form}
-            labelCol={{ span: 4 }}
+            labelCol={{ span: 6 }}
             wrapperCol={{ span: 12 }}
             layout='horizontal'
             onFinish={onFinish}
@@ -69,44 +72,29 @@ const AdminMailNewPage: NextPageWithLayout = () => {
                name='content'
                rules={[{ required: true, message: 'このフィールドを入力してください' }]}
             >
-               <TextArea />
+               <TextArea rows={15} />
             </Form.Item>
-            <Form.Item
-               label='ターゲット'
-               name='targetId'
-               rules={[{ required: true, message: 'このフィールドを入力してください' }]}
-            >
-               <Select>
-                  <Select.Option value='1'>all</Select.Option>
-               </Select>
+            <Form.Item label='ファイル' name='fileUpload'>
+               <input type="file" name='file' />
             </Form.Item>
-            <Form.Item
-               label='方法'
-               name='method'
-               rules={[{ required: true, message: 'このフィールドを入力してください' }]}
-            >
-               <Input />
-            </Form.Item>
-            <Form.Item label='送信日' name={'dateTime'}>
-               <Space.Compact>
-                  <Form.Item
-                     name={['dateTime', 'date']}
-                     rules={[{ required: true, message: 'このフィールドを入力してください' }]}
-                  >
-                     <DatePicker />
-                  </Form.Item>
-                  <Form.Item
-                     name={['dateTime', 'time']}
-                     rules={[{ required: true, message: 'このフィールドを入力してください' }]}
-                  >
-                     <TimePicker className='ms-2' />
-                  </Form.Item>
-               </Space.Compact>
-            </Form.Item>
-            <Form.Item wrapperCol={{ span: 12, offset: 8 }} style={{ paddingTop: '24px' }}>
+            <div className='flex ps-[19.8%]'>
+               <Form.Item labelCol={{ span: 4 }} className='w-[40%]' label='送信日' name='dateTime'>
+                  <DatePicker />
+               </Form.Item>
+               <Form.Item labelCol={{ span: 4 }} className='w-[40%]' label='送信媒体' name='method'>
+                  <Select>
+                     <Select.Option value='line'>LINE</Select.Option>
+                     <Select.Option value='email'>会員メール</Select.Option>
+                  </Select>
+               </Form.Item>
+            </div>
+            <Form.Item wrapperCol={{ span: 12, offset: 11 }} style={{ paddingTop: '24px' }}>
                <Space>
                   <Button type='primary' htmlType='submit'>
-                     変更する
+                     送信
+                  </Button>
+                  <Button type='primary' className='!bg-red-500' onClick={onCancel}>
+                     キャンセル
                   </Button>
                </Space>
             </Form.Item>

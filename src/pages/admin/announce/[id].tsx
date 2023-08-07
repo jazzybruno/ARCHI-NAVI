@@ -14,26 +14,33 @@ const AdminUserDetailsPage: NextPageWithLayout = () => {
    const [form] = Form.useForm()
    const router = useRouter()
    const { id } = router.query
+
    const onFinish = (values: any) => {
       const dateTime = values.dateTime.date.format('YYYY-MM-DD') + " " + values.dateTime.time.format('HH-mm-ss');
       const data = {
          title: values.title,
          content: values.content,
          dateTime: dateTime,
-         target: values.target,
-         method: values.method,
+         target: 'all',
+         method: 'email',
+         targetId: 1,
+         attachments: []
       }
-      console.log(dateTime)
       httpClient()
          .put(`${ApiRoutes.notification.index}/${id}`, data)
          .then(() => {
             alert('正常に変更されました。');
+            router.push('/admin/announce/list')
          })
          .catch((err) => console.error(err))
    }
 
    const onFinishFailed = (errorInfo: any) => {
       console.log('Failed:', errorInfo)
+   }
+
+   const onCancel = () => {
+      router.push('/admin/announce/list')
    }
 
    useEffect(() => {
@@ -63,7 +70,7 @@ const AdminUserDetailsPage: NextPageWithLayout = () => {
          </Title>
          <Form
             form={form}
-            labelCol={{ span: 4 }}
+            labelCol={{ span: 6 }}
             wrapperCol={{ span: 12 }}
             layout='horizontal'
             onFinish={onFinish}
@@ -81,23 +88,9 @@ const AdminUserDetailsPage: NextPageWithLayout = () => {
                name='content'
                rules={[{ required: true, message: 'このフィールドを入力してください' }]}
             >
-               <TextArea />
+               <TextArea rows={15} />
             </Form.Item>
-            <Form.Item
-               label='ターゲット'
-               name='target'
-               rules={[{ required: true, message: 'このフィールドを入力してください' }]}
-            >
-               <Input />
-            </Form.Item>
-            <Form.Item
-               label='方法'
-               name='method'
-               rules={[{ required: true, message: 'このフィールドを入力してください' }]}
-            >
-               <Input />
-            </Form.Item>
-            <Form.Item label='送信日' name={'dateTime'}>
+            <Form.Item className='mt-[100px]' label='送信日' name={'dateTime'}>
                <Space.Compact>
                   <Form.Item
                      name={['dateTime', 'date']}
@@ -116,7 +109,10 @@ const AdminUserDetailsPage: NextPageWithLayout = () => {
             <Form.Item wrapperCol={{ span: 12, offset: 8 }} style={{ paddingTop: '24px' }}>
                <Space>
                   <Button type='primary' htmlType='submit'>
-                     変更する
+                     送信
+                  </Button>
+                  <Button type='primary' className='!bg-red-500' onClick={onCancel}>
+                     キャンセル
                   </Button>
                </Space>
             </Form.Item>

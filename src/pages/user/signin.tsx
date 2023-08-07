@@ -6,7 +6,7 @@ const CompanySigninPage: NextPageWithLayout = () => {
    return (
       <>
          <div className='flex items-center justify-center'>
-            <SigninForm role='company'></SigninForm>
+            <SigninForm role='user'></SigninForm>
          </div>
       </>
    )

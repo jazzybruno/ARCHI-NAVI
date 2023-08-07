@@ -1,257 +1,406 @@
 import type { NextPageWithLayout } from 'next'
-import { useForm, SubmitHandler } from 'react-hook-form'
 import { MainLayout } from 'layouts/main'
-import { httpClient } from 'services/httpClient'
+import { httpClient, httpFormDataClient } from 'services/httpClient'
 import { ApiRoutes } from 'utils/constant'
+import React, { useCallback, useState, ChangeEvent } from 'react'
+import { Button, Input, Form, Select, DatePicker, Space, Radio, Typography } from 'antd'
+import dynamic from 'next/dynamic'
+const SimpleMDE = dynamic(() => import('react-simplemde-editor'), { ssr: false })
+import 'easymde/dist/easymde.min.css'
 
-type Inputs = {
-   name: string
-   nameKana: string
-   gender: number
-   birthday: string
-   postalCode: string
-   address: string
-   department: string
-   expectedGraduationDate: string
-   tel: string
-   email: string
-   password: string
-   receiveInformation: number
-}
+const { Title } = Typography
 
 const SignupPage: NextPageWithLayout = () => {
-   const {
-      register,
-      handleSubmit,
-      formState: { errors },
-      // watch,
-   } = useForm<Inputs>({
-      mode: 'onChange',
-   })
+   const [value, setValue] = useState('Initial value')
+   const [form] = Form.useForm()
+   const [previewImage, setPreviewImage] = useState('')
+   const [role, setRole] = useState<string>('user')
+   const [file, setFile] = useState<File>()
 
-   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-      try {
-         await httpClient().post(ApiRoutes.auth.signup, data)
-      } catch (error) {
-         console.log(error)
+   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+      if (e.target.files) {
+         setFile(e.target.files[0])
+         setPreviewImage(URL.createObjectURL(e.target.files[0]))
       }
    }
 
-   // console.log(watch('email'))
+   const handleRoleChange = (e: ChangeEvent<HTMLInputElement>) => {
+      setRole(e.target.value)
+   }
+   const onChange = useCallback((value: string) => {
+      setValue(value)
+   }, [])
+
+   const onFinishB = (values: any) => {
+      const formData = new FormData;
+      formData.append('upload_file', file)
+
+      httpFormDataClient()
+         .post(`${ApiRoutes.attachment.index}`, formData)
+         .then((res) => {
+            const data = {
+               name: values.name,
+               link: values.link,
+               tel: values.tel.toString(),
+               managerName: values.managerName,
+               department: values.department,
+               recruitmentOccupation: values.recruitmentOccupation,
+               overview: values.overview,
+               feature: values.feature,
+               personality: values.personality,
+               numberOfEmployees: values.numberOfEmployees,
+               appealPoint: values.appealPoint,
+               other: values.other,
+               email: values.email,
+               attachmentId: res.data.id,
+            }
+            httpClient()
+               .post(`${ApiRoutes.company.index}`, data)
+               .then(() => {
+                  alert('新しいユーザーが追加されました。')
+                  form.setFieldsValue({
+                     name: null,
+                     link: null,
+                     tel: null,
+                     managerName: null,
+                     department: null,
+                     recruitmentOccupation: null,
+                     overview: null,
+                     feature: null,
+                     personality: null,
+                     numberOfEmployees: null,
+                     appealPoint: null,
+                     other: null,
+                     attachmentId: null,
+                     email: null,
+                  })
+                  setPreviewImage(form.getFieldValue('attachmentId'))
+               })
+               .catch((err) => console.error(err))
+         })
+   }
+
+   const onFinish = (values: any) => {
+
+      const formData = new FormData()
+      formData.append('upload_file', file)
+
+      httpFormDataClient()
+         .post(`${ApiRoutes.attachment.index}`, formData)
+         .then((res) => {
+            const data = {
+               name: values.name,
+               nameKana: values.nameKana,
+               gender: values.gender?.toString(),
+               birthday: values.birthday.format('YYYY-MM-DD'),
+               email: values.email,
+               address: values.address,
+               schoolName: values.school,
+               faculty: values.faculty,
+               department: values.department,
+               receiveInformation: values.notification?.toString(),
+               tel: values.tel,
+               postalCode: values.postalCode,
+               password: values.password,
+               attachmentId: res.data.id
+            }
+            httpClient()
+               .post(`${ApiRoutes.user.index}`, data)
+               .then(() => {
+                  alert('新しいユーザーが追加されました。')
+                  form.setFieldsValue({
+                     name: null,
+                     nameKana: null,
+                     gender: null,
+                     birthday: null,
+                     email: null,
+                     address: null,
+                     school: null,
+                     faculty: null,
+                     department: null,
+                     notification: null,
+                     tel: null,
+                     postalCode: null,
+                     password: null,
+                     attachmentId: null
+                  })
+                  setPreviewImage(form.getFieldValue('attachmentId'))
+               })
+               .catch((err) => console.error(err))
+         })
+   }
+
+   const onFinishFailed = (errorInfo: any) => {
+      console.log('Failed:', errorInfo)
+   }
 
    return (
       <>
-         <div className='flex items-center justify-center'>
-            <div className='mx-auto w-full max-w-xs'>
-               <div className='py-6'>
-                  <h1 className='text-3xl font-bold'>新規登録</h1>
-               </div>
-               <form onSubmit={handleSubmit(onSubmit)}>
-                  <div className='py-3'>
-                     <label htmlFor='name'>氏名</label>
-                     <div>
-                        <input
-                           type='text'
-                           name='name'
-                           placeholder='山田 太郎'
-                           className='ipt'
-                           {...register('name', { required: true })}
-                        />
+         <Title level={2} style={{ textAlign: 'center' }}>
+            {role === 'user' ? (
+               'ユーザー登録'
+            ) : (
+               '企業登録'
+            )}
+         </Title>
+         <Form
+            className='w-[500px] mx-auto'
+            labelCol={{ span: 7 }}
+            onChange={handleRoleChange}
+         >
+            <Form.Item label='役割'>
+               <Radio.Group defaultValue={'user'}>
+                  <Radio value="user">ユーザー</Radio>
+                  <Radio value="company">企業</Radio>
+               </Radio.Group>
+            </Form.Item>
+         </Form>
+         <div className='flex justify-center'>
+            {role === 'user' ? (
+               <Form
+                  className='w=[500px] mx-auto'
+                  form={form}
+                  labelCol={{ span: 7 }}
+                  // wrapperCol={{ span: 12 }}
+                  layout='horizontal'
+                  onFinish={onFinish}
+                  onFinishFailed={onFinishFailed}
+               >
+                  <Form.Item className='w-[500px]'
+                     label='氏名'
+                     name='name'
+                     rules={[{ required: true, message: 'このフィールドを入力してください' }]}
+                  >
+                     <Input />
+                  </Form.Item>
+                  <Form.Item className='w-[500px]' label='プロフィール画像' name='avatar'>
+                     <div className='w-[150px] h-[150px]'>
+                        <input className='avatar-upload' type='file' onChange={handleFileChange} required />
                      </div>
-                     {errors.name && <span className='text-red-500'>氏名は必須です</span>}
-                  </div>
-                  <div className='py-3'>
-                     <label htmlFor='nameKana'>氏名（カナ）</label>
-                     <div>
-                        <input
-                           type='text'
-                           name='nameKana'
-                           placeholder='ヤマダ タロウ'
-                           className='ipt'
-                           {...register('nameKana', { required: true })}
-                        />
-                     </div>
-                     {errors.nameKana && (
-                        <span className='text-red-500'>氏名（カナ）は必須です</span>
-                     )}
-                  </div>
-                  <div className='py-3'>
-                     <label htmlFor='gender'>性別</label>
-                     <div>
-                        <label>
-                           <input
-                              type='radio'
-                              name='gender'
-                              value={0}
-                              {...register('gender', { required: true })}
-                           />{' '}
-                           未設定
-                        </label>
-                        <label>
-                           <input
-                              className='ml-2'
-                              type='radio'
-                              name='gender'
-                              value={1}
-                              {...register('gender', { required: true })}
-                           />{' '}
-                           男性
-                        </label>
-                        <label>
-                           <input
-                              className='ml-2'
-                              type='radio'
-                              name='gender'
-                              value={2}
-                              {...register('gender', { required: true })}
-                           />{' '}
-                           女性
-                        </label>
-                     </div>
-                     {errors.gender && <span className='text-red-500'>性別は必須です</span>}
-                  </div>
-                  <div className='py-3'>
-                     <label htmlFor='birthday'>誕生日</label>
-                     <div>
-                        <input
-                           type='date'
-                           name='birthday'
-                           className='ipt'
-                           {...register('birthday', { required: true })}
-                        />
-                     </div>
-                     {errors.birthday && <span className='text-red-500'>誕生日は必須です</span>}
-                  </div>
-                  <div className='py-3'>
-                     <label htmlFor='postalCode'>郵便番号</label>
-                     <div>
-                        <input
-                           type='text'
-                           name='postalCode'
-                           className='ipt'
-                           {...register('postalCode', { required: true })}
-                        />
-                     </div>
-                     {errors.postalCode && <span className='text-red-500'>郵便番号は必須です</span>}
-                  </div>
-                  <div className='py-3'>
-                     <label htmlFor='department'>学部・学科</label>
-                     <div>
-                        <input
-                           type='text'
-                           name='department'
-                           className='ipt'
-                           {...register('department', { required: true })}
-                        />
-                     </div>
-                     {errors.department && (
-                        <span className='text-red-500'>学部・学科は必須です</span>
-                     )}
-                  </div>
-                  <div className='py-3'>
-                     <label htmlFor='expectedGraduationDate'>卒業予定時期</label>
-                     <div>
-                        <input
-                           type='date'
-                           name='expectedGraduationDate'
-                           className='ipt'
-                           {...register('expectedGraduationDate', { required: true })}
-                        />
-                     </div>
-                     {errors.expectedGraduationDate && (
-                        <span className='text-red-500'>卒業予定時期は必須です</span>
-                     )}
-                  </div>
-                  <div className='py-3'>
-                     <label htmlFor='tel'>電話番号</label>
-                     <div>
-                        <input
-                           type='tel'
-                           name='tel'
-                           className='ipt'
-                           {...register('tel', { required: true })}
-                        />
-                     </div>
-                     {errors.tel && <span className='text-red-500'>電話番号は必須です</span>}
-                  </div>
-                  <div className='py-3'>
-                     <label htmlFor='address'>住所</label>
-                     <div>
-                        <input
-                           type='text'
-                           name='address'
-                           className='ipt'
-                           {...register('address', { required: true })}
-                        />
-                     </div>
-                     {errors.address && <span className='text-red-500'>住所は必須です</span>}
-                  </div>
-                  <div className='py-3'>
-                     <label htmlFor='email'>メールアドレス</label>
-                     <div>
-                        <input
-                           type='text'
-                           name='email'
-                           placeholder='example@example.com'
-                           className='ipt'
-                           {...register('email', { required: true })}
-                        />
-                     </div>
-                     {errors.email && (
-                        <span className='text-red-500'>メールアドレスは必須です</span>
-                     )}
-                  </div>
-                  <div className='py-3'>
-                     <label htmlFor='email'>パスワード</label>
-                     <div>
-                        <input
-                           type='password'
-                           name='password'
-                           className='ipt'
-                           {...register('password', { required: true })}
-                        />
-                     </div>
-                     {errors.password && <span className='text-red-500'>パスワードは必須です</span>}
-                  </div>
-                  <div className='py-3'>
-                     <label htmlFor='receiveInformation'>企業情報を受け取りますか？</label>
-                     <div>
-                        <label>
-                           <input
-                              type='radio'
-                              name='receiveInformation'
-                              value={0}
-                              {...register('receiveInformation', { required: true })}
-                           />{' '}
-                           受け取らない
-                        </label>
-                        <label>
-                           <input
-                              className='ml-2'
-                              type='radio'
-                              name='receiveInformation'
-                              value={1}
-                              {...register('receiveInformation', { required: true })}
-                           />{' '}
-                           メール
-                        </label>
-                        <label>
-                           <input
-                              className='ml-2'
-                              type='radio'
-                              name='receiveInformation'
-                              value={2}
-                              {...register('receiveInformation', { required: true })}
-                           />{' '}
-                           LINE
-                        </label>
-                     </div>
-                  </div>
-                  <div className='py-3'>
-                     <input type='submit' className='btn' />
-                  </div>
-               </form>
-            </div>
+                     <img src={previewImage} className='w-[150px] avatar-image' />
+                  </Form.Item>
+                  <Form.Item className='w-[500px]'
+                     label='氏名（カナ）'
+                     name='nameKana'
+                     rules={[{ required: true, message: 'このフィールドを入力してください' }]}
+                  >
+                     <Input />
+                  </Form.Item>
+                  <Form.Item className='w-[500px]'
+                     label='性別'
+                     name='gender'
+                     rules={[{ required: true, message: 'このフィールドを入力してください' }]}
+                  >
+                     <Select>
+                        <Select.Option value='0'>男性</Select.Option>
+                        <Select.Option value='1'>女性</Select.Option>
+                        <Select.Option value='2'>非公開</Select.Option>
+                     </Select>
+                  </Form.Item>
+                  <Form.Item className='w-[500px]'
+                     label='生年月日'
+                     name='birthday'
+                     rules={[{ required: true, message: 'このフィールドを入力してください' }]}
+                  >
+                     <DatePicker className='w-full' />
+                  </Form.Item>
+                  <Form.Item className='w-[500px]'
+                     label='メールアドレス'
+                     name='email'
+                     rules={[
+                        { required: true, message: 'このフィールドを入力してください' },
+                        { type: 'email', message: 'メール形式が正しくありません' },
+                     ]}
+                  >
+                     <Input />
+                  </Form.Item>
+                  <Form.Item className='w-[500px]'
+                     label='郵便番号'
+                     name='postalCode'
+                     rules={[{ required: true, message: 'このフィールドを入力してください' }]}
+                  >
+                     <Input />
+                  </Form.Item>
+                  <Form.Item className='w-[500px]'
+                     label='住所'
+                     name='address'
+                     rules={[{ required: true, message: 'このフィールドを入力してください' }]}
+                  >
+                     <Input />
+                  </Form.Item>
+                  <Form.Item className='w-[500px]'
+                     label='電話番号'
+                     name='tel'
+                     rules={[{ required: true, message: 'このフィールドを入力してください' }]}
+                  >
+                     <Input />
+                  </Form.Item>
+                  <Form.Item className='w-[500px]'
+                     label='学校名'
+                     name='school'
+                     rules={[{ required: true, message: 'このフィールドを入力してください' }]}
+                  >
+                     <Input />
+                  </Form.Item>
+                  <Form.Item className='w-[500px]'
+                     label='学部'
+                     name='faculty'
+                     rules={[{ required: true, message: 'このフィールドを入力してください' }]}
+                  >
+                     <Input />
+                  </Form.Item>
+                  <Form.Item className='w-[500px]'
+                     label='学科'
+                     name='department'
+                     rules={[{ required: true, message: 'このフィールドを入力してください' }]}
+                  >
+                     <Input />
+                  </Form.Item>
+                  <Form.Item className='w-[500px]'
+                     label='企業情報の受信設定'
+                     name='notification'
+                     rules={[{ required: true, message: 'このフィールドを入力してください' }]}
+                  >
+                     <Select>
+                        <Select.Option value='1'>メール</Select.Option>
+                        <Select.Option value='2'>LINE</Select.Option>
+                        <Select.Option value='0'>受け取らない</Select.Option>
+                     </Select>
+                  </Form.Item>
+                  <Form.Item className='w-[500px]'
+                     label='パスワード'
+                     name='password'
+                     rules={[{ required: true, message: 'このフィールドを入力してください' }]}
+                  >
+                     <Input />
+                  </Form.Item>
+                  <Form.Item className='w-[500px] flex justify-center'>
+                     <Space>
+                        <Button className='mx-auto w-[300px]' type='primary' htmlType='submit'>
+                           登録
+                        </Button>
+                     </Space>
+                  </Form.Item>
+               </Form>
+            ) : (
+               <Form
+                  form={form}
+                  labelCol={{ span: 8 }}
+                  // wrapperCol={{ span: 12 }}
+                  layout='horizontal'
+                  onFinish={onFinishB}
+                  onFinishFailed={onFinishFailed}
+               >
+                  <Form.Item className='w-[600px]'
+                     label='企業名'
+                     name='name'
+                     rules={[{ required: true, message: 'このフィールドを入力してください' }]}
+                  >
+                     <Input />
+                  </Form.Item>
+                  <Form.Item className='w-[600px]' label='ロゴ' name='avatar'>
+                     <input className='avatar-upload' type='file' onChange={handleFileChange} />
+                     <img src={previewImage} className='w-[150px] avatar-image' />
+                  </Form.Item>
+                  <Form.Item className='w-[600px]'
+                     label='会社HP'
+                     name='link'
+                     rules={[
+                        { required: true, message: 'このフィールドを入力してください' },
+                        { type: 'url', message: 'URL形式が正しくありません' },
+                     ]}
+                  >
+                     <Input placeholder='URL' />
+                  </Form.Item>
+                  <Form.Item className='w-[600px]'
+                     label='電話番号'
+                     name='tel'
+                     rules={[{ required: true, message: 'このフィールドを入力してください' }]}
+                  >
+                     <Input />
+                  </Form.Item>
+                  <Form.Item className='w-[600px]'
+                     label='部門'
+                     name='department'
+                     rules={[{ required: true, message: 'このフィールドを入力してください' }]}
+                  >
+                     <Input />
+                  </Form.Item>
+                  <Form.Item className='w-[600px]'
+                     label='募集職種'
+                     name='recruitmentOccupation'
+                     rules={[{ required: true, message: 'このフィールドを入力してください' }]}
+                  >
+                     <Input />
+                  </Form.Item>
+                  <Form.Item className='w-[600px]'
+                     label='特徴'
+                     name='feature'
+                     rules={[{ required: true, message: 'このフィールドを入力してください' }]}
+                  >
+                     <Input />
+                  </Form.Item>
+                  <Form.Item className='w-[600px]'
+                     label='個性'
+                     name='personality'
+                     rules={[{ required: true, message: 'このフィールドを入力してください' }]}
+                  >
+                     <Input />
+                  </Form.Item>
+                  <Form.Item className='w-[600px]'
+                     label='従業員数'
+                     name='numberOfEmployees'
+                     rules={[{ required: true, message: 'このフィールドを入力してください' }]}
+                  >
+                     <Input />
+                  </Form.Item>
+                  <Form.Item className='w-[600px]'
+                     label='アピールポイント'
+                     name='appealPoint'
+                     rules={[{ required: true, message: 'このフィールドを入力してください' }]}
+                  >
+                     <Input />
+                  </Form.Item>
+                  <Form.Item className='w-[600px]'
+                     label='他の'
+                     name='other'
+                     rules={[{ required: false, message: 'このフィールドを入力してください' }]}
+                  >
+                     <Input />
+                  </Form.Item>
+                  <Form.Item className='w-[600px]'
+                     label='担当者'
+                     name='managerName'
+                     rules={[{ required: true, message: 'このフィールドを入力してください' }]}
+                  >
+                     <Input />
+                  </Form.Item>
+                  <Form.Item className='w-[600px]'
+                     label='担当者メールアドレス：'
+                     name='email'
+                     rules={[
+                        { required: true, message: 'このフィールドを入力してください' },
+                        { type: 'email', message: 'メール形式が正しくありません' },
+                     ]}
+                  >
+                     <Input />
+                  </Form.Item>
+                  <Form.Item className='w-[600px]'
+                     label='会社概要'
+                     name='overview'
+                     rules={[{ required: true, message: 'このフィールドを入力してください' }]}
+                  >
+                     <SimpleMDE value={value} onChange={onChange} />
+                  </Form.Item>
+                  <Form.Item className='w-[600px] flex justify-center'>
+                     <Space>
+                        <Button className='mx-auto w-[300px]' type='primary' htmlType='submit'>
+                           登録
+                        </Button>
+                     </Space>
+                  </Form.Item>
+               </Form>
+            )}
          </div>
       </>
    )

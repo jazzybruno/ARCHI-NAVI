@@ -1,4 +1,4 @@
-import { Typography, Button, DatePicker, Form, Input, Card, Space, Table, Popconfirm, message } from 'antd'
+import { Typography, Button, Form, Card, Space, Table, Popconfirm } from 'antd'
 import type { ColumnsType } from 'antd/es/table'
 import type { NextPageWithLayout } from 'next'
 import { useRouter } from 'next/navigation'
@@ -8,20 +8,19 @@ import { httpClient } from 'services/httpClient'
 import { ApiRoutes } from 'utils/constant'
 
 const { Title } = Typography
-const { RangePicker } = DatePicker
 
 const AdminMailListPage: NextPageWithLayout = () => {
    interface DataType {
       key: React.Key
       title: string
       content: string
-      registeredAt: string
+      dateTime: string
+      status: string
    }
 
    const [dataSource, setDataSource] = useState([]);
    const [totalData, setTotalData] = useState(1);
    const [currentPage, setCurrentPage] = useState(1);
-   const [searchForm, setSearchForm] = useState(null);
    const [loading, setLoading] = useState(false);
    const router = useRouter()
 
@@ -65,26 +64,42 @@ const AdminMailListPage: NextPageWithLayout = () => {
          title: 'ID',
          dataIndex: 'id',
          key: `id`,
+         width: '5%'
       },
       {
-         title: 'タイトル',
+         title: '件名',
          dataIndex: 'title',
          key: 'title',
+         width: '20%'
       },
       {
-         title: 'コンテンツ',
+         title: '本文',
          dataIndex: 'content',
          key: 'content',
+         width: '40%'
       },
       {
-         title: '登録日',
-         dataIndex: 'createdAt',
-         key: 'createdAt',
+         title: '送信予定日時',
+         dataIndex: 'dateTime',
+         key: 'dateTime',
+         width: '10%'
+      },
+      {
+         title: '送信完了数',
+         dataIndex: 'number',
+         key: 'number',
+         width: '10%'
+      },
+      {
+         title: 'ステータス',
+         dataIndex: 'status',
+         key: 'status',
+         width: '10%'
       },
       {
          title: 'Action',
          key: 'operation',
-         width: 160,
+         width: '15%',
          render: (record) => (
             <Space>
                <Popconfirm
@@ -111,7 +126,7 @@ const AdminMailListPage: NextPageWithLayout = () => {
    return (
       <>
          <Title level={2} style={{ textAlign: 'center' }}>
-            一斉メール・LINE配信
+            一斉メール・ＬＩＮＥ配信
          </Title>
          <Space direction='vertical' size='middle' style={{ display: 'flex' }}>
             <Card>

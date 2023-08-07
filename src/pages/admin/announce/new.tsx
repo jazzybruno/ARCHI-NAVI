@@ -5,6 +5,7 @@ import { AdminLayout } from 'layouts/admin'
 import { httpClient } from 'services/httpClient'
 import { ApiRoutes } from 'utils/constant'
 import 'easymde/dist/easymde.min.css'
+import Router from 'next/router'
 
 const { Title } = Typography
 const { TextArea } = Input
@@ -18,8 +19,8 @@ const AdminAnnounceNewPage: NextPageWithLayout = () => {
          title: values.title,
          content: values.content,
          dateTime: dateTime,
-         target: values.target,
-         method: values.method,
+         target: 'all',
+         method: 'email',
       }
       httpClient()
          .post(`${ApiRoutes.notification.index}`, data)
@@ -35,12 +36,17 @@ const AdminAnnounceNewPage: NextPageWithLayout = () => {
                }
             })
             alert('正常に変更されました。');
+            Router.push('/admin/announce/list')
          })
          .catch((err) => console.error(err))
    }
 
    const onFinishFailed = (errorInfo: any) => {
       console.log('Failed:', errorInfo)
+   }
+
+   const onCancel = () => {
+      Router.push('/admin/announce/list')
    }
 
    return (
@@ -51,7 +57,7 @@ const AdminAnnounceNewPage: NextPageWithLayout = () => {
 
          <Form
             form={form}
-            labelCol={{ span: 4 }}
+            labelCol={{ span: 6 }}
             wrapperCol={{ span: 12 }}
             layout='horizontal'
             onFinish={onFinish}
@@ -69,23 +75,9 @@ const AdminAnnounceNewPage: NextPageWithLayout = () => {
                name='content'
                rules={[{ required: true, message: 'このフィールドを入力してください' }]}
             >
-               <TextArea />
+               <TextArea rows={15} />
             </Form.Item>
-            <Form.Item
-               label='ターゲット'
-               name='target'
-               rules={[{ required: true, message: 'このフィールドを入力してください' }]}
-            >
-               <Input />
-            </Form.Item>
-            <Form.Item
-               label='方法'
-               name='method'
-               rules={[{ required: true, message: 'このフィールドを入力してください' }]}
-            >
-               <Input />
-            </Form.Item>
-            <Form.Item label='送信日' name={'dateTime'}>
+            <Form.Item className='mt-[100px]' label='送信日' name={'dateTime'}>
                <Space.Compact>
                   <Form.Item
                      name={['dateTime', 'date']}
@@ -105,6 +97,9 @@ const AdminAnnounceNewPage: NextPageWithLayout = () => {
                <Space>
                   <Button type='primary' htmlType='submit'>
                      変更する
+                  </Button>
+                  <Button type='primary' className='!bg-red-500' onClick={onCancel}>
+                     キャンセル
                   </Button>
                </Space>
             </Form.Item>

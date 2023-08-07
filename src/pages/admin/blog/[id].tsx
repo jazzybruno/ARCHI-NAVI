@@ -8,6 +8,7 @@ import { AdminLayout } from 'layouts/admin'
 import { httpClient, httpFormDataClient } from 'services/httpClient'
 import { ApiRoutes } from 'utils/constant'
 import 'easymde/dist/easymde.min.css'
+import { FolderAddOutlined } from '@ant-design/icons';
 
 const { Title } = Typography
 const SimpleMDE = dynamic(() => import('react-simplemde-editor'), { ssr: false })
@@ -18,8 +19,14 @@ const AdminBlogDetailsPage: NextPageWithLayout = () => {
    const router = useRouter()
    const { id } = router.query
    const [previewImage, setPreviewImage] = useState('')
+   const [previewImage1, setPreviewImage1] = useState('')
+   const [previewImage2, setPreviewImage2] = useState('')
+   const [previewImage3, setPreviewImage3] = useState('')
 
    const [file, setFile] = useState<File>()
+   const [file1, setFile1] = useState<File>()
+   const [file2, setFile2] = useState<File>()
+   const [file3, setFile3] = useState<File>()
 
    const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
       if (e.target.files) {
@@ -28,58 +35,127 @@ const AdminBlogDetailsPage: NextPageWithLayout = () => {
       }
    }
 
+   const handleFileChange1 = (e: ChangeEvent<HTMLInputElement>) => {
+      if (e.target.files) {
+         setFile1(e.target.files[0])
+         setPreviewImage1(URL.createObjectURL(e.target.files[0]))
+      }
+   }
+
+   const handleFileChange2 = (e: ChangeEvent<HTMLInputElement>) => {
+      if (e.target.files) {
+         setFile2(e.target.files[0])
+         setPreviewImage2(URL.createObjectURL(e.target.files[0]))
+      }
+   }
+
+   const handleFileChange3 = (e: ChangeEvent<HTMLInputElement>) => {
+      if (e.target.files) {
+         setFile3(e.target.files[0])
+         setPreviewImage3(URL.createObjectURL(e.target.files[0]))
+      }
+   }
+
    const onChange = useCallback((value: string) => {
       setValue(value)
    }, [])
 
-   const onFinish = (values: any) => {
-      const formData = new FormData;
-      formData.append('upload_file', file)
+   const onFinish = async (values: any) => {
 
-      httpFormDataClient()
-         .post(`${ApiRoutes.attachment.index}`, formData)
-         .then((res) => {
-            const data = {
-               title: values.title,
-               content: values.content,
-               dateTime: values.dateTime.format('YYYY-MM-DD'),
-               attachmentId: res.data.id,
-               status: values.status?.toString(),
-               metaTitle: values.metaTitle,
-               metaKeyword: values.metaKeyword,
-               metaDescription: values.metaDescription
-            }
-            httpClient()
-               .put(`${ApiRoutes.post.index}/${id}`, data)
-               .then(() => {
-                  alert('正常に変更されました。');
-               })
-               .catch((err) => console.error(err))
+      const formData = new FormData;
+      const formData1 = new FormData;
+      const formData2 = new FormData;
+      const formData3 = new FormData;
+      formData.append('upload_file', file)
+      formData1.append('upload_file', file1)
+      formData2.append('upload_file', file2)
+      formData3.append('upload_file', file3)
+
+
+      let attachmentId, attachmentId1, attachmentId2, attachmentId3 = null;
+
+      if (file) {
+         let res = await httpFormDataClient().post(`${ApiRoutes.attachment.index}`, formData)
+         if (res.status > 400) {
+            return
+         } else if (res.status == 201) {
+            attachmentId = res.data.id
+         }
+      }
+
+      if (file1) {
+         let res = await httpFormDataClient().post(`${ApiRoutes.attachment.index}`, formData1)
+         if (res.status > 400) {
+            return
+         } else if (res.status == 201) {
+            attachmentId1 = res.data.id
+         }
+      }
+
+      if (file2) {
+         let res = await httpFormDataClient().post(`${ApiRoutes.attachment.index}`, formData2)
+         if (res.status > 400) {
+            return
+         } else if (res.status == 201) {
+            attachmentId2 = res.data.id
+         }
+      }
+
+
+      if (file3) {
+         let res = await httpFormDataClient().post(`${ApiRoutes.attachment.index}`, formData3)
+         if (res.status > 400) {
+            return
+         } else if (res.status == 201) {
+            attachmentId3 = res.data.id
+         }
+      }
+
+      const data = {
+         title: values.title,
+         content: values.content,
+         categoryId: values.category?.toString(),
+         dateTime: values.dateTime.format('YYYY-MM-DD'),
+         attachmentId: attachmentId,
+         attachments: [attachmentId1, attachmentId2, attachmentId3],
+         tag: values.tag,
+         relatedPostIds: values.relatedlink,
+         status: values.status?.toString(),
+         metaTitle: null,
+         metaKeyword: null,
+         metaDescription: null
+      }
+      httpClient()
+         .put(`${ApiRoutes.post.index}/${id}`, data)
+         .then(() => {
+            alert('正常に変更されました。');
+            router.push('/admin/blog/list');
          })
+         .catch((err) => console.error(err))
+   }
+
+   const onCancel = () => {
+      router.push('/admin/blog/list')
    }
 
    useEffect(() => {
-      let attachmentId = null;
-
       if (id) {
          httpClient()
             .get(`${ApiRoutes.post.index}/${id}`)
             .then((res) => {
-               attachmentId = res.data.attachmentId;
                form.setFieldsValue({
                   title: res.data.title,
-                  content: res.data.content,
+                  category: res.data.categoryId?.toString(),
                   dateTime: dayjs(res.data.dateTime),
                   status: res.data.status.toString(),
-                  metaTitle: res.data.metaTitle,
-                  metaKeyword: res.data.metaKeyword,
-                  metaDescription: res.data.metaDescription,
+                  tag: res.data.tag,
+                  relatedlink: res.data.relatedPostIds,
+                  content: res.data.content,
                })
-               httpClient()
-                  .get(`${ApiRoutes.attachment.index}/${attachmentId}`)
-                  .then((res) => {
-                     setPreviewImage(res.data.url)
-                  })
+               setPreviewImage(res.data.header.url)
+               setPreviewImage1(res.data.thumbnails[0].url)
+               setPreviewImage2(res.data.thumbnails[1].url)
+               setPreviewImage3(res.data.thumbnails[2].url)
             })
             .catch((err) => console.error(err))
       }
@@ -97,7 +173,7 @@ const AdminBlogDetailsPage: NextPageWithLayout = () => {
 
          <Form
             form={form}
-            labelCol={{ span: 4 }}
+            labelCol={{ span: 6 }}
             wrapperCol={{ span: 12 }}
             layout='horizontal'
             onFinish={onFinish}
@@ -110,27 +186,61 @@ const AdminBlogDetailsPage: NextPageWithLayout = () => {
             >
                <Input />
             </Form.Item>
-            <Form.Item label='画像' name='avatar'>
-               <input className='avatar-upload' type='file' onChange={handleFileChange} />
-               <img src={previewImage} className='w-[150px] avatar-image' />
+            <Form.Item label='ヘッダー画像' name='avatar'>
+               <div className='avatar-upload w-[150px] h-[150px] border' >
+                  <div className='opacity-0 absolute z-10 left-[75px] translate-x-[-50%] translate-y-[-50%] top-[50%]'>
+                     <FolderAddOutlined style={{ fontSize: '40px' }} ></FolderAddOutlined>
+                  </div>
+                  <input className='w-[150px] h-[150px] opacity-0 avatar-input' type='file' onChange={handleFileChange} />
+                  <img src={previewImage} className='w-[150px] mt-[-150px] avatar-image' />
+               </div>
+            </Form.Item>
+            <Form.Item label='サムネイル画像' name='thumbnail'>
+               <div className="flex">
+                  <div className='avatar-upload w-[150px] h-[150px] border' >
+                     <div className='opacity-0 absolute z-10 left-[75px] translate-x-[-50%] translate-y-[-50%] top-[50%]'>
+                        <FolderAddOutlined style={{ fontSize: '30px' }} ></FolderAddOutlined>
+                     </div>
+                     <input className='w-[150px] h-[150px] opacity-0 avatar-input' type='file' onChange={handleFileChange1} />
+                     <img src={previewImage1} className='w-[150px] mt-[-150px] avatar-image' />
+                  </div>
+                  <div className='avatar-upload w-[150px] h-[150px] border mx-[20px]' >
+                     <div className='opacity-0 absolute z-10 left-[245px] translate-x-[-50%] translate-y-[-50%] top-[50%]'>
+                        <FolderAddOutlined style={{ fontSize: '30px' }} ></FolderAddOutlined>
+                     </div>
+                     <input className='w-[150px] h-[150px] opacity-0 avatar-input' type='file' onChange={handleFileChange2} />
+                     <img src={previewImage2} className='w-[150px] mt-[-150px] avatar-image' />
+                  </div>
+                  <div className='avatar-upload w-[150px] h-[150px] border' >
+                     <div className='opacity-0 absolute z-10 left-[415px] translate-x-[-50%] translate-y-[-50%] top-[50%]'>
+                        <FolderAddOutlined style={{ fontSize: '30px' }} ></FolderAddOutlined>
+                     </div>
+                     <input className='w-[150px] h-[150px] opacity-0 avatar-input' type='file' onChange={handleFileChange3} />
+                     <img src={previewImage3} className='w-[150px] mt-[-150px] avatar-image' />
+                  </div>
+               </div>
             </Form.Item>
             <Form.Item
-               label='メタタイトル'
-               name='metaTitle'
+               label='カテゴリー'
+               name='category'
+               rules={[{ required: true, message: 'このフィールドを入力してください' }]}
+            >
+               <Select>
+                  <Select.Option value='1'>カテゴリー1</Select.Option>
+                  <Select.Option value='2'>カテゴリー2</Select.Option>
+                  <Select.Option value='3'>カテゴリー3</Select.Option>
+               </Select>
+            </Form.Item>
+            <Form.Item
+               label='タグ'
+               name='tag'
                rules={[{ required: true, message: 'このフィールドを入力してください' }]}
             >
                <Input />
             </Form.Item>
             <Form.Item
-               label='メタキーワード'
-               name='metaKeyword'
-               rules={[{ required: true, message: 'このフィールドを入力してください' }]}
-            >
-               <Input />
-            </Form.Item>
-            <Form.Item
-               label='メタ記述'
-               name='metaDescription'
+               label='関連リンク'
+               name='relatedlink'
                rules={[{ required: true, message: 'このフィールドを入力してください' }]}
             >
                <Input />
@@ -143,11 +253,11 @@ const AdminBlogDetailsPage: NextPageWithLayout = () => {
                <SimpleMDE value={value} onChange={onChange} />
             </Form.Item>
             <Form.Item
-               label='投稿日'
+               label='日付設定（投稿日）'
                name='dateTime'
                rules={[{ required: true, message: 'このフィールドを入力してください' }]}
             >
-               <DatePicker />
+               <DatePicker allowClear={false} />
             </Form.Item>
             <Form.Item
                label='ステータス'
@@ -155,8 +265,8 @@ const AdminBlogDetailsPage: NextPageWithLayout = () => {
                rules={[{ required: true, message: 'このフィールドを入力してください' }]}
             >
                <Select>
-                  <Select.Option value='1'>公開</Select.Option>
-                  <Select.Option value='0'>非公開</Select.Option>
+                  <Select.Option value='0'>公開</Select.Option>
+                  <Select.Option value='1'>非公開</Select.Option>
                   <Select.Option value='2'>下書き</Select.Option>
                </Select>
             </Form.Item>
@@ -164,6 +274,9 @@ const AdminBlogDetailsPage: NextPageWithLayout = () => {
                <Space>
                   <Button type='primary' htmlType='submit'>
                      変更する
+                  </Button>
+                  <Button type='primary' className='!bg-red-500' onClick={onCancel}>
+                     キャンセル
                   </Button>
                </Space>
             </Form.Item>
