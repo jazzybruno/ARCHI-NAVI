@@ -1,6 +1,5 @@
 import { FolderAddOutlined } from '@ant-design/icons';
-import { Button, Form, Input, Typography, Space, Select, DatePicker } from 'antd'
-import dayjs from 'dayjs';
+import { Button, Form, Input, Typography, Space, Select, DatePicker, Radio } from 'antd'
 import type { NextPageWithLayout } from 'next'
 import { useRouter } from 'next/router'
 import React, { useState, useEffect, ChangeEvent } from 'react'
@@ -8,7 +7,7 @@ import { AdminLayout } from 'layouts/admin'
 import { httpClient, httpFormDataClient } from 'services/httpClient'
 import { ApiRoutes } from 'utils/constant'
 import 'easymde/dist/easymde.min.css'
-
+import type { RadioChangeEvent } from 'antd';
 
 const { Title } = Typography
 const { TextArea } = Input
@@ -56,7 +55,6 @@ const AdminEventDetailsPage: NextPageWithLayout = () => {
     }
 
     const onFinish = async (values: any) => {
-        console.log("file", file, file1, file2, file3)
         const [start, end] = values.applicationPeriod;
         const [publicationStart, publicationEnd] = values.publicationDate;
         const formData = new FormData;
@@ -111,7 +109,8 @@ const AdminEventDetailsPage: NextPageWithLayout = () => {
         const data = {
             title: values.title,
             content: values.content,
-            type: values.type.category,
+            type: values.type?.toString(),
+            onlineOrOffline: values.onlineOrOffline?.toString(),
             startDate: start.format('YYYY-MM-DD'),
             endDate: end.format('YYYY-MM-DD'),
             prefecture: values.prefecture?.toString(),
@@ -124,9 +123,11 @@ const AdminEventDetailsPage: NextPageWithLayout = () => {
             publicationStartDate: publicationStart.format('YYYY-MM-DD'),
             publicationEndDate: publicationEnd.format('YYYY-MM-DD'),
             status: values.status?.toString(),
+            company: values.company,
+            isPickup: values.isPickup
         }
         httpClient()
-            .put(`${ApiRoutes.event.index}/${id}`, data)
+            .post(`${ApiRoutes.event.index}`, data)
             .then(() => {
                 alert('正常に変更されました。');
                 router.push('/admin/event/list');
@@ -141,6 +142,13 @@ const AdminEventDetailsPage: NextPageWithLayout = () => {
     const onCancel = () => {
         router.push('admin/event/list');
     }
+
+    const [value, setValue] = useState(Number);
+
+    const onChange = (e: RadioChangeEvent) => {
+        console.log('radio checked', e.target.value);
+        setValue(e.target.value);
+    };
 
 
     return (
@@ -158,6 +166,13 @@ const AdminEventDetailsPage: NextPageWithLayout = () => {
                 onFinishFailed={onFinishFailed}
             >
                 <Form.Item
+                    label='企業選択'
+                    name='company'
+                    rules={[{ required: true, message: 'このフィールドを入力してください' }]}
+                >
+                    <Input />
+                </Form.Item>
+                <Form.Item
                     label='タイトル'
                     name='title'
                     rules={[{ required: true, message: 'このフィールドを入力してください' }]}
@@ -167,26 +182,23 @@ const AdminEventDetailsPage: NextPageWithLayout = () => {
                 <Form.Item
                     label='種別'
                     name='type'
+                    rules={[{ required: true, message: 'このフィールドを入力してください' }]}
                 >
-                    <Form.Item
-                        name={['type', 'category']}
-                        rules={[{ required: true, message: 'このフィールドを入力してください' }]}
-                    >
-                        <Select>
-                            <Select.Option value='intern'>インターン</Select.Option>
-                            <Select.Option value='seminar'>説明会</Select.Option>
-                            <Select.Option value='other'>その他</Select.Option>
-                        </Select>
-                    </Form.Item>
-                    <Form.Item
-                        name={['type', 'lineStatus']}
-                        rules={[{ required: true, message: 'このフィールドを入力してください' }]}
-                    >
-                        <Select>
-                            <Select.Option value='オンライン'>オンライン</Select.Option>
-                            <Select.Option value='オフライン'>オフライン</Select.Option>
-                        </Select>
-                    </Form.Item>
+                    <Select>
+                        <Select.Option value='intern'>インターン</Select.Option>
+                        <Select.Option value='seminar'>説明会</Select.Option>
+                        <Select.Option value='other'>その他</Select.Option>
+                    </Select>
+                </Form.Item>
+                <Form.Item
+                    label='オンライン・オフライン'
+                    name='onlineOrOffline'
+                    rules={[{ required: true, message: 'このフィールドを入力してください' }]}
+                >
+                    <Select>
+                        <Select.Option value='オンライン'>オンライン</Select.Option>
+                        <Select.Option value='オフライン'>オフライン</Select.Option>
+                    </Select>
                 </Form.Item>
                 <Form.Item
                     label='開催期間'
@@ -279,6 +291,16 @@ const AdminEventDetailsPage: NextPageWithLayout = () => {
                     rules={[{ required: true, message: 'このフィールドを入力してください' }]}
                 >
                     <TextArea rows={5} />
+                </Form.Item>
+                <Form.Item
+                    label='ピックアップ'
+                    name='isPickup'
+                    rules={[{ required: true, message: 'このフィールドを入力してください' }]}
+                >
+                    <Radio.Group onChange={onChange} value={value}>
+                        <Radio value={1}>有効</Radio>
+                        <Radio value={0}>無効</Radio>
+                    </Radio.Group>
                 </Form.Item>
                 <Form.Item
                     label='アイキャッチ画像'

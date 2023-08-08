@@ -32,6 +32,9 @@ export const ApiRoutes = {
    alumnus: {
       index: `${_BaseApiPath}/alumnus`,
    },
+   category: {
+      index: `${_BaseApiPath}/category`,
+   }
 }
 
 export type UserRole = 'admin' | 'user' | 'company'

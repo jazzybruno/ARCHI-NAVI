@@ -22,6 +22,7 @@ const { RangePicker } = DatePicker
 
 interface DataType {
    key: React.Key
+   name: string
    title: string
    type: string
    content: string
@@ -48,8 +49,8 @@ const AdminEventListPage: NextPageWithLayout = () => {
       const queryParams = new URLSearchParams()
 
       if (values) {
-         if (values.title) {
-            queryParams.append('title', values.title)
+         if (values.company) {
+            queryParams.append('company', values.company)
          }
          if (values.content) {
             queryParams.append('content', values.content)
@@ -91,14 +92,14 @@ const AdminEventListPage: NextPageWithLayout = () => {
 
    const resetButtonClick = () => {
       const values = {
-         title: null,
+         company: null,
          type: null,
          content: null,
          start_date: null,
          end_date: null
       }
       form.setFieldsValue({
-         title: values.title,
+         company: values.company,
          type: values.type,
          content: values.content,
          registeredAt: null,
@@ -125,26 +126,37 @@ const AdminEventListPage: NextPageWithLayout = () => {
          title: 'ID',
          dataIndex: 'id',
          key: `id`,
+         width: '10%'
+      },
+      {
+         title: '企業名',
+         dataIndex: 'company',
+         key: 'company',
+         width: '15%'
+      },
+      {
+         title: 'PICKUP設定',
+         dataIndex: 'isPickup',
+         key: 'isPickup',
+         width: '10%'
       },
       {
          title: 'タイトル',
          dataIndex: 'title',
          key: 'title',
+         width: '20%'
       },
       {
-         title: 'コンテンツ',
-         dataIndex: 'content',
-         key: 'content',
-      },
-      {
-         title: 'カテゴリー',
+         title: '種別',
          dataIndex: 'type',
          key: 'type',
+         width: '20%'
       },
       {
          title: '登録日',
          dataIndex: 'createdAt',
          key: 'createdAt',
+         width: '10%'
       },
       {
          title: 'Action',
@@ -187,7 +199,7 @@ const AdminEventListPage: NextPageWithLayout = () => {
                   onFinish={onFinish}
                   onFinishFailed={onFinishFailed}
                >
-                  <Form.Item label='企業名' name='title'>
+                  <Form.Item label='企業名' name='company'>
                      <Input />
                   </Form.Item>
 

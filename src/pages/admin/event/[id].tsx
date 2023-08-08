@@ -1,5 +1,5 @@
 import { FolderAddOutlined } from '@ant-design/icons';
-import { Button, Form, Input, Typography, DatePicker, Space, Select } from 'antd'
+import { Button, Form, Input, Typography, DatePicker, Space, Select, Radio } from 'antd'
 import dayjs from 'dayjs';
 import type { NextPageWithLayout } from 'next'
 import { useRouter } from 'next/router'
@@ -8,6 +8,7 @@ import { AdminLayout } from 'layouts/admin'
 import { httpClient, httpFormDataClient } from 'services/httpClient'
 import { ApiRoutes } from 'utils/constant'
 import 'easymde/dist/easymde.min.css'
+import type { RadioChangeEvent } from 'antd';
 
 const { Title } = Typography
 const { TextArea } = Input
@@ -34,14 +35,12 @@ const AdminEventDetailsPage: NextPageWithLayout = () => {
          httpClient()
             .get(`${ApiRoutes.event.index}/${id}`)
             .then((res) => {
-               const [category, lineStatus] = res.data.type.split(',');
                form.setFieldsValue({
+                  company: res.data.company,
                   title: res.data.title,
                   content: res.data.content,
-                  type: {
-                     category: category,
-                     lineStatus: lineStatus
-                  },
+                  type: res.data.type,
+                  onlineOrOffline: res.data.onlineOrOffline,
                   applicationPeriod: [dayjs(res.data.startDate), dayjs(res.data.endDate)],
                   prefecture: res.data.prefecture?.toString(),
                   typeOfOccupation: res.data.typeOfOccupation?.toString(),
@@ -49,7 +48,8 @@ const AdminEventDetailsPage: NextPageWithLayout = () => {
                   compensation: res.data.compensation,
                   applicationUrl: res.data.applicationUrl,
                   publicationDate: [dayjs(res.data.publicationStartDate), dayjs(res.data.publicationEndDate)],
-                  status: res.data.status?.toString()
+                  status: res.data.status?.toString(),
+                  isPickup: res.data.status?.toString()
                })
                setPreviewImage(res.data.thumbnail.url)
                setPreviewImage1(res.data.attachments[0].url)
@@ -145,7 +145,8 @@ const AdminEventDetailsPage: NextPageWithLayout = () => {
       const data = {
          title: values.title,
          content: values.content,
-         type: values.type.category,
+         type: values.type?.toStirng(),
+         onlineOrOffline: values.onlineOrOffline?.toString(),
          startDate: start.format('YYYY-MM-DD'),
          endDate: end.format('YYYY-MM-DD'),
          prefecture: values.prefecture?.toString(),
@@ -158,6 +159,8 @@ const AdminEventDetailsPage: NextPageWithLayout = () => {
          publicationStartDate: publicationStart.format('YYYY-MM-DD'),
          publicationEndDate: publicationEnd.format('YYYY-MM-DD'),
          status: values.status?.toString(),
+         company: values.company,
+         isPickup: values.isPickup?.toString()
       }
       httpClient()
          .put(`${ApiRoutes.event.index}/${id}`, data)
@@ -176,6 +179,13 @@ const AdminEventDetailsPage: NextPageWithLayout = () => {
       router.push('admin/event/list');
    }
 
+   const [value, setValue] = useState(Number);
+
+   const onChange = (e: RadioChangeEvent) => {
+      console.log('radio checked', e.target.value);
+      setValue(e.target.value);
+   };
+
    return (
       <>
          <Title level={2} style={{ textAlign: 'center' }}>
@@ -191,6 +201,13 @@ const AdminEventDetailsPage: NextPageWithLayout = () => {
             onFinishFailed={onFinishFailed}
          >
             <Form.Item
+               label='企業選択'
+               name='company'
+               rules={[{ required: true, message: 'このフィールドを入力してください' }]}
+            >
+               <Input />
+            </Form.Item>
+            <Form.Item
                label='タイトル'
                name='title'
                rules={[{ required: true, message: 'このフィールドを入力してください' }]}
@@ -200,26 +217,23 @@ const AdminEventDetailsPage: NextPageWithLayout = () => {
             <Form.Item
                label='種別'
                name='type'
+               rules={[{ required: true, message: 'このフィールドを入力してください' }]}
             >
-               <Form.Item
-                  name={['type', 'category']}
-                  rules={[{ required: true, message: 'このフィールドを入力してください' }]}
-               >
-                  <Select>
-                     <Select.Option value='intern'>インターン</Select.Option>
-                     <Select.Option value='seminar'>説明会</Select.Option>
-                     <Select.Option value='other'>その他</Select.Option>
-                  </Select>
-               </Form.Item>
-               <Form.Item
-                  name={['type', 'lineStatus']}
-                  rules={[{ required: true, message: 'このフィールドを入力してください' }]}
-               >
-                  <Select>
-                     <Select.Option value='オンライン'>オンライン</Select.Option>
-                     <Select.Option value='オフライン'>オフライン</Select.Option>
-                  </Select>
-               </Form.Item>
+               <Select>
+                  <Select.Option value='intern'>インターン</Select.Option>
+                  <Select.Option value='seminar'>説明会</Select.Option>
+                  <Select.Option value='other'>その他</Select.Option>
+               </Select>
+            </Form.Item>
+            <Form.Item
+               label='オンライン・オフライン'
+               name='onlineOrOffline'
+               rules={[{ required: true, message: 'このフィールドを入力してください' }]}
+            >
+               <Select>
+                  <Select.Option value='オンライン'>オンライン</Select.Option>
+                  <Select.Option value='オフライン'>オフライン</Select.Option>
+               </Select>
             </Form.Item>
             <Form.Item
                label='開催期間'
@@ -312,6 +326,16 @@ const AdminEventDetailsPage: NextPageWithLayout = () => {
                rules={[{ required: true, message: 'このフィールドを入力してください' }]}
             >
                <TextArea rows={5} />
+            </Form.Item>
+            <Form.Item
+               label='ピックアップ'
+               name='isPickup'
+               rules={[{ required: true, message: 'このフィールドを入力してください' }]}
+            >
+               <Radio.Group onChange={onChange} value={value}>
+                  <Radio value='有効'>有効</Radio>
+                  <Radio value='無効+'>無効</Radio>
+               </Radio.Group>
             </Form.Item>
             <Form.Item
                label='アイキャッチ画像'

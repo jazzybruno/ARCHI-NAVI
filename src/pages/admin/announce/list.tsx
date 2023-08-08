@@ -21,7 +21,6 @@ const AdminAnnounceListPage: NextPageWithLayout = () => {
    const [dataSource, setDataSource] = useState([]);
    const [totalData, setTotalData] = useState(1);
    const [currentPage, setCurrentPage] = useState(1);
-   const [searchForm, setSearchForm] = useState(null);
    const [loading, setLoading] = useState(false);
    const router = useRouter()
 
@@ -83,7 +82,7 @@ const AdminAnnounceListPage: NextPageWithLayout = () => {
          title: '送信予定日時',
          dataIndex: 'dateTime',
          key: 'dateTime',
-         width: '10%'
+         width: '10%',
       },
       {
          title: 'ステータス',

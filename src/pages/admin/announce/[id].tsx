@@ -24,12 +24,40 @@ const AdminUserDetailsPage: NextPageWithLayout = () => {
          target: 'all',
          method: 'email',
          targetId: 1,
-         attachments: []
+         attachments: [],
+         status: 1,
       }
       httpClient()
          .put(`${ApiRoutes.notification.index}/${id}`, data)
          .then(() => {
-            alert('正常に変更されました。');
+            alert('成果的に転送されました。');
+            router.push('/admin/announce/list')
+         })
+         .catch((err) => console.error(err))
+   }
+
+   const onSubmit = () => {
+      const values = {
+         dateTime: form.getFieldValue('dateTime'),
+         title: form.getFieldValue('title'),
+         content: form.getFieldValue('content'),
+      }
+
+      const dateTime = values.dateTime.date.format('YYYY-MM-DD') + " " + values.dateTime.time.format('HH-mm-ss');
+      const data = {
+         title: values.title,
+         content: values.content,
+         dateTime: dateTime,
+         target: 'all',
+         method: 'email',
+         targetId: 1,
+         attachments: [],
+         status: 0,
+      }
+      httpClient()
+         .put(`${ApiRoutes.notification.index}/${id}`, data)
+         .then(() => {
+            alert('成果的に保管されました。');
             router.push('/admin/announce/list')
          })
          .catch((err) => console.error(err))
@@ -106,8 +134,11 @@ const AdminUserDetailsPage: NextPageWithLayout = () => {
                   </Form.Item>
                </Space.Compact>
             </Form.Item>
-            <Form.Item wrapperCol={{ span: 12, offset: 11 }} style={{ paddingTop: '24px' }}>
+            <Form.Item wrapperCol={{ span: 12, offset: 10 }} style={{ paddingTop: '24px' }}>
                <Space>
+                  <Button type='primary' onClick={onSubmit}>
+                     下書き
+                  </Button>
                   <Button type='primary' htmlType='submit'>
                      送信
                   </Button>

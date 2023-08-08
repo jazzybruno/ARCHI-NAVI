@@ -86,8 +86,8 @@ const AdminMailListPage: NextPageWithLayout = () => {
       },
       {
          title: '送信完了数',
-         dataIndex: 'number',
-         key: 'number',
+         dataIndex: 'sendCount',
+         key: 'sendCount',
          width: '10%'
       },
       {
