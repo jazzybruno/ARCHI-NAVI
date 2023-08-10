@@ -1,11 +1,3 @@
-import { format } from 'date-fns'
-
-import type { GetServerSideProps, NextPageWithLayout } from 'next'
-import { useEffect, useState } from 'react'
-import MySection from 'components/MySection'
-import Posts from 'components/Posts'
-import { MainLayout } from 'layouts/main'
-import { httpClient } from 'services/httpClient'
 import {
    RightOutlined,
    ClockCircleOutlined,
@@ -14,6 +6,14 @@ import {
    StarOutlined,
    SwapRightOutlined,
 } from '@ant-design/icons'
+import { format } from 'date-fns'
+import type { GetServerSideProps, NextPageWithLayout } from 'next'
+import Link from 'next/link'
+import { useEffect, useState } from 'react'
+import MySection from 'components/MySection'
+import Posts from 'components/Posts'
+import { MainLayout } from 'layouts/main'
+import { httpClient } from 'services/httpClient'
 
 type Props = {
    title?: string
@@ -34,12 +34,12 @@ const HomePage: NextPageWithLayout<Props> = (props) => {
                src='/images/home/top-mv-register-btn.svg'
                alt='Register-button'
             />
-            <a
+            <Link
                href='/signin'
                className='absolute start-[50%] top-[90%] translate-x-[-50%] text-[0.5rem] font-bold text-[#fff] underline transition-transform duration-300 hover:scale-105 md:text-[0.8rem] lg:text-[1.2rem]'
             >
                会員ログイン
-            </a>
+            </Link>
             <img
                className='absolute bottom-0 w-full bg-repeat'
                src='/images/home/top-mv-bg.png'
@@ -47,7 +47,7 @@ const HomePage: NextPageWithLayout<Props> = (props) => {
             />
          </section>
          <section>
-            <div className='bg-[url("/images/home/top-bg-wave-1.png")] bg-[length:50px_40px] bg-[center_bottom_2.8rem] bg-no-repeat bg-repeat-x md:bg-[length:100px_80px] md:bg-[center_bottom_3.5rem]'>
+            <div className='bg-[url("/images/home/top-bg-wave-1.png")] bg-[length:50px_40px] bg-[center_bottom_2.8rem] bg-repeat-x md:bg-[length:100px_80px] md:bg-[center_bottom_3.5rem]'>
                <div className='bg-[url("/images/home/top-bg-ship-1.png")] bg-[length:5rem_6rem] bg-[center_left_100px] bg-no-repeat py-[50px] md:bg-[length:9rem_11rem] md:py-[65px] lg:py-[75px]'>
                   <h2 className='text-center text-[1.2rem] font-black text-[#005bac] md:text-[3rem]'>
                      イベントカレンダー
@@ -104,7 +104,7 @@ const HomePage: NextPageWithLayout<Props> = (props) => {
                   </div>
                </div>
             </div>
-            <div className='bg-[url("/images/home/top-bg-wave-2.png")] bg-[length:50px_40px] bg-[center_bottom_2.8rem] bg-no-repeat bg-repeat-x pb-[75px] md:bg-[length:150px_100px] md:bg-[center_bottom_5rem] md:pb-[150px]'>
+            <div className='bg-[url("/images/home/top-bg-wave-2.png")] bg-[length:50px_40px] bg-[center_bottom_2.8rem] bg-repeat-x pb-[75px] md:bg-[length:150px_100px] md:bg-[center_bottom_5rem] md:pb-[150px]'>
                <div className='relative bg-[url("/images/home/top-bg-ship-1.png")] bg-[length:6rem_7.5rem] bg-[bottom_left_100px] bg-no-repeat py-[50px] md:bg-[length:12rem_15rem] md:py-[65px] lg:py-[75px]'>
                   <h2 className='text-center text-[1.2rem] font-black text-[#404040] after:absolute after:bottom-[-0.25rem] after:right-[50px] after:block after:h-[15vw] after:max-h-[180px] after:min-h-[100px] after:w-[30%] after:min-w-[200px] after:max-w-[350px] after:bg-[url("/images/home/top-bg-treasure.png")] after:bg-contain after:bg-no-repeat md:text-[3rem]'>
                      あなたの冒険に<br></br>アチナビはきっと役立つ。
