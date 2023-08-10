@@ -1,5 +1,5 @@
 import { Button, DatePicker, Form, Input, Typography, Space, TimePicker, Select } from 'antd'
-import dayjs from 'dayjs';
+import dayjs from 'dayjs'
 import type { NextPageWithLayout } from 'next'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState, ChangeEvent } from 'react'
@@ -28,7 +28,7 @@ const AdminMailDetailsPage: NextPageWithLayout = () => {
          content: values.content,
          dateTime: values.dateTime.format('YYYY-MM-DD'),
          method: values.method?.toString(),
-         attachments: [1]
+         attachments: [1],
       }
       httpClient()
          .put(`${ApiRoutes.message.index}/${id}`, data)
@@ -99,7 +99,7 @@ const AdminMailDetailsPage: NextPageWithLayout = () => {
                <TextArea rows={15} />
             </Form.Item>
             <Form.Item label='ファイル' name='fileUpload'>
-               <input type="file" name='file' onChange={handleFileChange} />
+               <input type='file' name='file' onChange={handleFileChange} />
             </Form.Item>
             <div className='flex ps-[19.8%]'>
                <Form.Item labelCol={{ span: 4 }} className='w-[40%]' label='送信日' name='dateTime'>

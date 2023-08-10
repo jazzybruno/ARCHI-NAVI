@@ -43,7 +43,6 @@ const AdminBlogListPage: NextPageWithLayout = () => {
    const [form] = Form.useForm()
 
    const fetchData = (page: number, values: any = null) => {
-
       setLoading(true)
 
       const queryParams = new URLSearchParams()
@@ -67,9 +66,7 @@ const AdminBlogListPage: NextPageWithLayout = () => {
 
       queryParams.set('page', page.toString())
 
-
       const queryString = queryParams.toString()
-
 
       httpClient()
          .get(`${ApiRoutes.post.index}?${queryString}`)
@@ -110,7 +107,7 @@ const AdminBlogListPage: NextPageWithLayout = () => {
          keyword: null,
          category: null,
          start_date: null,
-         end_date: null
+         end_date: null,
       }
       form.setFieldsValue({
          name: values.name,
@@ -118,7 +115,7 @@ const AdminBlogListPage: NextPageWithLayout = () => {
          category: values.category,
          registeredAt: null,
       })
-      fetchData(1, values);
+      fetchData(1, values)
    }
 
    const columns: ColumnsType<DataType> = [

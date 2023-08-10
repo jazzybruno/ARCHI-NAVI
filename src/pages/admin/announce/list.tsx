@@ -18,45 +18,46 @@ const AdminAnnounceListPage: NextPageWithLayout = () => {
       status: string
    }
 
-   const [dataSource, setDataSource] = useState([]);
-   const [totalData, setTotalData] = useState(1);
-   const [currentPage, setCurrentPage] = useState(1);
-   const [loading, setLoading] = useState(false);
+   const [dataSource, setDataSource] = useState([])
+   const [totalData, setTotalData] = useState(1)
+   const [currentPage, setCurrentPage] = useState(1)
+   const [loading, setLoading] = useState(false)
    const router = useRouter()
 
    useEffect(() => {
-      fetchData(1);
-   }, []);
+      fetchData(1)
+   }, [])
 
-   const [form] = Form.useForm();
+   const [form] = Form.useForm()
 
    const fetchData = (page: number, values: any = null) => {
-
-      setLoading(true);
-      const queryParams = new URLSearchParams();
-      queryParams.set('page', page.toString());
-      const queryString = queryParams.toString();
-      httpClient().get(`${ApiRoutes.notification.index}?${queryString}`)
+      setLoading(true)
+      const queryParams = new URLSearchParams()
+      queryParams.set('page', page.toString())
+      const queryString = queryParams.toString()
+      httpClient()
+         .get(`${ApiRoutes.notification.index}?${queryString}`)
          .then((res) => {
-            setDataSource(res.data.data);
-            setTotalData(res.data.total);
-            setCurrentPage(page);
+            setDataSource(res.data.data)
+            setTotalData(res.data.total)
+            setCurrentPage(page)
          })
-         .catch((err) => console.error(err));
-      setLoading(false);
+         .catch((err) => console.error(err))
+      setLoading(false)
    }
 
    const confirmDelete = (id: number) => {
-      setLoading(true);
-      httpClient().delete(`${ApiRoutes.notification.index}/${id}`)
+      setLoading(true)
+      httpClient()
+         .delete(`${ApiRoutes.notification.index}/${id}`)
          .then((_res) => {
             fetchData(currentPage)
          })
          .catch((err) => console.error(err))
-   };
+   }
 
    const goEdit = (id: number) => {
-      router.push(`/admin/announce/${id}`);
+      router.push(`/admin/announce/${id}`)
    }
 
    const columns: ColumnsType<DataType> = [
@@ -64,19 +65,19 @@ const AdminAnnounceListPage: NextPageWithLayout = () => {
          title: 'ID',
          dataIndex: 'id',
          key: `id`,
-         width: '5%'
+         width: '5%',
       },
       {
          title: '件名',
          dataIndex: 'title',
          key: 'title',
-         width: '20%'
+         width: '20%',
       },
       {
          title: '本文',
          dataIndex: 'content',
          key: 'content',
-         width: '40%'
+         width: '40%',
       },
       {
          title: '送信予定日時',
@@ -88,7 +89,7 @@ const AdminAnnounceListPage: NextPageWithLayout = () => {
          title: 'ステータス',
          dataIndex: 'status',
          key: 'status',
-         width: '10%'
+         width: '10%',
       },
       {
          title: 'Action',
@@ -97,19 +98,17 @@ const AdminAnnounceListPage: NextPageWithLayout = () => {
          render: (record) => (
             <Space>
                <Popconfirm
-                  title="確認"
-                  description="このデータを削除してもよろしいですか？"
+                  title='確認'
+                  description='このデータを削除してもよろしいですか？'
                   onConfirm={() => confirmDelete(record.id)}
-                  okText="はい"
-                  cancelText="いいえ"
+                  okText='はい'
+                  cancelText='いいえ'
                >
                   <Button className='delete-button' type='primary' size='small' danger>
                      削除
                   </Button>
                </Popconfirm>
-               <Button type='primary' size='small'
-                  onClick={() => goEdit(record.id)}
-               >
+               <Button type='primary' size='small' onClick={() => goEdit(record.id)}>
                   編集
                </Button>
             </Space>
@@ -137,8 +136,8 @@ const AdminAnnounceListPage: NextPageWithLayout = () => {
                      current: currentPage,
                      showSizeChanger: false,
                      onChange: (page, _pageSize) => {
-                        fetchData(page);
-                     }
+                        fetchData(page)
+                     },
                   }}
                />
             </Card>

@@ -27,7 +27,7 @@ const AdminMailNewPage: NextPageWithLayout = () => {
          content: values.content,
          dateTime: values.dateTime.format('YYYY-MM-DD'),
          method: values.method?.toString(),
-         attachments: [1]
+         attachments: [1],
       }
       httpClient()
          .post(`${ApiRoutes.message.index}`, data)
@@ -75,7 +75,7 @@ const AdminMailNewPage: NextPageWithLayout = () => {
                <TextArea rows={15} />
             </Form.Item>
             <Form.Item label='ファイル' name='fileUpload'>
-               <input type="file" name='file' />
+               <input type='file' name='file' />
             </Form.Item>
             <div className='flex ps-[19.8%]'>
                <Form.Item labelCol={{ span: 4 }} className='w-[40%]' label='送信日' name='dateTime'>

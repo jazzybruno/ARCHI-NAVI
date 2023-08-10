@@ -15,7 +15,7 @@ export const ApiRoutes = {
    },
    attachment: {
       index: `${_BaseApiPath}/attachment`,
-      upload: `/file`
+      upload: `/file`,
    },
    company: {
       index: `${_BaseApiPath}/company`,
@@ -34,7 +34,7 @@ export const ApiRoutes = {
    },
    category: {
       index: `${_BaseApiPath}/category`,
-   }
+   },
 }
 
 export type UserRole = 'admin' | 'user' | 'company'

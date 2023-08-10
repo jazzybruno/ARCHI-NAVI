@@ -1,5 +1,16 @@
-import { FolderAddOutlined } from '@ant-design/icons';
-import { Button, Form, Input, Typography, Space, DatePicker, Select, Checkbox, Row, Col } from 'antd'
+import { FolderAddOutlined } from '@ant-design/icons'
+import {
+   Button,
+   Form,
+   Input,
+   Typography,
+   Space,
+   DatePicker,
+   Select,
+   Checkbox,
+   Row,
+   Col,
+} from 'antd'
 import dayjs from 'dayjs'
 import type { NextPageWithLayout } from 'next'
 import { useRouter } from 'next/router'
@@ -9,7 +20,7 @@ import { httpClient, httpFormDataClient } from 'services/httpClient'
 import { ApiRoutes } from 'utils/constant'
 import 'easymde/dist/easymde.min.css'
 
-const { TextArea } = Input;
+const { TextArea } = Input
 const { Title } = Typography
 
 const AdminCompanyDetailsPage: NextPageWithLayout = () => {
@@ -28,11 +39,11 @@ const AdminCompanyDetailsPage: NextPageWithLayout = () => {
    }
 
    const onCancel = () => {
-      router.push('/admin/company/list');
+      router.push('/admin/company/list')
    }
 
    const onFinish = (values: any) => {
-      const formData = new FormData;
+      const formData = new FormData()
       formData.append('upload_file', file)
 
       httpFormDataClient()
@@ -60,8 +71,8 @@ const AdminCompanyDetailsPage: NextPageWithLayout = () => {
             httpClient()
                .put(`${ApiRoutes.company.index}/${id}`, data)
                .then(() => {
-                  router.push('/admin/company/list');
-                  alert('ユーザー情報が変更されました');
+                  router.push('/admin/company/list')
+                  alert('ユーザー情報が変更されました')
                })
                .catch((err) => console.error(err))
          })
@@ -72,12 +83,12 @@ const AdminCompanyDetailsPage: NextPageWithLayout = () => {
    }
 
    useEffect(() => {
-      let attachmentId = null;
+      let attachmentId = null
       if (id) {
          httpClient()
             .get(`${ApiRoutes.company.index}/${id}`)
             .then((res) => {
-               attachmentId = res.data.attachmentId;
+               attachmentId = res.data.attachmentId
                form.setFieldsValue({
                   name: res.data.name,
                   link: res.data.link,
@@ -128,12 +139,16 @@ const AdminCompanyDetailsPage: NextPageWithLayout = () => {
                <Input bordered={false} />
             </Form.Item>
             <Form.Item label='プロフィール画像' name='avatar'>
-               <div className='avatar-upload w-[150px] h-[150px] border' >
-                  <div className='opacity-0 absolute z-10 left-[75px] translate-x-[-50%] translate-y-[-50%] top-[50%]'>
-                     <FolderAddOutlined style={{ fontSize: '30px' }} ></FolderAddOutlined>
+               <div className='avatar-upload h-[150px] w-[150px] border'>
+                  <div className='absolute left-[75px] top-[50%] z-10 translate-x-[-50%] translate-y-[-50%] opacity-0'>
+                     <FolderAddOutlined style={{ fontSize: '30px' }}></FolderAddOutlined>
                   </div>
-                  <input className='w-[150px] h-[150px] opacity-0 avatar-input' type='file' onChange={handleFileChange} />
-                  <img src={previewImage} className='w-[150px] mt-[-150px] avatar-image' />
+                  <input
+                     className='avatar-input h-[150px] w-[150px] opacity-0'
+                     type='file'
+                     onChange={handleFileChange}
+                  />
+                  <img src={previewImage} className='avatar-image mt-[-150px] w-[150px]' />
                </div>
             </Form.Item>
             <Form.Item
@@ -282,49 +297,49 @@ const AdminCompanyDetailsPage: NextPageWithLayout = () => {
                <Checkbox.Group style={{ width: '100%' }}>
                   <Row>
                      <Col span={8}>
-                        <Checkbox value="1">環境</Checkbox>
+                        <Checkbox value='1'>環境</Checkbox>
                      </Col>
                      <Col span={8}>
-                        <Checkbox value="2">ゼネコン</Checkbox>
+                        <Checkbox value='2'>ゼネコン</Checkbox>
                      </Col>
                      <Col span={8}>
-                        <Checkbox value="3">サブコン</Checkbox>
+                        <Checkbox value='3'>サブコン</Checkbox>
                      </Col>
                      <Col span={8}>
-                        <Checkbox value="4">地場ゼネコン</Checkbox>
+                        <Checkbox value='4'>地場ゼネコン</Checkbox>
                      </Col>
                      <Col span={8}>
-                        <Checkbox value="5">設計事務所</Checkbox>
+                        <Checkbox value='5'>設計事務所</Checkbox>
                      </Col>
                      <Col span={8}>
-                        <Checkbox value="6">デベロッパー</Checkbox>
+                        <Checkbox value='6'>デベロッパー</Checkbox>
                      </Col>
                      <Col span={8}>
-                        <Checkbox value="7">ハウスメーカー</Checkbox>
+                        <Checkbox value='7'>ハウスメーカー</Checkbox>
                      </Col>
                      <Col span={8}>
-                        <Checkbox value="8">建設コンサルタント</Checkbox>
+                        <Checkbox value='8'>建設コンサルタント</Checkbox>
                      </Col>
                      <Col span={8}>
-                        <Checkbox value="9">公務員</Checkbox>
+                        <Checkbox value='9'>公務員</Checkbox>
                      </Col>
                      <Col span={8}>
-                        <Checkbox value="10">素材,建材メーカー</Checkbox>
+                        <Checkbox value='10'>素材,建材メーカー</Checkbox>
                      </Col>
                      <Col span={8}>
-                        <Checkbox value="11">不動産</Checkbox>
+                        <Checkbox value='11'>不動産</Checkbox>
                      </Col>
                      <Col span={8}>
-                        <Checkbox value="12">インテリア</Checkbox>
+                        <Checkbox value='12'>インテリア</Checkbox>
                      </Col>
                      <Col span={8}>
-                        <Checkbox value="13">マリコン</Checkbox>
+                        <Checkbox value='13'>マリコン</Checkbox>
                      </Col>
                      <Col span={8}>
-                        <Checkbox value="14">アトリエ</Checkbox>
+                        <Checkbox value='14'>アトリエ</Checkbox>
                      </Col>
                      <Col span={8}>
-                        <Checkbox value="15">その他</Checkbox>
+                        <Checkbox value='15'>その他</Checkbox>
                      </Col>
                   </Row>
                </Checkbox.Group>

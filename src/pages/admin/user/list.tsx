@@ -1,4 +1,15 @@
-import { Typography, Button, DatePicker, Form, Input, Card, Space, Table, Popconfirm, message } from 'antd'
+import {
+   Typography,
+   Button,
+   DatePicker,
+   Form,
+   Input,
+   Card,
+   Space,
+   Table,
+   Popconfirm,
+   message,
+} from 'antd'
 import type { ColumnsType } from 'antd/es/table'
 import type { NextPageWithLayout } from 'next'
 import { useRouter } from 'next/navigation'
@@ -18,95 +29,96 @@ interface DataType {
 }
 
 const AdminUserListPage: NextPageWithLayout = () => {
-   const [dataSource, setDataSource] = useState([]);
-   const [totalData, setTotalData] = useState(1);
-   const [currentPage, setCurrentPage] = useState(1);
-   const [searchForm, setSearchForm] = useState(null);
-   const [loading, setLoading] = useState(false);
+   const [dataSource, setDataSource] = useState([])
+   const [totalData, setTotalData] = useState(1)
+   const [currentPage, setCurrentPage] = useState(1)
+   const [searchForm, setSearchForm] = useState(null)
+   const [loading, setLoading] = useState(false)
    const router = useRouter()
 
    useEffect(() => {
-      fetchData(1);
-   }, []);
+      fetchData(1)
+   }, [])
 
-   const [form] = Form.useForm();
+   const [form] = Form.useForm()
 
    const fetchData = (page: number, values: any = null) => {
-
-      setLoading(true);
-      const queryParams = new URLSearchParams();
+      setLoading(true)
+      const queryParams = new URLSearchParams()
       if (values) {
          if (values.username) {
-            queryParams.append('name', values.username);
+            queryParams.append('name', values.username)
          }
          if (values.email) {
-            queryParams.append('email', values.email);
+            queryParams.append('email', values.email)
          }
          if (values.registeredAt) {
-            const [start, end] = values.registeredAt;
-            queryParams.append('start_date', start.format('YYYY-MM-DD'));
-            queryParams.append('end_date', end.format('YYYY-MM-DD'));
+            const [start, end] = values.registeredAt
+            queryParams.append('start_date', start.format('YYYY-MM-DD'))
+            queryParams.append('end_date', end.format('YYYY-MM-DD'))
          }
       } else if (searchForm) {
          if (searchForm.username) {
-            queryParams.append('name', searchForm.username);
+            queryParams.append('name', searchForm.username)
          }
          if (searchForm.email) {
-            queryParams.append('email', searchForm.email);
+            queryParams.append('email', searchForm.email)
          }
          if (searchForm.registeredAt) {
-            const [start, end] = searchForm.registeredAt;
-            queryParams.append('start_date', start.format('YYYY-MM-DD'));
-            queryParams.append('end_date', end.format('YYYY-MM-DD'));
+            const [start, end] = searchForm.registeredAt
+            queryParams.append('start_date', start.format('YYYY-MM-DD'))
+            queryParams.append('end_date', end.format('YYYY-MM-DD'))
          }
       }
-      queryParams.set('page', page.toString());
-      const queryString = queryParams.toString();
-      httpClient().get(`${ApiRoutes.user.index}?${queryString}`)
+      queryParams.set('page', page.toString())
+      const queryString = queryParams.toString()
+      httpClient()
+         .get(`${ApiRoutes.user.index}?${queryString}`)
          .then((res) => {
-            setDataSource(res.data.data);
-            setTotalData(res.data.total);
-            setCurrentPage(page);
+            setDataSource(res.data.data)
+            setTotalData(res.data.total)
+            setCurrentPage(page)
          })
-         .catch((err) => console.error(err));
-      setLoading(false);
+         .catch((err) => console.error(err))
+      setLoading(false)
    }
 
    const onFinish = (values: any) => {
-      setSearchForm(values);
-      fetchData(1, values);
-   };
+      setSearchForm(values)
+      fetchData(1, values)
+   }
 
    const onFinishFailed = (errorInfo: any) => {
       console.log('Failed:', errorInfo)
    }
 
    const confirmDelete = (id: number) => {
-      setLoading(true);
-      httpClient().delete(`${ApiRoutes.user.index}/${id}`)
+      setLoading(true)
+      httpClient()
+         .delete(`${ApiRoutes.user.index}/${id}`)
          .then((_res) => {
             fetchData(currentPage)
          })
          .catch((err) => console.error(err))
-   };
+   }
 
    const resetButtonClick = () => {
       const values = {
          name: null,
          email: null,
          start_date: null,
-         end_date: null
+         end_date: null,
       }
       form.setFieldsValue({
          username: values.name,
          email: values.email,
          registeredAt: null,
       })
-      fetchData(1, values);
+      fetchData(1, values)
    }
 
    const goEdit = (id: number) => {
-      router.push(`/admin/user/${id}`);
+      router.push(`/admin/user/${id}`)
    }
 
    const columns: ColumnsType<DataType> = [
@@ -137,18 +149,21 @@ const AdminUserListPage: NextPageWithLayout = () => {
          render: (record) => (
             <Space>
                <Popconfirm
-                  title="確認"
-                  description="このデータを削除してもよろしいですか？"
+                  title='確認'
+                  description='このデータを削除してもよろしいですか？'
                   onConfirm={() => confirmDelete(record.id)}
-                  okText="はい"
-                  cancelText="いいえ"
+                  okText='はい'
+                  cancelText='いいえ'
                   className='bg-blue-500'
                >
                   <Button className='!bg-red-500' type='primary' size='small' danger>
                      削除
                   </Button>
                </Popconfirm>
-               <Button type='primary' className='bg-blue-500' size='small'
+               <Button
+                  type='primary'
+                  className='bg-blue-500'
+                  size='small'
                   onClick={() => goEdit(record.id)}
                >
                   編集
@@ -178,10 +193,7 @@ const AdminUserListPage: NextPageWithLayout = () => {
                      <Input />
                   </Form.Item>
 
-                  <Form.Item
-                     label='メールアドレス'
-                     name='email'
-                  >
+                  <Form.Item label='メールアドレス' name='email'>
                      <Input />
                   </Form.Item>
 
@@ -216,8 +228,8 @@ const AdminUserListPage: NextPageWithLayout = () => {
                      current: currentPage,
                      showSizeChanger: false,
                      onChange: (page, _pageSize) => {
-                        fetchData(page);
-                     }
+                        fetchData(page)
+                     },
                   }}
                />
             </Card>

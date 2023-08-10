@@ -1,14 +1,4 @@
-import {
-   Typography,
-   Button,
-   DatePicker,
-   Form,
-   Input,
-   Card,
-   Space,
-   Table,
-   Popconfirm,
-} from 'antd'
+import { Typography, Button, DatePicker, Form, Input, Card, Space, Table, Popconfirm } from 'antd'
 import type { ColumnsType } from 'antd/es/table'
 import type { NextPageWithLayout } from 'next'
 import { useRouter } from 'next/navigation'
@@ -43,7 +33,6 @@ const AdminEventListPage: NextPageWithLayout = () => {
    const [form] = Form.useForm()
 
    const fetchData = (page: number, values: any = null) => {
-
       setLoading(true)
 
       const queryParams = new URLSearchParams()
@@ -67,9 +56,7 @@ const AdminEventListPage: NextPageWithLayout = () => {
 
       queryParams.set('page', page.toString())
 
-
       const queryString = queryParams.toString()
-
 
       httpClient()
          .get(`${ApiRoutes.event.index}?${queryString}`)
@@ -96,7 +83,7 @@ const AdminEventListPage: NextPageWithLayout = () => {
          type: null,
          content: null,
          start_date: null,
-         end_date: null
+         end_date: null,
       }
       form.setFieldsValue({
          company: values.company,
@@ -104,7 +91,7 @@ const AdminEventListPage: NextPageWithLayout = () => {
          content: values.content,
          registeredAt: null,
       })
-      fetchData(1, values);
+      fetchData(1, values)
    }
 
    const confirmDelete = (id: number) => {
@@ -126,37 +113,37 @@ const AdminEventListPage: NextPageWithLayout = () => {
          title: 'ID',
          dataIndex: 'id',
          key: `id`,
-         width: '10%'
+         width: '10%',
       },
       {
          title: '企業名',
          dataIndex: 'company',
          key: 'company',
-         width: '15%'
+         width: '15%',
       },
       {
          title: 'PICKUP設定',
          dataIndex: 'isPickup',
          key: 'isPickup',
-         width: '10%'
+         width: '10%',
       },
       {
          title: 'タイトル',
          dataIndex: 'title',
          key: 'title',
-         width: '20%'
+         width: '20%',
       },
       {
          title: '種別',
          dataIndex: 'type',
          key: 'type',
-         width: '20%'
+         width: '20%',
       },
       {
          title: '登録日',
          dataIndex: 'createdAt',
          key: 'createdAt',
-         width: '10%'
+         width: '10%',
       },
       {
          title: 'Action',

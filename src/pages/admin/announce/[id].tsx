@@ -1,5 +1,5 @@
 import { Button, DatePicker, Form, Input, Typography, Space, TimePicker } from 'antd'
-import dayjs from 'dayjs';
+import dayjs from 'dayjs'
 import type { NextPageWithLayout } from 'next'
 import { useRouter } from 'next/router'
 import React, { useEffect } from 'react'
@@ -16,7 +16,8 @@ const AdminUserDetailsPage: NextPageWithLayout = () => {
    const { id } = router.query
 
    const onFinish = (values: any) => {
-      const dateTime = values.dateTime.date.format('YYYY-MM-DD') + " " + values.dateTime.time.format('HH-mm-ss');
+      const dateTime =
+         values.dateTime.date.format('YYYY-MM-DD') + ' ' + values.dateTime.time.format('HH-mm-ss')
       const data = {
          title: values.title,
          content: values.content,
@@ -30,7 +31,7 @@ const AdminUserDetailsPage: NextPageWithLayout = () => {
       httpClient()
          .put(`${ApiRoutes.notification.index}/${id}`, data)
          .then(() => {
-            alert('成果的に転送されました。');
+            alert('成果的に転送されました。')
             router.push('/admin/announce/list')
          })
          .catch((err) => console.error(err))
@@ -43,7 +44,8 @@ const AdminUserDetailsPage: NextPageWithLayout = () => {
          content: form.getFieldValue('content'),
       }
 
-      const dateTime = values.dateTime.date.format('YYYY-MM-DD') + " " + values.dateTime.time.format('HH-mm-ss');
+      const dateTime =
+         values.dateTime.date.format('YYYY-MM-DD') + ' ' + values.dateTime.time.format('HH-mm-ss')
       const data = {
          title: values.title,
          content: values.content,
@@ -57,7 +59,7 @@ const AdminUserDetailsPage: NextPageWithLayout = () => {
       httpClient()
          .put(`${ApiRoutes.notification.index}/${id}`, data)
          .then(() => {
-            alert('成果的に保管されました。');
+            alert('成果的に保管されました。')
             router.push('/admin/announce/list')
          })
          .catch((err) => console.error(err))
@@ -83,8 +85,8 @@ const AdminUserDetailsPage: NextPageWithLayout = () => {
                   method: res.data.method,
                   dateTime: {
                      date: dayjs(res.data.dateTime),
-                     time: dayjs(res.data.dateTime)
-                  }
+                     time: dayjs(res.data.dateTime),
+                  },
                })
             })
             .catch((err) => console.error(err))

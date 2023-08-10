@@ -29,27 +29,27 @@ const SigninForm = ({ role }: Props) => {
          const res = await signin({ ...data, role: role })
          if (res) {
             if (res.role === 'admin') {
-               Router.push('/admin');
+               Router.push('/admin')
             } else {
                Router.push('/mypage')
             }
          }
       } catch (error) {
-         console.log("error: ", error)
+         console.log('error: ', error)
       }
    }
 
    return (
       <>
          <div>
-            <div className='border py-[20px] px-[80px]'>
+            <div className='border px-[80px] py-[20px]'>
                <div className='py-6'>
-                  <h1 className='text-3xl font-bold text-center'>
+                  <h1 className='text-center text-3xl font-bold'>
                      {role === 'user'
                         ? '会員ログイン'
                         : role === 'admin'
-                           ? '管理者ログイン'
-                           : '企業ログイン'}
+                        ? '管理者ログイン'
+                        : '企業ログイン'}
                   </h1>
                </div>
                <form onSubmit={handleSubmit(onSubmit)}>
@@ -79,8 +79,11 @@ const SigninForm = ({ role }: Props) => {
                               />
                            </div>
                            {errors.password && <span>パスワードは必須です</span>}
-                           {error && <p className='text-[12px] text-danger'>メールやパスワードが正しくありません。</p>}
-
+                           {error && (
+                              <p className='text-danger text-[12px]'>
+                                 メールやパスワードが正しくありません。
+                              </p>
+                           )}
                         </div>
                      </>
                   )}
@@ -146,11 +149,7 @@ const SigninForm = ({ role }: Props) => {
                      <input type='submit' className='btn' value='ログイン' />
                   </div>
                </form>
-               {role !== 'company' ? (
-                  <SocialPage></SocialPage>
-               ) : (
-                  ''
-               )}
+               {role !== 'company' ? <SocialPage></SocialPage> : ''}
             </div>
          </div>
       </>

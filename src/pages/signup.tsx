@@ -32,7 +32,7 @@ const SignupPage: NextPageWithLayout = () => {
    }, [])
 
    const onFinishB = (values: any) => {
-      const formData = new FormData;
+      const formData = new FormData()
       formData.append('upload_file', file)
 
       httpFormDataClient()
@@ -81,7 +81,6 @@ const SignupPage: NextPageWithLayout = () => {
    }
 
    const onFinish = (values: any) => {
-
       const formData = new FormData()
       formData.append('upload_file', file)
 
@@ -102,7 +101,7 @@ const SignupPage: NextPageWithLayout = () => {
                tel: values.tel,
                postalCode: values.postalCode,
                password: values.password,
-               attachmentId: res.data.id
+               attachmentId: res.data.id,
             }
             httpClient()
                .post(`${ApiRoutes.user.index}`, data)
@@ -122,7 +121,7 @@ const SignupPage: NextPageWithLayout = () => {
                      tel: null,
                      postalCode: null,
                      password: null,
-                     attachmentId: null
+                     attachmentId: null,
                   })
                   setPreviewImage(form.getFieldValue('attachmentId'))
                })
@@ -137,21 +136,13 @@ const SignupPage: NextPageWithLayout = () => {
    return (
       <>
          <Title level={2} style={{ textAlign: 'center' }}>
-            {role === 'user' ? (
-               'ユーザー登録'
-            ) : (
-               '企業登録'
-            )}
+            {role === 'user' ? 'ユーザー登録' : '企業登録'}
          </Title>
-         <Form
-            className='w-[500px] mx-auto'
-            labelCol={{ span: 7 }}
-            onChange={handleRoleChange}
-         >
+         <Form className='mx-auto w-[500px]' labelCol={{ span: 7 }} onChange={handleRoleChange}>
             <Form.Item label='役割'>
                <Radio.Group defaultValue={'user'}>
-                  <Radio value="user">ユーザー</Radio>
-                  <Radio value="company">企業</Radio>
+                  <Radio value='user'>ユーザー</Radio>
+                  <Radio value='company'>企業</Radio>
                </Radio.Group>
             </Form.Item>
          </Form>
@@ -166,7 +157,8 @@ const SignupPage: NextPageWithLayout = () => {
                   onFinish={onFinish}
                   onFinishFailed={onFinishFailed}
                >
-                  <Form.Item className='w-[500px]'
+                  <Form.Item
+                     className='w-[500px]'
                      label='氏名'
                      name='name'
                      rules={[{ required: true, message: 'このフィールドを入力してください' }]}
@@ -174,19 +166,26 @@ const SignupPage: NextPageWithLayout = () => {
                      <Input />
                   </Form.Item>
                   <Form.Item className='w-[500px]' label='プロフィール画像' name='avatar'>
-                     <div className='w-[150px] h-[150px]'>
-                        <input className='avatar-upload' type='file' onChange={handleFileChange} required />
+                     <div className='h-[150px] w-[150px]'>
+                        <input
+                           className='avatar-upload'
+                           type='file'
+                           onChange={handleFileChange}
+                           required
+                        />
                      </div>
-                     <img src={previewImage} className='w-[150px] avatar-image' />
+                     <img src={previewImage} className='avatar-image w-[150px]' />
                   </Form.Item>
-                  <Form.Item className='w-[500px]'
+                  <Form.Item
+                     className='w-[500px]'
                      label='氏名（カナ）'
                      name='nameKana'
                      rules={[{ required: true, message: 'このフィールドを入力してください' }]}
                   >
                      <Input />
                   </Form.Item>
-                  <Form.Item className='w-[500px]'
+                  <Form.Item
+                     className='w-[500px]'
                      label='性別'
                      name='gender'
                      rules={[{ required: true, message: 'このフィールドを入力してください' }]}
@@ -197,14 +196,16 @@ const SignupPage: NextPageWithLayout = () => {
                         <Select.Option value='2'>非公開</Select.Option>
                      </Select>
                   </Form.Item>
-                  <Form.Item className='w-[500px]'
+                  <Form.Item
+                     className='w-[500px]'
                      label='生年月日'
                      name='birthday'
                      rules={[{ required: true, message: 'このフィールドを入力してください' }]}
                   >
                      <DatePicker className='w-full' />
                   </Form.Item>
-                  <Form.Item className='w-[500px]'
+                  <Form.Item
+                     className='w-[500px]'
                      label='メールアドレス'
                      name='email'
                      rules={[
@@ -214,49 +215,56 @@ const SignupPage: NextPageWithLayout = () => {
                   >
                      <Input />
                   </Form.Item>
-                  <Form.Item className='w-[500px]'
+                  <Form.Item
+                     className='w-[500px]'
                      label='郵便番号'
                      name='postalCode'
                      rules={[{ required: true, message: 'このフィールドを入力してください' }]}
                   >
                      <Input />
                   </Form.Item>
-                  <Form.Item className='w-[500px]'
+                  <Form.Item
+                     className='w-[500px]'
                      label='住所'
                      name='address'
                      rules={[{ required: true, message: 'このフィールドを入力してください' }]}
                   >
                      <Input />
                   </Form.Item>
-                  <Form.Item className='w-[500px]'
+                  <Form.Item
+                     className='w-[500px]'
                      label='電話番号'
                      name='tel'
                      rules={[{ required: true, message: 'このフィールドを入力してください' }]}
                   >
                      <Input />
                   </Form.Item>
-                  <Form.Item className='w-[500px]'
+                  <Form.Item
+                     className='w-[500px]'
                      label='学校名'
                      name='school'
                      rules={[{ required: true, message: 'このフィールドを入力してください' }]}
                   >
                      <Input />
                   </Form.Item>
-                  <Form.Item className='w-[500px]'
+                  <Form.Item
+                     className='w-[500px]'
                      label='学部'
                      name='faculty'
                      rules={[{ required: true, message: 'このフィールドを入力してください' }]}
                   >
                      <Input />
                   </Form.Item>
-                  <Form.Item className='w-[500px]'
+                  <Form.Item
+                     className='w-[500px]'
                      label='学科'
                      name='department'
                      rules={[{ required: true, message: 'このフィールドを入力してください' }]}
                   >
                      <Input />
                   </Form.Item>
-                  <Form.Item className='w-[500px]'
+                  <Form.Item
+                     className='w-[500px]'
                      label='企業情報の受信設定'
                      name='notification'
                      rules={[{ required: true, message: 'このフィールドを入力してください' }]}
@@ -267,14 +275,15 @@ const SignupPage: NextPageWithLayout = () => {
                         <Select.Option value='0'>受け取らない</Select.Option>
                      </Select>
                   </Form.Item>
-                  <Form.Item className='w-[500px]'
+                  <Form.Item
+                     className='w-[500px]'
                      label='パスワード'
                      name='password'
                      rules={[{ required: true, message: 'このフィールドを入力してください' }]}
                   >
                      <Input />
                   </Form.Item>
-                  <Form.Item className='w-[500px] flex justify-center'>
+                  <Form.Item className='flex w-[500px] justify-center'>
                      <Space>
                         <Button className='mx-auto w-[300px]' type='primary' htmlType='submit'>
                            登録
@@ -291,7 +300,8 @@ const SignupPage: NextPageWithLayout = () => {
                   onFinish={onFinishB}
                   onFinishFailed={onFinishFailed}
                >
-                  <Form.Item className='w-[600px]'
+                  <Form.Item
+                     className='w-[600px]'
                      label='企業名'
                      name='name'
                      rules={[{ required: true, message: 'このフィールドを入力してください' }]}
@@ -300,9 +310,10 @@ const SignupPage: NextPageWithLayout = () => {
                   </Form.Item>
                   <Form.Item className='w-[600px]' label='ロゴ' name='avatar'>
                      <input className='avatar-upload' type='file' onChange={handleFileChange} />
-                     <img src={previewImage} className='w-[150px] avatar-image' />
+                     <img src={previewImage} className='avatar-image w-[150px]' />
                   </Form.Item>
-                  <Form.Item className='w-[600px]'
+                  <Form.Item
+                     className='w-[600px]'
                      label='会社HP'
                      name='link'
                      rules={[
@@ -312,70 +323,80 @@ const SignupPage: NextPageWithLayout = () => {
                   >
                      <Input placeholder='URL' />
                   </Form.Item>
-                  <Form.Item className='w-[600px]'
+                  <Form.Item
+                     className='w-[600px]'
                      label='電話番号'
                      name='tel'
                      rules={[{ required: true, message: 'このフィールドを入力してください' }]}
                   >
                      <Input />
                   </Form.Item>
-                  <Form.Item className='w-[600px]'
+                  <Form.Item
+                     className='w-[600px]'
                      label='部門'
                      name='department'
                      rules={[{ required: true, message: 'このフィールドを入力してください' }]}
                   >
                      <Input />
                   </Form.Item>
-                  <Form.Item className='w-[600px]'
+                  <Form.Item
+                     className='w-[600px]'
                      label='募集職種'
                      name='recruitmentOccupation'
                      rules={[{ required: true, message: 'このフィールドを入力してください' }]}
                   >
                      <Input />
                   </Form.Item>
-                  <Form.Item className='w-[600px]'
+                  <Form.Item
+                     className='w-[600px]'
                      label='特徴'
                      name='feature'
                      rules={[{ required: true, message: 'このフィールドを入力してください' }]}
                   >
                      <Input />
                   </Form.Item>
-                  <Form.Item className='w-[600px]'
+                  <Form.Item
+                     className='w-[600px]'
                      label='個性'
                      name='personality'
                      rules={[{ required: true, message: 'このフィールドを入力してください' }]}
                   >
                      <Input />
                   </Form.Item>
-                  <Form.Item className='w-[600px]'
+                  <Form.Item
+                     className='w-[600px]'
                      label='従業員数'
                      name='numberOfEmployees'
                      rules={[{ required: true, message: 'このフィールドを入力してください' }]}
                   >
                      <Input />
                   </Form.Item>
-                  <Form.Item className='w-[600px]'
+                  <Form.Item
+                     className='w-[600px]'
                      label='アピールポイント'
                      name='appealPoint'
                      rules={[{ required: true, message: 'このフィールドを入力してください' }]}
                   >
                      <Input />
                   </Form.Item>
-                  <Form.Item className='w-[600px]'
+                  <Form.Item
+                     className='w-[600px]'
                      label='他の'
                      name='other'
                      rules={[{ required: false, message: 'このフィールドを入力してください' }]}
                   >
                      <Input />
                   </Form.Item>
-                  <Form.Item className='w-[600px]'
+                  <Form.Item
+                     className='w-[600px]'
                      label='担当者'
                      name='managerName'
                      rules={[{ required: true, message: 'このフィールドを入力してください' }]}
                   >
                      <Input />
                   </Form.Item>
-                  <Form.Item className='w-[600px]'
+                  <Form.Item
+                     className='w-[600px]'
                      label='担当者メールアドレス：'
                      name='email'
                      rules={[
@@ -385,14 +406,15 @@ const SignupPage: NextPageWithLayout = () => {
                   >
                      <Input />
                   </Form.Item>
-                  <Form.Item className='w-[600px]'
+                  <Form.Item
+                     className='w-[600px]'
                      label='会社概要'
                      name='overview'
                      rules={[{ required: true, message: 'このフィールドを入力してください' }]}
                   >
                      <SimpleMDE value={value} onChange={onChange} />
                   </Form.Item>
-                  <Form.Item className='w-[600px] flex justify-center'>
+                  <Form.Item className='flex w-[600px] justify-center'>
                      <Space>
                         <Button className='mx-auto w-[300px]' type='primary' htmlType='submit'>
                            登録

@@ -1,6 +1,6 @@
-import { FolderAddOutlined } from '@ant-design/icons';
+import { FolderAddOutlined } from '@ant-design/icons'
 import { Button, Form, Input, Typography, DatePicker, Space, Select, Radio } from 'antd'
-import dayjs from 'dayjs';
+import dayjs from 'dayjs'
 import type { NextPageWithLayout } from 'next'
 import { useRouter } from 'next/router'
 import React, { useState, useEffect, ChangeEvent } from 'react'
@@ -8,7 +8,7 @@ import { AdminLayout } from 'layouts/admin'
 import { httpClient, httpFormDataClient } from 'services/httpClient'
 import { ApiRoutes } from 'utils/constant'
 import 'easymde/dist/easymde.min.css'
-import type { RadioChangeEvent } from 'antd';
+import type { RadioChangeEvent } from 'antd'
 
 const { Title } = Typography
 const { TextArea } = Input
@@ -27,9 +27,6 @@ const AdminEventDetailsPage: NextPageWithLayout = () => {
    const [file2, setFile2] = useState<File>()
    const [file3, setFile3] = useState<File>()
 
-
-
-
    useEffect(() => {
       if (id) {
          httpClient()
@@ -47,9 +44,12 @@ const AdminEventDetailsPage: NextPageWithLayout = () => {
                   recruitmentCondition: res.data.recruitmentCondition,
                   compensation: res.data.compensation,
                   applicationUrl: res.data.applicationUrl,
-                  publicationDate: [dayjs(res.data.publicationStartDate), dayjs(res.data.publicationEndDate)],
+                  publicationDate: [
+                     dayjs(res.data.publicationStartDate),
+                     dayjs(res.data.publicationEndDate),
+                  ],
                   status: res.data.status?.toString(),
-                  isPickup: res.data.status?.toString()
+                  isPickup: res.data.status?.toString(),
                })
                setPreviewImage(res.data.thumbnail.url)
                setPreviewImage1(res.data.attachments[0].url)
@@ -59,8 +59,6 @@ const AdminEventDetailsPage: NextPageWithLayout = () => {
             .catch((err) => console.error(err))
       }
    }, [id])
-
-
 
    const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
       if (e.target.files) {
@@ -91,19 +89,21 @@ const AdminEventDetailsPage: NextPageWithLayout = () => {
    }
 
    const onFinish = async (values: any) => {
-      const [start, end] = values.applicationPeriod;
-      const [publicationStart, publicationEnd] = values.publicationDate;
-      const formData = new FormData;
-      const formData1 = new FormData;
-      const formData2 = new FormData;
-      const formData3 = new FormData;
+      const [start, end] = values.applicationPeriod
+      const [publicationStart, publicationEnd] = values.publicationDate
+      const formData = new FormData()
+      const formData1 = new FormData()
+      const formData2 = new FormData()
+      const formData3 = new FormData()
       formData.append('upload_file', file)
       formData1.append('upload_file', file1)
       formData2.append('upload_file', file2)
       formData3.append('upload_file', file3)
 
-
-      let attachmentId, attachmentId1, attachmentId2, attachmentId3 = null;
+      let attachmentId,
+         attachmentId1,
+         attachmentId2,
+         attachmentId3 = null
 
       if (file) {
          let res = await httpFormDataClient().post(`${ApiRoutes.attachment.index}`, formData)
@@ -132,7 +132,6 @@ const AdminEventDetailsPage: NextPageWithLayout = () => {
          }
       }
 
-
       if (file3) {
          let res = await httpFormDataClient().post(`${ApiRoutes.attachment.index}`, formData3)
          if (res.status > 400) {
@@ -160,13 +159,13 @@ const AdminEventDetailsPage: NextPageWithLayout = () => {
          publicationEndDate: publicationEnd.format('YYYY-MM-DD'),
          status: values.status?.toString(),
          company: values.company,
-         isPickup: values.isPickup?.toString()
+         isPickup: values.isPickup?.toString(),
       }
       httpClient()
          .put(`${ApiRoutes.event.index}/${id}`, data)
          .then(() => {
-            alert('正常に変更されました。');
-            router.push('/admin/event/list');
+            alert('正常に変更されました。')
+            router.push('/admin/event/list')
          })
          .catch((err) => console.error(err))
    }
@@ -176,15 +175,15 @@ const AdminEventDetailsPage: NextPageWithLayout = () => {
    }
 
    const onCancel = () => {
-      router.push('admin/event/list');
+      router.push('admin/event/list')
    }
 
-   const [value, setValue] = useState(Number);
+   const [value, setValue] = useState(Number)
 
    const onChange = (e: RadioChangeEvent) => {
-      console.log('radio checked', e.target.value);
-      setValue(e.target.value);
-   };
+      console.log('radio checked', e.target.value)
+      setValue(e.target.value)
+   }
 
    return (
       <>
@@ -337,43 +336,53 @@ const AdminEventDetailsPage: NextPageWithLayout = () => {
                   <Radio value='無効+'>無効</Radio>
                </Radio.Group>
             </Form.Item>
-            <Form.Item
-               label='アイキャッチ画像'
-               name='logo'
-            >
-               <div className='avatar-upload w-[150px] h-[150px] border' >
-                  <div className='opacity-0 absolute z-10 left-[75px] translate-x-[-50%] translate-y-[-50%] top-[50%]'>
-                     <FolderAddOutlined style={{ fontSize: '40px' }} ></FolderAddOutlined>
+            <Form.Item label='アイキャッチ画像' name='logo'>
+               <div className='avatar-upload h-[150px] w-[150px] border'>
+                  <div className='absolute left-[75px] top-[50%] z-10 translate-x-[-50%] translate-y-[-50%] opacity-0'>
+                     <FolderAddOutlined style={{ fontSize: '40px' }}></FolderAddOutlined>
                   </div>
-                  <input className='w-[150px] h-[150px] opacity-0 avatar-input' type='file' onChange={handleFileChange} />
-                  <img src={previewImage} className='w-[150px] mt-[-150px] avatar-image' />
+                  <input
+                     className='avatar-input h-[150px] w-[150px] opacity-0'
+                     type='file'
+                     onChange={handleFileChange}
+                  />
+                  <img src={previewImage} className='avatar-image mt-[-150px] w-[150px]' />
                </div>
             </Form.Item>
-            <Form.Item
-               label='その他画像'
-               name='attachments'
-            >
-               <div className="flex">
-                  <div className='avatar-upload w-[150px] h-[150px] border' >
-                     <div className='opacity-0 absolute z-10 left-[75px] translate-x-[-50%] translate-y-[-50%] top-[50%]'>
-                        <FolderAddOutlined style={{ fontSize: '30px' }} ></FolderAddOutlined>
+            <Form.Item label='その他画像' name='attachments'>
+               <div className='flex'>
+                  <div className='avatar-upload h-[150px] w-[150px] border'>
+                     <div className='absolute left-[75px] top-[50%] z-10 translate-x-[-50%] translate-y-[-50%] opacity-0'>
+                        <FolderAddOutlined style={{ fontSize: '30px' }}></FolderAddOutlined>
                      </div>
-                     <input className='w-[150px] h-[150px] opacity-0 avatar-input' type='file' onChange={handleFileChange1} />
-                     <img src={previewImage1} className='w-[150px] mt-[-150px] avatar-image' />
+                     <input
+                        className='avatar-input h-[150px] w-[150px] opacity-0'
+                        type='file'
+                        onChange={handleFileChange1}
+                     />
+                     <img src={previewImage1} className='avatar-image mt-[-150px] w-[150px]' />
                   </div>
-                  <div className='avatar-upload w-[150px] h-[150px] border mx-[20px]' >
-                     <div className='opacity-0 absolute z-10 left-[245px] translate-x-[-50%] translate-y-[-50%] top-[50%]'>
-                        <FolderAddOutlined style={{ fontSize: '30px' }} ></FolderAddOutlined>
+                  <div className='avatar-upload mx-[20px] h-[150px] w-[150px] border'>
+                     <div className='absolute left-[245px] top-[50%] z-10 translate-x-[-50%] translate-y-[-50%] opacity-0'>
+                        <FolderAddOutlined style={{ fontSize: '30px' }}></FolderAddOutlined>
                      </div>
-                     <input className='w-[150px] h-[150px] opacity-0 avatar-input' type='file' onChange={handleFileChange2} />
-                     <img src={previewImage2} className='w-[150px] mt-[-150px] avatar-image' />
+                     <input
+                        className='avatar-input h-[150px] w-[150px] opacity-0'
+                        type='file'
+                        onChange={handleFileChange2}
+                     />
+                     <img src={previewImage2} className='avatar-image mt-[-150px] w-[150px]' />
                   </div>
-                  <div className='avatar-upload w-[150px] h-[150px] border' >
-                     <div className='opacity-0 absolute z-10 left-[415px] translate-x-[-50%] translate-y-[-50%] top-[50%]'>
-                        <FolderAddOutlined style={{ fontSize: '30px' }} ></FolderAddOutlined>
+                  <div className='avatar-upload h-[150px] w-[150px] border'>
+                     <div className='absolute left-[415px] top-[50%] z-10 translate-x-[-50%] translate-y-[-50%] opacity-0'>
+                        <FolderAddOutlined style={{ fontSize: '30px' }}></FolderAddOutlined>
                      </div>
-                     <input className='w-[150px] h-[150px] opacity-0 avatar-input' type='file' onChange={handleFileChange3} />
-                     <img src={previewImage3} className='w-[150px] mt-[-150px] avatar-image' />
+                     <input
+                        className='avatar-input h-[150px] w-[150px] opacity-0'
+                        type='file'
+                        onChange={handleFileChange3}
+                     />
+                     <img src={previewImage3} className='avatar-image mt-[-150px] w-[150px]' />
                   </div>
                </div>
             </Form.Item>
@@ -384,10 +393,7 @@ const AdminEventDetailsPage: NextPageWithLayout = () => {
             >
                <TextArea rows={12} />
             </Form.Item>
-            <Form.Item
-               label='申し込みURL'
-               name='applicationUrl'
-            >
+            <Form.Item label='申し込みURL' name='applicationUrl'>
                <Input />
             </Form.Item>
             <Form.Item

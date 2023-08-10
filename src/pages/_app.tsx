@@ -2,7 +2,7 @@ import type { AppPropsWithLayout } from 'next/app'
 import Head from 'next/head'
 import 'styles/globals.scss'
 
-interface MyAppProps extends AppPropsWithLayout { }
+interface MyAppProps extends AppPropsWithLayout {}
 
 function MyApp(props: MyAppProps) {
    const { Component, pageProps } = props

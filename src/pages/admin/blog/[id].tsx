@@ -1,6 +1,6 @@
-import { FolderAddOutlined } from '@ant-design/icons';
+import { FolderAddOutlined } from '@ant-design/icons'
 import { Button, Form, Input, Typography, Space, DatePicker, Select } from 'antd'
-import dayjs from 'dayjs';
+import dayjs from 'dayjs'
 import type { NextPageWithLayout } from 'next'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
@@ -61,18 +61,19 @@ const AdminBlogDetailsPage: NextPageWithLayout = () => {
    }, [])
 
    const onFinish = async (values: any) => {
-
-      const formData = new FormData;
-      const formData1 = new FormData;
-      const formData2 = new FormData;
-      const formData3 = new FormData;
+      const formData = new FormData()
+      const formData1 = new FormData()
+      const formData2 = new FormData()
+      const formData3 = new FormData()
       formData.append('upload_file', file)
       formData1.append('upload_file', file1)
       formData2.append('upload_file', file2)
       formData3.append('upload_file', file3)
 
-
-      let attachmentId, attachmentId1, attachmentId2, attachmentId3 = null;
+      let attachmentId,
+         attachmentId1,
+         attachmentId2,
+         attachmentId3 = null
 
       if (file) {
          let res = await httpFormDataClient().post(`${ApiRoutes.attachment.index}`, formData)
@@ -101,7 +102,6 @@ const AdminBlogDetailsPage: NextPageWithLayout = () => {
          }
       }
 
-
       if (file3) {
          let res = await httpFormDataClient().post(`${ApiRoutes.attachment.index}`, formData3)
          if (res.status > 400) {
@@ -123,13 +123,13 @@ const AdminBlogDetailsPage: NextPageWithLayout = () => {
          status: values.status?.toString(),
          metaTitle: null,
          metaKeyword: null,
-         metaDescription: null
+         metaDescription: null,
       }
       httpClient()
          .put(`${ApiRoutes.post.index}/${id}`, data)
          .then(() => {
-            alert('正常に変更されました。');
-            router.push('/admin/blog/list');
+            alert('正常に変更されました。')
+            router.push('/admin/blog/list')
          })
          .catch((err) => console.error(err))
    }
@@ -187,36 +187,52 @@ const AdminBlogDetailsPage: NextPageWithLayout = () => {
                <Input />
             </Form.Item>
             <Form.Item label='ヘッダー画像' name='avatar'>
-               <div className='avatar-upload w-[150px] h-[150px] border' >
-                  <div className='opacity-0 absolute z-10 left-[75px] translate-x-[-50%] translate-y-[-50%] top-[50%]'>
-                     <FolderAddOutlined style={{ fontSize: '40px' }} ></FolderAddOutlined>
+               <div className='avatar-upload h-[150px] w-[150px] border'>
+                  <div className='absolute left-[75px] top-[50%] z-10 translate-x-[-50%] translate-y-[-50%] opacity-0'>
+                     <FolderAddOutlined style={{ fontSize: '40px' }}></FolderAddOutlined>
                   </div>
-                  <input className='w-[150px] h-[150px] opacity-0 avatar-input' type='file' onChange={handleFileChange} />
-                  <img src={previewImage} className='w-[150px] mt-[-150px] avatar-image' />
+                  <input
+                     className='avatar-input h-[150px] w-[150px] opacity-0'
+                     type='file'
+                     onChange={handleFileChange}
+                  />
+                  <img src={previewImage} className='avatar-image mt-[-150px] w-[150px]' />
                </div>
             </Form.Item>
             <Form.Item label='サムネイル画像' name='thumbnail'>
-               <div className="flex">
-                  <div className='avatar-upload w-[150px] h-[150px] border' >
-                     <div className='opacity-0 absolute z-10 left-[75px] translate-x-[-50%] translate-y-[-50%] top-[50%]'>
-                        <FolderAddOutlined style={{ fontSize: '30px' }} ></FolderAddOutlined>
+               <div className='flex'>
+                  <div className='avatar-upload h-[150px] w-[150px] border'>
+                     <div className='absolute left-[75px] top-[50%] z-10 translate-x-[-50%] translate-y-[-50%] opacity-0'>
+                        <FolderAddOutlined style={{ fontSize: '30px' }}></FolderAddOutlined>
                      </div>
-                     <input className='w-[150px] h-[150px] opacity-0 avatar-input' type='file' onChange={handleFileChange1} />
-                     <img src={previewImage1} className='w-[150px] mt-[-150px] avatar-image' />
+                     <input
+                        className='avatar-input h-[150px] w-[150px] opacity-0'
+                        type='file'
+                        onChange={handleFileChange1}
+                     />
+                     <img src={previewImage1} className='avatar-image mt-[-150px] w-[150px]' />
                   </div>
-                  <div className='avatar-upload w-[150px] h-[150px] border mx-[20px]' >
-                     <div className='opacity-0 absolute z-10 left-[245px] translate-x-[-50%] translate-y-[-50%] top-[50%]'>
-                        <FolderAddOutlined style={{ fontSize: '30px' }} ></FolderAddOutlined>
+                  <div className='avatar-upload mx-[20px] h-[150px] w-[150px] border'>
+                     <div className='absolute left-[245px] top-[50%] z-10 translate-x-[-50%] translate-y-[-50%] opacity-0'>
+                        <FolderAddOutlined style={{ fontSize: '30px' }}></FolderAddOutlined>
                      </div>
-                     <input className='w-[150px] h-[150px] opacity-0 avatar-input' type='file' onChange={handleFileChange2} />
-                     <img src={previewImage2} className='w-[150px] mt-[-150px] avatar-image' />
+                     <input
+                        className='avatar-input h-[150px] w-[150px] opacity-0'
+                        type='file'
+                        onChange={handleFileChange2}
+                     />
+                     <img src={previewImage2} className='avatar-image mt-[-150px] w-[150px]' />
                   </div>
-                  <div className='avatar-upload w-[150px] h-[150px] border' >
-                     <div className='opacity-0 absolute z-10 left-[415px] translate-x-[-50%] translate-y-[-50%] top-[50%]'>
-                        <FolderAddOutlined style={{ fontSize: '30px' }} ></FolderAddOutlined>
+                  <div className='avatar-upload h-[150px] w-[150px] border'>
+                     <div className='absolute left-[415px] top-[50%] z-10 translate-x-[-50%] translate-y-[-50%] opacity-0'>
+                        <FolderAddOutlined style={{ fontSize: '30px' }}></FolderAddOutlined>
                      </div>
-                     <input className='w-[150px] h-[150px] opacity-0 avatar-input' type='file' onChange={handleFileChange3} />
-                     <img src={previewImage3} className='w-[150px] mt-[-150px] avatar-image' />
+                     <input
+                        className='avatar-input h-[150px] w-[150px] opacity-0'
+                        type='file'
+                        onChange={handleFileChange3}
+                     />
+                     <img src={previewImage3} className='avatar-image mt-[-150px] w-[150px]' />
                   </div>
                </div>
             </Form.Item>

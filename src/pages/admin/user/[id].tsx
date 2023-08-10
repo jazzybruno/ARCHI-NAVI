@@ -1,4 +1,4 @@
-import { FolderAddOutlined } from '@ant-design/icons';
+import { FolderAddOutlined } from '@ant-design/icons'
 import { Button, DatePicker, Form, Input, Select, Typography, Space, message } from 'antd'
 import dayjs from 'dayjs'
 import type { NextPageWithLayout } from 'next'
@@ -16,14 +16,14 @@ const AdminUserDetailsPage: NextPageWithLayout = () => {
    const { id } = router.query
    const [previewImage, setPreviewImage] = useState('')
    const [file, setFile] = useState<File>()
-   const [messageApi, contextHolder] = message.useMessage();
+   const [messageApi, contextHolder] = message.useMessage()
 
    const success = () => {
       messageApi.open({
          type: 'success',
          content: 'ユーザー情報が変更されました',
-      });
-   };
+      })
+   }
 
    const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
       if (e.target.files) {
@@ -33,7 +33,6 @@ const AdminUserDetailsPage: NextPageWithLayout = () => {
    }
 
    const onFinish = (values: any) => {
-
       const formData = new FormData()
       formData.append('upload_file', file)
 
@@ -60,8 +59,8 @@ const AdminUserDetailsPage: NextPageWithLayout = () => {
             httpClient()
                .put(`${ApiRoutes.user.index}/${id}`, data)
                .then(() => {
-                  router.push('/admin/user/list');
-                  alert('ユーザー情報が変更されました');
+                  router.push('/admin/user/list')
+                  alert('ユーザー情報が変更されました')
                })
                .catch((err) => console.error(err))
          })
@@ -72,16 +71,16 @@ const AdminUserDetailsPage: NextPageWithLayout = () => {
    }
 
    const onCancel = () => {
-      router.push('/admin/user/list');
+      router.push('/admin/user/list')
    }
 
    useEffect(() => {
-      let attachmentId = null;
+      let attachmentId = null
       if (id) {
          httpClient()
             .get(`${ApiRoutes.user.index}/${id}`)
             .then((res) => {
-               attachmentId = res.data.attachmentId;
+               attachmentId = res.data.attachmentId
                form.setFieldsValue({
                   name: res.data.name,
                   nameKana: res.data.nameKana,
@@ -95,7 +94,7 @@ const AdminUserDetailsPage: NextPageWithLayout = () => {
                   notification: res.data.receiveInformation?.toString(),
                   tel: res.data.tel,
                   postalCode: res.data.postalCode,
-                  expectedGraduationDate: dayjs(res.data.expectedGraduationDate)
+                  expectedGraduationDate: dayjs(res.data.expectedGraduationDate),
                })
                httpClient()
                   .get(`${ApiRoutes.attachment.index}/${attachmentId}`)
@@ -122,12 +121,16 @@ const AdminUserDetailsPage: NextPageWithLayout = () => {
             onFinishFailed={onFinishFailed}
          >
             <Form.Item label='プロフィール画像' name='avatar'>
-               <div className='avatar-upload w-[150px] h-[150px] border' >
-                  <div className='opacity-0 absolute z-10 left-[75px] translate-x-[-50%] translate-y-[-50%] top-[50%]'>
-                     <FolderAddOutlined style={{ fontSize: '30px' }} ></FolderAddOutlined>
+               <div className='avatar-upload h-[150px] w-[150px] border'>
+                  <div className='absolute left-[75px] top-[50%] z-10 translate-x-[-50%] translate-y-[-50%] opacity-0'>
+                     <FolderAddOutlined style={{ fontSize: '30px' }}></FolderAddOutlined>
                   </div>
-                  <input className='w-[150px] h-[150px] opacity-0 avatar-input' type='file' onChange={handleFileChange} />
-                  <img src={previewImage} className='w-[150px] mt-[-150px] avatar-image' />
+                  <input
+                     className='avatar-input h-[150px] w-[150px] opacity-0'
+                     type='file'
+                     onChange={handleFileChange}
+                  />
+                  <img src={previewImage} className='avatar-image mt-[-150px] w-[150px]' />
                </div>
             </Form.Item>
             <Form.Item

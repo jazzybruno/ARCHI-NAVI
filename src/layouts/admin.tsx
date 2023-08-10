@@ -61,8 +61,8 @@ const items: MenuItem[] = [
       getItem(<Link href='/admin/mail/new'>一斉メール・LINE作成</Link>, '6-1'),
    ]),
    getItem('コラムカテゴリ追加編集', '7', <FileOutlined />, [
-      getItem(<Link href='/admin/blog/add'>コラムカテゴリ追加編集</Link>, '7-0')
-   ])
+      getItem(<Link href='/admin/blog/add'>コラムカテゴリ追加編集</Link>, '7-0'),
+   ]),
 ]
 
 export const AdminLayout: React.FC = ({ children }: LayoutProps) => {

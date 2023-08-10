@@ -14,7 +14,8 @@ const AdminAnnounceNewPage: NextPageWithLayout = () => {
    const [form] = Form.useForm()
 
    const onFinish = (values: any) => {
-      const dateTime = values.dateTime.date.format('YYYY-MM-DD') + " " + values.dateTime.time.format('HH-mm-ss');
+      const dateTime =
+         values.dateTime.date.format('YYYY-MM-DD') + ' ' + values.dateTime.time.format('HH-mm-ss')
       const data = {
          title: values.title,
          content: values.content,
@@ -32,10 +33,10 @@ const AdminAnnounceNewPage: NextPageWithLayout = () => {
                method: null,
                dateTime: {
                   date: null,
-                  time: null
-               }
+                  time: null,
+               },
             })
-            alert('正常に変更されました。');
+            alert('正常に変更されました。')
             Router.push('/admin/announce/list')
          })
          .catch((err) => console.error(err))
@@ -56,7 +57,8 @@ const AdminAnnounceNewPage: NextPageWithLayout = () => {
          content: form.getFieldValue('content'),
       }
 
-      const dateTime = values.dateTime.date.format('YYYY-MM-DD') + " " + values.dateTime.time.format('HH-mm-ss');
+      const dateTime =
+         values.dateTime.date.format('YYYY-MM-DD') + ' ' + values.dateTime.time.format('HH-mm-ss')
       const data = {
          title: values.title,
          content: values.content,
@@ -70,7 +72,7 @@ const AdminAnnounceNewPage: NextPageWithLayout = () => {
       httpClient()
          .post(`${ApiRoutes.notification.index}`, data)
          .then(() => {
-            alert('成果的に保管されました。');
+            alert('成果的に保管されました。')
             Router.push('/admin/announce/list')
          })
          .catch((err) => console.error(err))
