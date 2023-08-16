@@ -14,12 +14,35 @@ import MySection from 'components/MySection'
 import Posts from 'components/Posts'
 import { MainLayout } from 'layouts/main'
 import { httpClient } from 'services/httpClient'
+import { ApiRoutes } from 'utils/constant'
 
 type Props = {
    title?: string
 }
 
 const HomePage: NextPageWithLayout<Props> = (props) => {
+   const [articlesData, setArticlesData] = useState([]);
+   const [eventsData, setEventsData] = useState([]);
+
+   const fetchData = async () => {
+      const responseArticles = await fetch('https://api-stg.archi-navi.com/api/post');
+      const dataArticles = await responseArticles.json();
+      const getMainDataArticles = dataArticles['data'];
+      // const sortedDataArticles = getMainDataArticles.sort((a, b) => new Date(b.createAt).getTime() - new Date(a.createAt).getTime());
+      const latestDataArticles = getMainDataArticles.slice(0, 4);
+      const responseEvents = await fetch('https://api-stg.archi-navi.com/api/event');
+      const dataEvents = await responseEvents.json();
+      const getMainDataEvents = dataEvents['data'];
+      // const sortedDataEvents = getMainDataEvents.sort((a, b) => new Date(b.createAt).getTime() - new Date(a.createAt).getTime());
+      const latestDataEvents = getMainDataEvents.slice(0, 4);
+      setArticlesData(latestDataArticles);
+      setEventsData(latestDataEvents);
+      console.log(getMainDataArticles)
+   };
+
+   useEffect(() => {
+      fetchData();
+   }, []);
    return (
       <>
          <section className='relative'>
@@ -118,41 +141,28 @@ const HomePage: NextPageWithLayout<Props> = (props) => {
                   コラム・記事<br></br>
                   <span className='text-[34px] font-black'>COLUMN</span>
                </h2>
-               <button className='absolute right-0 top-[50%] ms-auto hidden translate-y-[-50%] rounded-[50px] bg-green-700 px-[20px] py-[10px] text-[12.5px] font-bold text-[#fff] duration-500 hover:opacity-[0.5] md:block'>
+               <Link href="/articles/list" className='absolute right-0 top-[50%] ms-auto hidden translate-y-[-50%] rounded-[50px] bg-green-700 px-[20px] py-[10px] text-[12.5px] font-bold text-[#fff] duration-500 hover:opacity-[0.5] md:block'>
                   <p className='flex w-[70px] justify-between'>
                      <span>一覧を見る</span>
                      <span className='me-[-10px] flex items-center text-[10px]'>
                         <RightOutlined />
                      </span>
                   </p>
-               </button>
+               </Link>
             </div>
             <div className='relative bg-[#fafafa] py-[40px]'>
                <div className='mx-auto block w-[90%] max-w-[75rem] justify-between md:flex lg:w-[95%]'>
-                  <div className='mx-auto mb-[20px] w-full max-w-[400px] rounded-[8px] border-[2px] md:mb-[0px] md:w-[24%]'>
-                     <img src='/images/home/top-feature-1.png' alt='articles' />
-                     <p className='bg-[#fff] px-[20px] py-[20px] text-[13px] text-[#404040] md:px-[20px]'>
-                        記事のタイトルが入ります記事のタイトルが入ります記事のタイトルが入ります
-                     </p>
-                  </div>
-                  <div className='mx-auto mb-[20px] w-full max-w-[400px] rounded-[8px] border-[2px] md:mb-[0px] md:w-[24%]'>
-                     <img src='/images/home/top-feature-1.png' alt='articles' />
-                     <p className='bg-[#fff] px-[20px] py-[20px] text-[13px] text-[#404040] md:px-[20px]'>
-                        記事のタイトルが入ります記事のタイトルが入ります記事のタイトルが入ります
-                     </p>
-                  </div>
-                  <div className='mx-auto mb-[20px] w-full max-w-[400px] rounded-[8px] border-[2px] md:mb-[0px] md:w-[24%]'>
-                     <img src='/images/home/top-feature-1.png' alt='articles' />
-                     <p className='bg-[#fff] px-[20px] py-[20px] text-[13px] text-[#404040] md:px-[20px]'>
-                        記事のタイトルが入ります記事のタイトルが入ります記事のタイトルが入ります
-                     </p>
-                  </div>
-                  <div className='mx-auto mb-[20px] w-full max-w-[400px] rounded-[8px] border-[2px] md:mb-[0px] md:w-[24%]'>
-                     <img src='/images/home/top-feature-1.png' alt='articles' />
-                     <p className='bg-[#fff] px-[20px] py-[20px] text-[13px] text-[#404040] md:px-[20px]'>
-                        記事のタイトルが入ります記事のタイトルが入ります記事のタイトルが入ります
-                     </p>
-                  </div>
+                  {articlesData.map((item, index) => (
+                     <div className='mx-auto mb-[20px] w-full max-w-[400px] rounded-[8px] border-[2px] md:mb-[0px] md:w-[24%]' key={index}>
+                        <img src={item.header.url} className='w-full h-[60%]' alt='articles' />
+                        <p className='px-[20px] pt-[20px] text-[13px] text-[#404040] md:px-[20px] font-bold'>
+                           {item.title}
+                        </p>
+                        <p className='px-[20px] pt-[10px] pb-[20px] text-[13px] text-[#404040] md:px-[20px] font-bold'>
+                           {item.content.length > 100 ? `${item.content.substring(0, 100)}...` : item.content}
+                        </p>
+                     </div>
+                  ))}
                </div>
             </div>
          </section>
@@ -162,194 +172,79 @@ const HomePage: NextPageWithLayout<Props> = (props) => {
                   インターン・イベント<br></br>
                   <span className='text-[34px] font-black'>INTERN・IVENT</span>
                </h2>
-               <button className='absolute right-0 top-[70%] ms-auto hidden translate-y-[-50%] rounded-[50px] bg-green-700 px-[20px] py-[10px] text-[12.5px] font-bold text-[#fff] duration-500 hover:opacity-[0.5] md:block'>
+               <Link href='/events/list' className='absolute right-0 top-[70%] ms-auto hidden translate-y-[-50%] rounded-[50px] bg-green-700 px-[20px] py-[10px] text-[12.5px] font-bold text-[#fff] duration-500 hover:opacity-[0.5] md:block'>
                   <p className='flex w-[70px] justify-between'>
                      <span>一覧を見る</span>
                      <span className='me-[-10px] flex items-center text-[10px]'>
                         <RightOutlined />
                      </span>
                   </p>
-               </button>
+               </Link>
             </div>
             <div className='relative bg-[#fafafa] py-[40px] text-[#404040]'>
                <div className='mx-auto block w-[90%] max-w-[75rem] flex-wrap justify-between md:flex lg:w-[95%]'>
-                  <div className='mx-auto mb-[20px] w-full max-w-[600px] rounded-[12px] border-[1px] px-[20px] py-[30px] md:w-[48%]'>
-                     <div className='flex'>
-                        <div className='w-[70%]'>
-                           <p className='mb-[20px] text-[15px]'>
-                              地方都市だからこそ生まれるイノベーション!最前線のインターンモデルをともに支えるパートナーを募集します。
+                  {eventsData.map((item, index) => (
+                     <div className='mx-auto mb-[20px] w-full max-w-[600px] rounded-[12px] border-[1px] px-[20px] py-[30px] md:w-[48%] font-bold' key={index}>
+                        <div className='flex'>
+                           <div className='w-[70%]'>
+                              <p className='mb-[20px] text-[15px] text-[#404040]'>
+                                 {item.title}
+                              </p>
+                              <p className='text-[13px] text-[#737373]'>
+                                 {item.content.length > 100 ? `${item.content.substring(0, 100)}...` : item.content}
+                              </p>
+                           </div>
+                           <img className='w-[30%]' src={item.header} alt='' />
+                        </div>
+                        <div className='my-[15px] flex'>
+                           <p className='me-[10px] rounded-[50px] bg-[#F2F7FF] px-[18px] py-[2px] text-[11px]'>
+                              {item.type === "intern" ? 'intern' : item.type == "semina" ? "semina" : "other"}
                            </p>
-                           <p className='text-[13px] text-[#737373]'>
-                              日本で最も進んだ実践型インターンシップ「ホンキ系インターンシップ」を展開する土台作り、新規プログラム企画に共に挑む右腕を募集します。
+                           <p className='rounded-[50px] bg-[#F2F7FF] px-[18px] py-[2px] text-[11px]'>
+                              {item.onlineOrOffline}
                            </p>
                         </div>
-                        <img className='w-[30%]' src='' alt='' />
-                     </div>
-                     <div className='my-[15px] flex'>
-                        <p className='me-[10px] rounded-[50px] bg-[#F2F7FF] px-[18px] py-[2px] text-[11px]'>
-                           インターン
-                        </p>
-                        <p className='rounded-[50px] bg-[#F2F7FF] px-[18px] py-[2px] text-[11px]'>
-                           インターン
-                        </p>
-                     </div>
-                     <div className='flex flex-wrap text-[13px]'>
-                        <p className='flex items-center pe-[10px]'>
-                           <ClockCircleOutlined className='pe-[5px]' />
-                           開催日：2023年11月1日（水）～2023年11月20日（月）
-                        </p>
-                        <p className='flex items-center'>
-                           <EnvironmentOutlined className='pe-[5px]' />
-                           会場：東京
-                        </p>
-                        <p className='flex items-center'>
-                           <CreditCardOutlined className='pe-[5px]' />
-                           対象職種：ITインフラ
-                        </p>
-                     </div>
-                     <button className='mx-auto mt-[40px] flex items-center rounded-[50px] bg-[#ff8329] px-[30px] py-[10px] text-[12px] text-[#fff]'>
-                        <StarOutlined className='pe-[5px] !text-[18px]' />
-                        お気に入り登録
-                     </button>
-                  </div>
-                  <div className='mx-auto mb-[20px] w-full max-w-[600px] rounded-[12px] border-[1px] px-[20px] py-[30px] md:w-[48%]'>
-                     <div className='flex'>
-                        <div className='w-[70%]'>
-                           <p className='mb-[20px] text-[15px]'>
-                              地方都市だからこそ生まれるイノベーション!最前線のインターンモデルをともに支えるパートナーを募集します。
+                        <div className='flex flex-wrap text-[13px]'>
+                           <p className='flex items-center pe-[10px]  text-[#404040]'>
+                              <ClockCircleOutlined className='pe-[5px] text-green-700' />
+                              開催日：{item.startDate}～{item.endDate}
                            </p>
-                           <p className='text-[13px] text-[#737373]'>
-                              日本で最も進んだ実践型インターンシップ「ホンキ系インターンシップ」を展開する土台作り、新規プログラム企画に共に挑む右腕を募集します。
+                           <p className='flex items-center pe-[10px] text-[#404040]'>
+                              <EnvironmentOutlined className='pe-[5px] text-green-700' />
+                              会場：{item.prefecture.toString()}
+                           </p>
+                           <p className='flex items-center text-[#404040]'>
+                              <CreditCardOutlined className='pe-[5px] text-green-700' />
+                              対象職種：{item.typeOfOccupation === 'design' ? 'design' : 'deveope'}
                            </p>
                         </div>
-                        <img className='w-[30%]' src='' alt='' />
+                        <button className='mx-auto mt-[40px] flex items-center rounded-[50px] bg-[#ff8329] px-[30px] py-[10px] text-[12px] text-[#fff]'>
+                           <StarOutlined className='pe-[5px] !text-[18px]' />
+                           お気に入り登録
+                        </button>
                      </div>
-                     <div className='my-[15px] flex'>
-                        <p className='me-[10px] rounded-[50px] bg-[#F2F7FF] px-[18px] py-[2px] text-[11px]'>
-                           インターン
-                        </p>
-                        <p className='rounded-[50px] bg-[#F2F7FF] px-[18px] py-[2px] text-[11px]'>
-                           インターン
-                        </p>
-                     </div>
-                     <div className='flex flex-wrap text-[13px]'>
-                        <p className='flex items-center pe-[10px]'>
-                           <ClockCircleOutlined className='pe-[5px]' />
-                           開催日：2023年11月1日（水）～2023年11月20日（月）
-                        </p>
-                        <p className='flex items-center'>
-                           <EnvironmentOutlined className='pe-[5px]' />
-                           会場：東京
-                        </p>
-                        <p className='flex items-center'>
-                           <CreditCardOutlined className='pe-[5px]' />
-                           対象職種：ITインフラ
-                        </p>
-                     </div>
-                     <button className='mx-auto mt-[40px] flex items-center rounded-[50px] bg-[#ff8329] px-[30px] py-[10px] text-[12px] text-[#fff]'>
-                        <StarOutlined className='pe-[5px] !text-[18px]' />
-                        お気に入り登録
-                     </button>
-                  </div>
-                  <div className='mx-auto mb-[20px] w-full max-w-[600px] rounded-[12px] border-[1px] px-[20px] py-[30px] md:w-[48%]'>
-                     <div className='flex'>
-                        <div className='w-[70%]'>
-                           <p className='mb-[20px] text-[15px]'>
-                              地方都市だからこそ生まれるイノベーション!最前線のインターンモデルをともに支えるパートナーを募集します。
-                           </p>
-                           <p className='text-[13px] text-[#737373]'>
-                              日本で最も進んだ実践型インターンシップ「ホンキ系インターンシップ」を展開する土台作り、新規プログラム企画に共に挑む右腕を募集します。
-                           </p>
-                        </div>
-                        <img className='w-[30%]' src='' alt='' />
-                     </div>
-                     <div className='my-[15px] flex'>
-                        <p className='me-[10px] rounded-[50px] bg-[#F2F7FF] px-[18px] py-[2px] text-[11px]'>
-                           インターン
-                        </p>
-                        <p className='rounded-[50px] bg-[#F2F7FF] px-[18px] py-[2px] text-[11px]'>
-                           インターン
-                        </p>
-                     </div>
-                     <div className='flex flex-wrap text-[13px]'>
-                        <p className='flex items-center pe-[10px]'>
-                           <ClockCircleOutlined className='pe-[5px]' />
-                           開催日：2023年11月1日（水）～2023年11月20日（月）
-                        </p>
-                        <p className='flex items-center'>
-                           <EnvironmentOutlined className='pe-[5px]' />
-                           会場：東京
-                        </p>
-                        <p className='flex items-center'>
-                           <CreditCardOutlined className='pe-[5px]' />
-                           対象職種：ITインフラ
-                        </p>
-                     </div>
-                     <button className='mx-auto mt-[40px] flex items-center rounded-[50px] bg-[#ff8329] px-[30px] py-[10px] text-[12px] text-[#fff]'>
-                        <StarOutlined className='pe-[5px] !text-[18px]' />
-                        お気に入り登録
-                     </button>
-                  </div>
-                  <div className='mx-auto mb-[20px] w-full max-w-[600px] rounded-[12px] border-[1px] px-[20px] py-[30px] md:w-[48%]'>
-                     <div className='flex'>
-                        <div className='w-[70%]'>
-                           <p className='mb-[20px] text-[15px]'>
-                              地方都市だからこそ生まれるイノベーション!最前線のインターンモデルをともに支えるパートナーを募集します。
-                           </p>
-                           <p className='text-[13px] text-[#737373]'>
-                              日本で最も進んだ実践型インターンシップ「ホンキ系インターンシップ」を展開する土台作り、新規プログラム企画に共に挑む右腕を募集します。
-                           </p>
-                        </div>
-                        <img className='w-[30%]' src='' alt='' />
-                     </div>
-                     <div className='my-[15px] flex'>
-                        <p className='me-[10px] rounded-[50px] bg-[#F2F7FF] px-[18px] py-[2px] text-[11px]'>
-                           インターン
-                        </p>
-                        <p className='rounded-[50px] bg-[#F2F7FF] px-[18px] py-[2px] text-[11px]'>
-                           インターン
-                        </p>
-                     </div>
-                     <div className='flex flex-wrap text-[13px]'>
-                        <p className='flex items-center pe-[10px]'>
-                           <ClockCircleOutlined className='pe-[5px]' />
-                           開催日：2023年11月1日（水）～2023年11月20日（月）
-                        </p>
-                        <p className='flex items-center'>
-                           <EnvironmentOutlined className='pe-[5px]' />
-                           会場：東京
-                        </p>
-                        <p className='flex items-center'>
-                           <CreditCardOutlined className='pe-[5px]' />
-                           対象職種：ITインフラ
-                        </p>
-                     </div>
-                     <button className='mx-auto mt-[40px] flex items-center rounded-[50px] bg-[#ff8329] px-[30px] py-[10px] text-[12px] text-[#fff]'>
-                        <StarOutlined className='pe-[5px] !text-[18px]' />
-                        お気に入り登録
-                     </button>
-                  </div>
+                  ))}
                </div>
             </div>
          </section>
          <section>
-            <div className='mx-auto my-[100px] block bg-[#F8F5EC] md:flex'>
-               <div className='w-full md:w-[50%] md:py-[60px] md:pe-[90px] md:ps-[250px]'>
-                  <div className='flex items-center justify-between pb-[50px]'>
+            <div className='mx-auto my-[100px] block bg-[#F8F5EC] md:flex px-[5%] py-[30px] md:px-[0px] md:py-[0px]'>
+               <div className='w-full md:w-[50%] md:py-[60px] md:pe-[90px] md:ps-[250px] pb-[30px]'>
+                  <div className='flex items-center justify-between md:pb-[50px] pb-[20px]'>
                      <div>
                         <p className='text-[13px] text-green-700'>ABOUT</p>
                         <p className='text-[24px] text-[#404040]'>このサイトについて</p>
                      </div>
-                     <div className='flex items-center rounded-full bg-green-700 px-[20px] py-[20px] text-[30px] text-[#fff]'>
+                     <Link href='/about' className='flex items-center rounded-full bg-green-700 px-[20px] py-[20px] text-[30px] text-[#fff]'>
                         <SwapRightOutlined />
-                     </div>
+                     </Link>
                   </div>
                   <div>
                      <p className='text-[15px] text-[#404040]'>運営の情報も載せる</p>
                   </div>
                </div>
                <img
-                  className='w-full md:w-[50%]'
+                  className='w-full md:w-[50%] hover:opacity-[0.5] duration-500'
                   src='/images/home/top-about-ist.jpg'
                   alt='about'
                />
@@ -431,6 +326,8 @@ export const getServerSideProps: GetServerSideProps = async () => {
       props: props,
    }
 }
+
+
 
 HomePage.getLayout = (page) => <MainLayout>{page}</MainLayout>
 
