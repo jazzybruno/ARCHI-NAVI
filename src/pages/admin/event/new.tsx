@@ -1,5 +1,5 @@
 import { FolderAddOutlined } from '@ant-design/icons'
-import type { RadioChangeEvent } from 'antd';
+import type { RadioChangeEvent } from 'antd'
 import { Button, Form, Input, Typography, Space, Select, DatePicker, Radio } from 'antd'
 import type { NextPageWithLayout } from 'next'
 import { useRouter } from 'next/router'

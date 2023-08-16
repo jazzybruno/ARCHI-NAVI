@@ -21,28 +21,28 @@ type Props = {
 }
 
 const HomePage: NextPageWithLayout<Props> = (props) => {
-   const [articlesData, setArticlesData] = useState([]);
-   const [eventsData, setEventsData] = useState([]);
+   const [articlesData, setArticlesData] = useState([])
+   const [eventsData, setEventsData] = useState([])
 
    const fetchData = async () => {
-      const responseArticles = await fetch('https://api-stg.archi-navi.com/api/post');
-      const dataArticles = await responseArticles.json();
-      const getMainDataArticles = dataArticles['data'];
+      const responseArticles = await fetch('https://api-stg.archi-navi.com/api/post')
+      const dataArticles = await responseArticles.json()
+      const getMainDataArticles = dataArticles['data']
       // const sortedDataArticles = getMainDataArticles.sort((a, b) => new Date(b.createAt).getTime() - new Date(a.createAt).getTime());
-      const latestDataArticles = getMainDataArticles.slice(0, 4);
-      const responseEvents = await fetch('https://api-stg.archi-navi.com/api/event');
-      const dataEvents = await responseEvents.json();
-      const getMainDataEvents = dataEvents['data'];
+      const latestDataArticles = getMainDataArticles.slice(0, 4)
+      const responseEvents = await fetch('https://api-stg.archi-navi.com/api/event')
+      const dataEvents = await responseEvents.json()
+      const getMainDataEvents = dataEvents['data']
       // const sortedDataEvents = getMainDataEvents.sort((a, b) => new Date(b.createAt).getTime() - new Date(a.createAt).getTime());
-      const latestDataEvents = getMainDataEvents.slice(0, 4);
-      setArticlesData(latestDataArticles);
-      setEventsData(latestDataEvents);
+      const latestDataEvents = getMainDataEvents.slice(0, 4)
+      setArticlesData(latestDataArticles)
+      setEventsData(latestDataEvents)
       console.log(getMainDataArticles)
-   };
+   }
 
    useEffect(() => {
-      fetchData();
-   }, []);
+      fetchData()
+   }, [])
    return (
       <>
          <section className='relative'>
@@ -141,7 +141,10 @@ const HomePage: NextPageWithLayout<Props> = (props) => {
                   コラム・記事<br></br>
                   <span className='text-[34px] font-black'>COLUMN</span>
                </h2>
-               <Link href="/articles/list" className='absolute right-0 top-[50%] ms-auto hidden translate-y-[-50%] rounded-[50px] bg-green-700 px-[20px] py-[10px] text-[12.5px] font-bold text-[#fff] duration-500 hover:opacity-[0.5] md:block'>
+               <Link
+                  href='/articles/list'
+                  className='absolute right-0 top-[50%] ms-auto hidden translate-y-[-50%] rounded-[50px] bg-green-700 px-[20px] py-[10px] text-[12.5px] font-bold text-[#fff] duration-500 hover:opacity-[0.5] md:block'
+               >
                   <p className='flex w-[70px] justify-between'>
                      <span>一覧を見る</span>
                      <span className='me-[-10px] flex items-center text-[10px]'>
@@ -153,13 +156,18 @@ const HomePage: NextPageWithLayout<Props> = (props) => {
             <div className='relative bg-[#fafafa] py-[40px]'>
                <div className='mx-auto block w-[90%] max-w-[75rem] justify-between md:flex lg:w-[95%]'>
                   {articlesData.map((item, index) => (
-                     <div className='mx-auto mb-[20px] w-full max-w-[400px] rounded-[8px] border-[2px] md:mb-[0px] md:w-[24%]' key={index}>
-                        <img src={item.header.url} className='w-full h-[60%]' alt='articles' />
-                        <p className='px-[20px] pt-[20px] text-[13px] text-[#404040] md:px-[20px] font-bold'>
+                     <div
+                        className='mx-auto mb-[20px] w-full max-w-[400px] rounded-[8px] border-[2px] md:mb-[0px] md:w-[24%]'
+                        key={index}
+                     >
+                        <img src={item.header.url} className='h-[60%] w-full' alt='articles' />
+                        <p className='px-[20px] pt-[20px] text-[13px] font-bold text-[#404040] md:px-[20px]'>
                            {item.title}
                         </p>
-                        <p className='px-[20px] pt-[10px] pb-[20px] text-[13px] text-[#404040] md:px-[20px] font-bold'>
-                           {item.content.length > 100 ? `${item.content.substring(0, 100)}...` : item.content}
+                        <p className='px-[20px] pb-[20px] pt-[10px] text-[13px] font-bold text-[#404040] md:px-[20px]'>
+                           {item.content.length > 100
+                              ? `${item.content.substring(0, 100)}...`
+                              : item.content}
                         </p>
                      </div>
                   ))}
@@ -172,7 +180,10 @@ const HomePage: NextPageWithLayout<Props> = (props) => {
                   インターン・イベント<br></br>
                   <span className='text-[34px] font-black'>INTERN・IVENT</span>
                </h2>
-               <Link href='/events/list' className='absolute right-0 top-[70%] ms-auto hidden translate-y-[-50%] rounded-[50px] bg-green-700 px-[20px] py-[10px] text-[12.5px] font-bold text-[#fff] duration-500 hover:opacity-[0.5] md:block'>
+               <Link
+                  href='/events/list'
+                  className='absolute right-0 top-[70%] ms-auto hidden translate-y-[-50%] rounded-[50px] bg-green-700 px-[20px] py-[10px] text-[12.5px] font-bold text-[#fff] duration-500 hover:opacity-[0.5] md:block'
+               >
                   <p className='flex w-[70px] justify-between'>
                      <span>一覧を見る</span>
                      <span className='me-[-10px] flex items-center text-[10px]'>
@@ -184,21 +195,28 @@ const HomePage: NextPageWithLayout<Props> = (props) => {
             <div className='relative bg-[#fafafa] py-[40px] text-[#404040]'>
                <div className='mx-auto block w-[90%] max-w-[75rem] flex-wrap justify-between md:flex lg:w-[95%]'>
                   {eventsData.map((item, index) => (
-                     <div className='mx-auto mb-[20px] w-full max-w-[600px] rounded-[12px] border-[1px] px-[20px] py-[30px] md:w-[48%] font-bold' key={index}>
+                     <div
+                        className='mx-auto mb-[20px] w-full max-w-[600px] rounded-[12px] border-[1px] px-[20px] py-[30px] font-bold md:w-[48%]'
+                        key={index}
+                     >
                         <div className='flex'>
                            <div className='w-[70%]'>
-                              <p className='mb-[20px] text-[15px] text-[#404040]'>
-                                 {item.title}
-                              </p>
+                              <p className='mb-[20px] text-[15px] text-[#404040]'>{item.title}</p>
                               <p className='text-[13px] text-[#737373]'>
-                                 {item.content.length > 100 ? `${item.content.substring(0, 100)}...` : item.content}
+                                 {item.content.length > 100
+                                    ? `${item.content.substring(0, 100)}...`
+                                    : item.content}
                               </p>
                            </div>
                            <img className='w-[30%]' src={item.header} alt='' />
                         </div>
                         <div className='my-[15px] flex'>
                            <p className='me-[10px] rounded-[50px] bg-[#F2F7FF] px-[18px] py-[2px] text-[11px]'>
-                              {item.type === "intern" ? 'intern' : item.type == "semina" ? "semina" : "other"}
+                              {item.type === 'intern'
+                                 ? 'intern'
+                                 : item.type == 'semina'
+                                 ? 'semina'
+                                 : 'other'}
                            </p>
                            <p className='rounded-[50px] bg-[#F2F7FF] px-[18px] py-[2px] text-[11px]'>
                               {item.onlineOrOffline}
@@ -228,14 +246,17 @@ const HomePage: NextPageWithLayout<Props> = (props) => {
             </div>
          </section>
          <section>
-            <div className='mx-auto my-[100px] block bg-[#F8F5EC] md:flex px-[5%] py-[30px] md:px-[0px] md:py-[0px]'>
-               <div className='w-full md:w-[50%] md:py-[60px] md:pe-[90px] md:ps-[250px] pb-[30px]'>
-                  <div className='flex items-center justify-between md:pb-[50px] pb-[20px]'>
+            <div className='mx-auto my-[100px] block bg-[#F8F5EC] px-[5%] py-[30px] md:flex md:px-[0px] md:py-[0px]'>
+               <div className='w-full pb-[30px] md:w-[50%] md:py-[60px] md:pe-[90px] md:ps-[250px]'>
+                  <div className='flex items-center justify-between pb-[20px] md:pb-[50px]'>
                      <div>
                         <p className='text-[13px] text-green-700'>ABOUT</p>
                         <p className='text-[24px] text-[#404040]'>このサイトについて</p>
                      </div>
-                     <Link href='/about' className='flex items-center rounded-full bg-green-700 px-[20px] py-[20px] text-[30px] text-[#fff]'>
+                     <Link
+                        href='/about'
+                        className='flex items-center rounded-full bg-green-700 px-[20px] py-[20px] text-[30px] text-[#fff]'
+                     >
                         <SwapRightOutlined />
                      </Link>
                   </div>
@@ -244,7 +265,7 @@ const HomePage: NextPageWithLayout<Props> = (props) => {
                   </div>
                </div>
                <img
-                  className='w-full md:w-[50%] hover:opacity-[0.5] duration-500'
+                  className='w-full duration-500 hover:opacity-[0.5] md:w-[50%]'
                   src='/images/home/top-about-ist.jpg'
                   alt='about'
                />
@@ -326,8 +347,6 @@ export const getServerSideProps: GetServerSideProps = async () => {
       props: props,
    }
 }
-
-
 
 HomePage.getLayout = (page) => <MainLayout>{page}</MainLayout>
 

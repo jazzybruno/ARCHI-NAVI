@@ -239,7 +239,7 @@ const AdminBlogDetailsPage: NextPageWithLayout = () => {
             <Form.Item
                label='カテゴリー'
                name='category'
-            // rules={[{ required: true, message: 'このフィールドを入力してください' }]}
+               // rules={[{ required: true, message: 'このフィールドを入力してください' }]}
             >
                <Select>
                   <Select.Option value='1'>カテゴリー1</Select.Option>
