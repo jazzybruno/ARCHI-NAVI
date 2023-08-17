@@ -37,11 +37,11 @@ const EventPage: NextPageWithLayout<Props> = (props) => {
       const response = await fetch(`https://api-stg.archi-navi.com/api/event/${id}`)
       const responseEvents = await fetch('https://api-stg.archi-navi.com/api/event')
       const dataEvents = await responseEvents.json()
+      const data = await response.json()
       const getMainDataEvents = dataEvents['data']
       const sameCompanyEvents = getMainDataEvents.filter((event) => {
-         event.company.id == eventDetails.company.id
+         event.company == data.company
       })
-      const data = await response.json()
       setEventDetails(data)
       setEventAttachments(data.attachments)
       setEventTags(data.thumbnail.url)

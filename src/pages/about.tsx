@@ -48,7 +48,7 @@ const AboutPage: NextPageWithLayout<Props> = (props) => {
             <div className='bg-[#0bc3ff]'>
                <div className='mt-[-1px] border-0 bg-[url("/images/about/about-bg-title.svg")] bg-contain bg-top bg-no-repeat px-[10%] pb-[50px] pt-[130px] lg:px-[130px] lg:pb-[150px] lg:pt-[220px]'>
                   <div className='mx-auto w-[2.5rem] border-[2px] border-green-700'></div>
-                  <h3 className='pt-[30px] font-bold text-center text-[25px] text-[30px] leading-relaxed text-[#FFF] lg:text-[35px]'>
+                  <h3 className='pt-[30px] font-bold text-center text-[30px] leading-relaxed text-[#FFF] lg:text-[35px]'>
                      アチナビとは？
                   </h3>
                   <p className='mx-auto mt-[40px] max-w-[810px] text-[15px] leading-relaxed text-[#FFF] lg:text-[20px]'>
@@ -64,7 +64,7 @@ const AboutPage: NextPageWithLayout<Props> = (props) => {
          <section>
             <div className='pt-[60px]'>
                <div className='mx-auto w-[2.5rem] border-[2px] border-green-700'></div>
-               <h3 className='pt-[30px] text-center text-[25px] text-[30px] font-bold leading-relaxed text-[#404040] lg:text-[35px]'>
+               <h3 className='pt-[30px] text-center text-[30px] font-bold leading-relaxed text-[#404040] lg:text-[35px]'>
                   運営者について
                </h3>
                <p className='mx-auto mt-[35px] max-w-[1080px] px-[10%] text-[15px] leading-loose text-[#404040] lg:px-[140px] lg:text-[20px]'>
@@ -73,7 +73,7 @@ const AboutPage: NextPageWithLayout<Props> = (props) => {
             </div>
             <div className='pt-[60px]'>
                <div className='mx-auto w-[2.5rem] border-[2px] border-green-700'></div>
-               <h3 className='pt-[30px] text-center text-[25px] text-[30px] font-bold leading-relaxed text-[#404040] lg:text-[35px]'>
+               <h3 className='pt-[30px] text-center text-[30px] font-bold leading-relaxed text-[#404040] lg:text-[35px]'>
                   運営会社
                </h3>
                <p className='mx-auto mt-[35px] max-w-[1080px] px-[10%] text-[15px] leading-loose text-[#404040] lg:px-[140px] lg:text-[20px]'>
@@ -86,7 +86,7 @@ const AboutPage: NextPageWithLayout<Props> = (props) => {
          <section>
             <div className='py-[60px]'>
                <div className='mx-auto w-[5rem] border-[2px] border-green-700'></div>
-               <h3 className='pt-[30px] text-center text-[25px] text-[30px] font-bold leading-relaxed text-[#404040] lg:text-[35px]'>
+               <h3 className='pt-[30px] text-center  text-[30px] font-bold leading-relaxed text-[#404040] lg:text-[35px]'>
                   企業概要
                </h3>
                <div className='mx-auto mt-[35px] max-w-[1080px] px-[10%] xl:px-[0%]'>

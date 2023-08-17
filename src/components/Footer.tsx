@@ -1,6 +1,7 @@
+import { MailOutlined } from '@ant-design/icons'
 import * as React from 'react'
 import styles from 'styles/components/Footer.module.scss'
-import { MailOutlined } from '@ant-design/icons'
+
 
 const Footer = () => {
    return (
