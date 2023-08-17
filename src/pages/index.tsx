@@ -137,8 +137,8 @@ const HomePage: NextPageWithLayout<Props> = (props) => {
             </div>
          </section>
          <section>
-            <div className='relative mx-auto w-[90%] max-w-[75rem] justify-between pt-[3rem] before:absolute before:bottom-[-17rem] before:block before:h-[500px] before:w-full before:max-w-[500px] before:bg-no-repeat lg:w-[95%]'>
-               <h2 className='pb-[40px] text-center text-[24px] font-bold text-[#404040]'>
+            <div  className='relative mx-auto w-[90%] max-w-[75rem] justify-between pt-[3rem] before:absolute before:bottom-[-17rem] before:block before:h-[500px] before:w-full before:max-w-[500px] before:bg-no-repeat lg:w-[95%]'>
+               <h2  className='pb-[40px] text-center text-[24px] font-bold text-[#404040]'>
                   コラム・記事<br></br>
                   <span className='text-[34px] font-black'>COLUMN</span>
                </h2>

@@ -156,19 +156,19 @@ const Header = () => {
                      </Link>
                      <Link
                         className='lg:border-bottom-0 xs:border-bottom-1 border-gray-300 px-[36px] py-5 font-bold'
-                        href='/'
+                        href='/articles/list'
                      >
                         コラム・記事
                      </Link>
                      <Link
                         className='lg:border-bottom-0 xs:border-bottom-1 border-gray-300 px-[36px] py-5 font-bold'
-                        href='/'
+                        href='/events/list'
                      >
                         インターン・イベント情報
                      </Link>
                      <Link
                         className='lg:border-bottom-0 xs:border-bottom-1 border-gray-300 px-[36px] py-5 font-bold'
-                        href='/'
+                        href='/about'
                      >
                         このサイトについて
                      </Link>
