@@ -22,13 +22,14 @@ type Props = {
 }
 
 
+
 const EventPage: NextPageWithLayout<Props> = (props) => {
 
-   const [eventDetails, setEventDetails] = useState({})
-   const [eventAttachments, setEventAttachments] = useState([])
-   const [eventTags, setEventTags] = useState([])
-   const [company , setCompany] = useState({})
-   const [eventsData, setEventsData] = useState([])
+   const [eventDetails, setEventDetails] = useState<{} | any>({})
+   const [eventAttachments, setEventAttachments] = useState<{} | any>([])
+   const [eventTags, setEventTags] = useState<{} | any>([])
+   const [company , setCompany] = useState<{} | any>({})
+   const [eventsData, setEventsData] = useState<{} | any>([])
    
 
    const getEventDetails = async () => {
