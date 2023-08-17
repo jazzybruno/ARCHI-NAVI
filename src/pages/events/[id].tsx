@@ -21,8 +21,6 @@ type Props = {
    title?: string
 }
 
-
-
 const EventPage: NextPageWithLayout<Props> = (props) => {
 
    const [eventDetails, setEventDetails] = useState<{} | any>({})

@@ -1,3 +1,4 @@
+/*eslit-disable */
 import { MailOutlined } from '@ant-design/icons'
 import * as React from 'react'
 import styles from 'styles/components/Footer.module.scss'
@@ -10,7 +11,7 @@ const Footer = () => {
             <img className='mx-auto hidden w-[200px] md:block' src='/logo.png' alt='logo' />
             <img className='mx-auto block w-[100px] md:hidden' src='/logo-h.png' alt='logo' />
          </div>
-         <div className='bg-[url("/images/footer/footer-bg-sp.jpg")] bg-[length:100%_100%] bg-cover bg-no-repeat px-[10%] pb-[120px] pt-[40px] xl:px-[120px]'>
+         <div className='bg-[url("/images/footer/footer-bg-sp.jpg")] bg-[length:100%_100%] bg-no-repeat px-[10%] pb-[120px] pt-[40px] xl:px-[120px]'>
             <div className='block border-b xl:flex xl:border-b-[0px]'>
                <div className='flex flex-wrap xl:order-2'>
                   <a

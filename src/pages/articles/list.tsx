@@ -1,3 +1,4 @@
+/*eslit-disable */
 import {
    RightOutlined,
    ClockCircleOutlined,
@@ -6,8 +7,9 @@ import {
    StarOutlined,
    SwapRightOutlined,
    HomeOutlined,
+   
 } from '@ant-design/icons'
-import { Breadcrumb } from 'antd'
+import { Breadcrumb , Pagination , PaginationProps } from 'antd'
 import { format } from 'date-fns'
 import type { GetServerSideProps, NextPageWithLayout } from 'next'
 import Link from 'next/link'
@@ -16,8 +18,7 @@ import MySection from 'components/MySection'
 import Posts from 'components/Posts'
 import { MainLayout } from 'layouts/main'
 import { httpClient } from 'services/httpClient'
-import type { PaginationProps } from 'antd'
-import { Pagination } from 'antd'
+
 
 type Props = {
    title?: string
@@ -47,7 +48,7 @@ const ArticlesPage: NextPageWithLayout<Props> = (props) => {
    useEffect(() => {
       fetchData()
    }, [])
-   
+
    const itemRender: PaginationProps['itemRender'] = (_, type, originalElement) => {
       if (type === 'prev') {
          return <a>Previous</a>
