@@ -21,7 +21,38 @@ type Props = {
    title?: string
 }
 
+
 const EventPage: NextPageWithLayout<Props> = (props) => {
+
+   const [eventDetails, setEventDetails] = useState({})
+   const [eventAttachments, setEventAttachments] = useState([])
+   const [eventTags, setEventTags] = useState([])
+   const [company , setCompany] = useState({})
+   const [eventsData, setEventsData] = useState([])
+   
+
+   const getEventDetails = async () => {
+      // extract the id from the url
+      const id = window.location.pathname.split('/')[2]
+      const response = await fetch(`https://api-stg.archi-navi.com/api/event/${id}`)
+      const responseEvents = await fetch('https://api-stg.archi-navi.com/api/event')
+      const dataEvents = await responseEvents.json()
+      const getMainDataEvents = dataEvents['data']
+      const sameCompanyEvents = getMainDataEvents.filter((event) => {
+         event.company.id == eventDetails.company.id
+      })
+      const data = await response.json()
+      setEventDetails(data)
+      setEventAttachments(data.attachments)
+      setEventTags(data.thumbnail.url)
+      setCompany(data.company)
+      setEventsData(sameCompanyEvents)
+   }
+
+   useEffect(() => {
+      getEventDetails()
+   }, [])
+
    return (
       <>
          <Breadcrumb
@@ -52,30 +83,30 @@ const EventPage: NextPageWithLayout<Props> = (props) => {
          />
          <div className='relative mx-auto mb-[20px] w-full px-[5%] py-[15px] font-bold text-[#404040] lg:px-[10%] xl:px-[100px]'>
             <div className='w-full'>
-               <p className='text[16px] mb-[20px] mt-[40px] lg:text-[20px]'>
-                  地方都市だからこそ生まれるイノベーション!最前線のインターンモデルをともに支えるパートナーを募集します。
-               </p>
+               <p className='text-xl mb-[20px] mt-[40px] lg:text-[20px] font-bold '>
+                  {eventDetails.title}
+                       </p>
             </div>
             <div className='my-[15px] flex'>
                <p className='me-[10px] rounded-[50px] bg-[#F2F7FF] px-[18px] py-[2px] text-[11px]'>
-                  インターン
+                  {eventDetails.type}
                </p>
                <p className='rounded-[50px] bg-[#F2F7FF] px-[18px] py-[2px] text-[11px]'>
-                  インターン
+               {eventDetails.onlineOrOffline}
                </p>
             </div>
             <div className='flex flex-wrap text-[13px]'>
                <p className='flex items-center pe-[10px]'>
                   <ClockCircleOutlined className='pe-[5px] text-green-700' />
-                  開催日：2023年11月1日（水）～2023年11月20日（月）
+                  開催日：{eventDetails.startDate}（水)～{eventDetails.endDate}（月）
                </p>
                <p className='flex items-center pe-[10px]'>
                   <EnvironmentOutlined className='pe-[5px] text-green-700' />
-                  会場：東京
+                  会場：{eventDetails.prefecture}
                </p>
                <p className='flex items-center'>
                   <CreditCardOutlined className='pe-[5px] text-green-700' />
-                  対象職種：ITインフラ
+                  対象職種：{eventDetails.typeOfOccupation}
                </p>
             </div>
             <div className='mt-[40px] flex flex-wrap justify-center sm:justify-end'>
@@ -83,7 +114,10 @@ const EventPage: NextPageWithLayout<Props> = (props) => {
                   <StarOutlined className='pe-[5px] !text-[18px]' />
                   お気に入り登録
                </button>
-               <button className='relative mt-[5px] flex h-[40px] w-[180px] items-center justify-center rounded-[50px] bg-green-700 px-[20px] py-[10px] text-[12.5px] font-bold text-[#fff] duration-500 hover:opacity-[0.5] sm:mt-0'>
+               <button onClick={()=>{
+                     const url = eventDetails.applicationUrl;
+                     window.location.href = url;
+                  }} className='relative mt-[5px] flex h-[40px] w-[180px] items-center justify-center rounded-[50px] bg-green-700 px-[20px] py-[10px] text-[12.5px] font-bold text-[#fff] duration-500 hover:opacity-[0.5] sm:mt-0'>
                   <span>応募する </span>
                   <span className='absolute end-[10%] flex items-center text-[10px]'>
                      <RightOutlined />
@@ -138,13 +172,14 @@ const EventPage: NextPageWithLayout<Props> = (props) => {
                <div className='mb-[10px] hidden lg:block lg:w-[25%]'>
                   <div className='mb-[30px] border px-[20px] py-[30px] text-[#404040]'>
                      <img src='/images/articles/top_bg.jpg' alt='' />
-                     <h5 className='py-[5px] text-[15px]'>企業名が入る</h5>
+                     <h5 className='py-[5px] text-[15px] font-bold'>{company.name}</h5>
+                     <h5 className='py-[5px] text-[15px] '> <span className='font-bold'>業種：</span>{company.classification}</h5>
                      <p className=''>
-                        業種：テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト
+                     求める人物像：{company.personality}
                      </p>
                   </div>
                   <div>
-                     <h4 className='mb-[10px] flex items-center text-[#404040]'>
+                     <h4 className='mb-[10px] flex items-center text-[#404040] font-bold'>
                         <svg
                            className='me-[8px] p-[4px] text-[20px] text-[#fff]'
                            width='30'
@@ -163,8 +198,8 @@ const EventPage: NextPageWithLayout<Props> = (props) => {
                   </div>
                   <div className='mx-auto mb-[20px] w-full border-b'>
                      <div>
-                        <p className='mb-[20px] text-[15px]'>
-                           地方都市だからこそ生まれるイノベーション!最前線のインターンモデルをともに支えるパートナーを募集します。
+                        <p className='mb-[20px] text-[15px] font-bold'>
+                        タイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトル
                         </p>
                      </div>
                      <div className='my-[15px] flex'>
@@ -175,25 +210,30 @@ const EventPage: NextPageWithLayout<Props> = (props) => {
                            インターン
                         </p>
                      </div>
-                     <div className='mb-[20px] flex flex-wrap text-[13px]'>
-                        <p className='flex items-center pe-[10px]'>
-                           <ClockCircleOutlined className='pe-[5px]' />
-                           開催日：2023年11月1日（水）～2023年11月20日（月）
+                     <div className='mb-[20px] flex flex-wrap text-[13px] space-y-3 text-[#404040]'>
+                        <p className='flex items-start pe-[10px] mt-2'>
+                           <div className='w-[35%] flex justify-center items-center'>
+                           <ClockCircleOutlined className='pe-[5px] text-green-500' /> 開催日：
+                           </div>
+                           <div className='flex flex-col w-[70%]'>
+                           <p>2023年11月1日（水）～</p>
+                           <p>2023年11月20日（月）</p>
+                           </div>
                         </p>
-                        <p className='flex items-center'>
-                           <EnvironmentOutlined className='pe-[5px]' />
+                        <p className='flex items-center w-[100%] text-[#404040]'>
+                           <EnvironmentOutlined className='pe-[5px] text-green-500' />
                            会場：東京
                         </p>
-                        <p className='flex items-center'>
-                           <CreditCardOutlined className='pe-[5px]' />
+                        <p className='flex items-center text-[#404040]'>
+                           <CreditCardOutlined className='pe-[5px] text-green-500' />
                            対象職種：ITインフラ
                         </p>
                      </div>
                   </div>
                   <div className='mx-auto mb-[20px] w-full border-b'>
                      <div>
-                        <p className='mb-[20px] text-[15px]'>
-                           地方都市だからこそ生まれるイノベーション!最前線のインターンモデルをともに支えるパートナーを募集します。
+                        <p className='mb-[20px] text-[15px] font-bold'>
+                        タイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトル
                         </p>
                      </div>
                      <div className='my-[15px] flex'>
@@ -204,25 +244,31 @@ const EventPage: NextPageWithLayout<Props> = (props) => {
                            インターン
                         </p>
                      </div>
-                     <div className='mb-[20px] flex flex-wrap text-[13px]'>
-                        <p className='flex items-center pe-[10px]'>
-                           <ClockCircleOutlined className='pe-[5px]' />
-                           開催日：2023年11月1日（水）～2023年11月20日（月）
+                     <div className='mb-[20px] flex flex-wrap text-[13px] space-y-3 text-[#404040]'>
+                        <p className='flex items-start pe-[10px] mt-2'>
+                           <div className='w-[35%] flex justify-center items-center'>
+                           <ClockCircleOutlined className='pe-[5px] text-green-500' /> 開催日：
+                           </div>
+                           <div className='flex flex-col w-[70%]'>
+                           <p>2023年11月1日（水）～</p>
+                           <p>2023年11月20日（月）</p>
+                           </div>
                         </p>
-                        <p className='flex items-center'>
-                           <EnvironmentOutlined className='pe-[5px]' />
+                        <p className='flex items-center w-[100%] text-[#404040]'>
+                           <EnvironmentOutlined className='pe-[5px] text-green-500' />
                            会場：東京
                         </p>
-                        <p className='flex items-center'>
-                           <CreditCardOutlined className='pe-[5px]' />
+                        <p className='flex items-center text-[#404040]'>
+                           <CreditCardOutlined className='pe-[5px] text-green-500' />
                            対象職種：ITインフラ
                         </p>
                      </div>
                   </div>
+
                   <div className='mx-auto mb-[20px] w-full border-b'>
                      <div>
-                        <p className='mb-[20px] text-[15px]'>
-                           地方都市だからこそ生まれるイノベーション!最前線のインターンモデルをともに支えるパートナーを募集します。
+                        <p className='mb-[20px] text-[15px] font-bold'>
+                        タイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトル
                         </p>
                      </div>
                      <div className='my-[15px] flex'>
@@ -233,58 +279,133 @@ const EventPage: NextPageWithLayout<Props> = (props) => {
                            インターン
                         </p>
                      </div>
-                     <div className='mb-[20px] flex flex-wrap text-[13px]'>
-                        <p className='flex items-center pe-[10px]'>
-                           <ClockCircleOutlined className='pe-[5px]' />
-                           開催日：2023年11月1日（水）～2023年11月20日（月）
+                     <div className='mb-[20px] flex flex-wrap text-[13px] space-y-3 text-[#404040]'>
+                        <p className='flex items-start pe-[10px] mt-2'>
+                           <div className='w-[35%] flex justify-center items-center'>
+                           <ClockCircleOutlined className='pe-[5px] text-green-500' /> 開催日：
+                           </div>
+                           <div className='flex flex-col w-[70%]'>
+                           <p>2023年11月1日（水）～</p>
+                           <p>2023年11月20日（月）</p>
+                           </div>
                         </p>
-                        <p className='flex items-center'>
-                           <EnvironmentOutlined className='pe-[5px]' />
+                        <p className='flex items-center w-[100%] text-[#404040]'>
+                           <EnvironmentOutlined className='pe-[5px] text-green-500' />
                            会場：東京
                         </p>
-                        <p className='flex items-center'>
-                           <CreditCardOutlined className='pe-[5px]' />
+                        <p className='flex items-center text-[#404040]'>
+                           <CreditCardOutlined className='pe-[5px] text-green-500' />
                            対象職種：ITインフラ
                         </p>
                      </div>
                   </div>
+
+                  <div className='mx-auto mb-[20px] w-full border-b'>
+                     <div>
+                        <p className='mb-[20px] text-[15px] font-bold'>
+                        タイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトル
+                        </p>
+                     </div>
+                     <div className='my-[15px] flex'>
+                        <p className='me-[10px] rounded-[50px] bg-[#F2F7FF] px-[18px] py-[2px] text-[11px]'>
+                           インターン
+                        </p>
+                        <p className='rounded-[50px] bg-[#F2F7FF] px-[18px] py-[2px] text-[11px]'>
+                           インターン
+                        </p>
+                     </div>
+                     <div className='mb-[20px] flex flex-wrap text-[13px] space-y-3 text-[#404040]'>
+                        <p className='flex items-start pe-[10px] mt-2'>
+                           <div className='w-[35%] flex justify-center items-center'>
+                           <ClockCircleOutlined className='pe-[5px] text-green-500' /> 開催日：
+                           </div>
+                           <div className='flex flex-col w-[70%]'>
+                           <p>2023年11月1日（水）～</p>
+                           <p>2023年11月20日（月）</p>
+                           </div>
+                        </p>
+                        <p className='flex items-center w-[100%] text-[#404040]'>
+                           <EnvironmentOutlined className='pe-[5px] text-green-500' />
+                           会場：東京
+                        </p>
+                        <p className='flex items-center text-[#404040]'>
+                           <CreditCardOutlined className='pe-[5px] text-green-500' />
+                           対象職種：ITインフラ
+                        </p>
+                     </div>
+                  </div>
+
+                  <div className='mx-auto mb-[20px] w-full border-b'>
+                     <div>
+                        <p className='mb-[20px] text-[15px] font-bold'>
+                        タイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトル
+                        </p>
+                     </div>
+                     <div className='my-[15px] flex'>
+                        <p className='me-[10px] rounded-[50px] bg-[#F2F7FF] px-[18px] py-[2px] text-[11px]'>
+                           インターン
+                        </p>
+                        <p className='rounded-[50px] bg-[#F2F7FF] px-[18px] py-[2px] text-[11px]'>
+                           インターン
+                        </p>
+                     </div>
+                     <div className='mb-[20px] flex flex-wrap text-[13px] space-y-3 text-[#404040]'>
+                        <p className='flex items-start pe-[10px] mt-2'>
+                           <div className='w-[35%] flex justify-center items-center'>
+                           <ClockCircleOutlined className='pe-[5px] text-green-500' /> 開催日：
+                           </div>
+                           <div className='flex flex-col w-[70%]'>
+                           <p>2023年11月1日（水）～</p>
+                           <p>2023年11月20日（月）</p>
+                           </div>
+                        </p>
+                        <p className='flex items-center w-[100%] text-[#404040]'>
+                           <EnvironmentOutlined className='pe-[5px] text-green-500' />
+                           会場：東京
+                        </p>
+                        <p className='flex items-center text-[#404040]'>
+                           <CreditCardOutlined className='pe-[5px] text-green-500' />
+                           対象職種：ITインフラ
+                        </p>
+                     </div>
+                  </div>
+                  
                </div>
                <div className='w-full lg:w-[72%]'>
-                  <img className='w-full' src='/images/event/event-main-visual.png' alt='' />
+                  <img className='w-full h-[70vh] border-2 border-gray-700'  src={eventTags} alt='' />
                   <p className='my-[15px] text-center text-[24px] font-bold text-[#404040]'>
                      募集内容
                   </p>
                   <p className='mb-[40px] text-[15px] font-medium leading-[2] text-[#404040]'>
-                     本文が入ります。<br></br>
-                     【既卒総合職（本社部門）/在宅勤務可/ミドル・バックへキャリアチェンジ可能/安定経営のソニーフィナンシャルグループ/福利厚生・教育・研修制度◎】
-                     <br></br>
-                     <br></br>
-                     ■以下の日程で休日選考会を実施致します。今後事業拡大に伴い新たなキャリアを形成できる貴重なチャンスです。是非ご応募お待ちしております。〇日時：2023年2月12日(日)〇会場：オンライン〇詳細：9:00～17:30：順次選考（※面接合格者は後日最終面接を実施）※所要時間1時間想定
-                     <br></br>
-                     <br></br>
-                     ■配属先について：今回は本社総合職の採用となります。総合職採用となるため将来的に部署異動があり、様々なキャリアパスが広がっております。以下想定配属先部門・業務になりますが、他部門へ打診させていただく可能性もございます。・営業統轄本部（推進・企画部門）・保険オペレーション本部（保険事務）・内部管理系部門
-                     ・営業管理部(ライフプランナー職の人事部門)
-                     ・人事部・カスタマーセンター・共創戦略部・経営管理 ・法務・経理、運用管理
-                     等※オファー時に想定される配属部門についてはお伝えさせて頂きます。
+                    {eventDetails.content}
                   </p>
                   <p className='text-[15px] font-medium leading-[2.2] text-[#404040]'>
-                     応募期間：2023年11月11日～2023年12月12日
+                     <span className='font-bold'>応募期間</span>： 開催日：{eventDetails.startDate}（水)～{eventDetails.endDate}（月）
                   </p>
                   <p className='text-[15px] font-medium leading-[2.2] text-[#404040]'>
-                     対象学年：2025年卒
+                     <span className='font-bold'>対象学年</span>：2025年卒
                   </p>
                   <p className='text-[15px] font-medium leading-[2.2] text-[#404040]'>
-                     応募条件：2020年4月から2021年3月の間にご卒業見込の方。学部学科、専攻は問いません。
+                     <span className='font-bold'>応募条件</span>：{eventDetails.recruitmentCondition}
                   </p>
                   <p className='text-[15px] font-medium leading-[2.2] text-[#404040]'>
-                     報酬・手当：なし
+                     <span className='font-bold'>報酬・手当</span>：{eventDetails.compensation}
                   </p>
-                  <div className='mb-[50px] flex'>
-                     <img src='/images/event/event-slides(1).png' alt='' />
-                     <img src='/images/event/event-slides(2).png' alt='' />
-                     <img src='/images/event/event-slides(1).png' alt='' />
+                  <div className=' flex flex-wrap space-x-5 w-[100%]  mb-[50px] flex'>
+                     {
+                        eventAttachments.map(attachment => {
+                           return (
+                           <div key={attachment.id} className='w-[40%] h-30'>
+                              <img className='h-[100%]'  src={attachment.url} alt="" />
+                           </div>
+                           )
+                        })
+                     }
                   </div>
-                  <button className='mx-auto mb-[50px] mt-[5px] flex h-[80px] w-[300px] items-center justify-center rounded-[50px] bg-green-700 px-[20px] py-[10px] text-[20px] font-bold text-[#fff] duration-500 hover:opacity-[0.5] sm:mt-0'>
+                  <button onClick={()=>{
+                     const url = eventDetails.applicationUrl;
+                     window.location.href = url;
+                  }} className='mx-auto mb-[50px] mt-[5px] flex h-[80px] w-[300px] items-center justify-center rounded-[50px] bg-green-700 px-[20px] py-[10px] text-[20px] font-bold text-[#fff] duration-500 hover:opacity-[0.5] sm:mt-0'>
                      <span>応募する </span>
                      <span className='absolute end-[10%] flex items-center text-[10px]'>
                         <RightOutlined />
@@ -311,11 +432,11 @@ const EventPage: NextPageWithLayout<Props> = (props) => {
                <div className='mx-auto mb-[20px] w-full max-w-[600px] rounded-[12px] border-[1px] px-[20px] py-[30px] md:w-[48%]'>
                   <div className='flex'>
                      <div className='w-[70%]'>
-                        <p className='mb-[20px] text-[15px]'>
-                           地方都市だからこそ生まれるイノベーション!最前線のインターンモデルをともに支えるパートナーを募集します。
+                        <p className='mb-[20px] text-[15px] font-bold'>
+                        セミナーのタイトルがはいります
                         </p>
                         <p className='text-[13px] text-[#737373]'>
-                           日本で最も進んだ実践型インターンシップ「ホンキ系インターンシップ」を展開する土台作り、新規プログラム企画に共に挑む右腕を募集します。
+                        テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト
                         </p>
                      </div>
                      <img className='w-[30%]' src='' alt='' />
@@ -328,17 +449,17 @@ const EventPage: NextPageWithLayout<Props> = (props) => {
                         インターン
                      </p>
                   </div>
-                  <div className='flex flex-wrap text-[13px]'>
+                  <div className='flex flex-wrap text-[13px] font-bold'>
                      <p className='flex items-center pe-[10px]'>
-                        <ClockCircleOutlined className='pe-[5px]' />
+                        <ClockCircleOutlined className='pe-[5px] text-green-500' />
                         開催日：2023年11月1日（水）～2023年11月20日（月）
                      </p>
                      <p className='flex items-center'>
-                        <EnvironmentOutlined className='pe-[5px]' />
+                        <EnvironmentOutlined className='pe-[5px] text-green-500 ' />
                         会場：東京
                      </p>
                      <p className='flex items-center'>
-                        <CreditCardOutlined className='pe-[5px]' />
+                        <CreditCardOutlined className='pe-[5px] text-green-500' />
                         対象職種：ITインフラ
                      </p>
                   </div>
@@ -350,11 +471,11 @@ const EventPage: NextPageWithLayout<Props> = (props) => {
                <div className='mx-auto mb-[20px] w-full max-w-[600px] rounded-[12px] border-[1px] px-[20px] py-[30px] md:w-[48%]'>
                   <div className='flex'>
                      <div className='w-[70%]'>
-                        <p className='mb-[20px] text-[15px]'>
-                           地方都市だからこそ生まれるイノベーション!最前線のインターンモデルをともに支えるパートナーを募集します。
+                        <p className='mb-[20px] text-[15px] font-bold'>
+                        セミナーのタイトルがはいります
                         </p>
                         <p className='text-[13px] text-[#737373]'>
-                           日本で最も進んだ実践型インターンシップ「ホンキ系インターンシップ」を展開する土台作り、新規プログラム企画に共に挑む右腕を募集します。
+                        テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト
                         </p>
                      </div>
                      <img className='w-[30%]' src='' alt='' />
@@ -367,17 +488,17 @@ const EventPage: NextPageWithLayout<Props> = (props) => {
                         インターン
                      </p>
                   </div>
-                  <div className='flex flex-wrap text-[13px]'>
+                  <div className='flex flex-wrap text-[13px] font-bold'>
                      <p className='flex items-center pe-[10px]'>
-                        <ClockCircleOutlined className='pe-[5px]' />
+                        <ClockCircleOutlined className='pe-[5px] text-green-500' />
                         開催日：2023年11月1日（水）～2023年11月20日（月）
                      </p>
                      <p className='flex items-center'>
-                        <EnvironmentOutlined className='pe-[5px]' />
+                        <EnvironmentOutlined className='pe-[5px] text-green-500 ' />
                         会場：東京
                      </p>
                      <p className='flex items-center'>
-                        <CreditCardOutlined className='pe-[5px]' />
+                        <CreditCardOutlined className='pe-[5px] text-green-500' />
                         対象職種：ITインフラ
                      </p>
                   </div>
@@ -389,11 +510,11 @@ const EventPage: NextPageWithLayout<Props> = (props) => {
                <div className='mx-auto mb-[20px] w-full max-w-[600px] rounded-[12px] border-[1px] px-[20px] py-[30px] md:w-[48%]'>
                   <div className='flex'>
                      <div className='w-[70%]'>
-                        <p className='mb-[20px] text-[15px]'>
-                           地方都市だからこそ生まれるイノベーション!最前線のインターンモデルをともに支えるパートナーを募集します。
+                        <p className='mb-[20px] text-[15px] font-bold'>
+                        セミナーのタイトルがはいります
                         </p>
                         <p className='text-[13px] text-[#737373]'>
-                           日本で最も進んだ実践型インターンシップ「ホンキ系インターンシップ」を展開する土台作り、新規プログラム企画に共に挑む右腕を募集します。
+                        テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト
                         </p>
                      </div>
                      <img className='w-[30%]' src='' alt='' />
@@ -406,17 +527,17 @@ const EventPage: NextPageWithLayout<Props> = (props) => {
                         インターン
                      </p>
                   </div>
-                  <div className='flex flex-wrap text-[13px]'>
+                  <div className='flex flex-wrap text-[13px] font-bold'>
                      <p className='flex items-center pe-[10px]'>
-                        <ClockCircleOutlined className='pe-[5px]' />
+                        <ClockCircleOutlined className='pe-[5px] text-green-500' />
                         開催日：2023年11月1日（水）～2023年11月20日（月）
                      </p>
                      <p className='flex items-center'>
-                        <EnvironmentOutlined className='pe-[5px]' />
+                        <EnvironmentOutlined className='pe-[5px] text-green-500' />
                         会場：東京
                      </p>
                      <p className='flex items-center'>
-                        <CreditCardOutlined className='pe-[5px]' />
+                        <CreditCardOutlined className='pe-[5px] text-green-500' />
                         対象職種：ITインフラ
                      </p>
                   </div>
@@ -428,11 +549,11 @@ const EventPage: NextPageWithLayout<Props> = (props) => {
                <div className='mx-auto mb-[20px] w-full max-w-[600px] rounded-[12px] border-[1px] px-[20px] py-[30px] md:w-[48%]'>
                   <div className='flex'>
                      <div className='w-[70%]'>
-                        <p className='mb-[20px] text-[15px]'>
-                           地方都市だからこそ生まれるイノベーション!最前線のインターンモデルをともに支えるパートナーを募集します。
+                        <p className='mb-[20px] text-[15px] font-bold'>
+                        セミナーのタイトルがはいります
                         </p>
                         <p className='text-[13px] text-[#737373]'>
-                           日本で最も進んだ実践型インターンシップ「ホンキ系インターンシップ」を展開する土台作り、新規プログラム企画に共に挑む右腕を募集します。
+                        テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト
                         </p>
                      </div>
                      <img className='w-[30%]' src='' alt='' />
@@ -445,17 +566,17 @@ const EventPage: NextPageWithLayout<Props> = (props) => {
                         インターン
                      </p>
                   </div>
-                  <div className='flex flex-wrap text-[13px]'>
+                  <div className='flex flex-wrap text-[13px] font-bold'>
                      <p className='flex items-center pe-[10px]'>
-                        <ClockCircleOutlined className='pe-[5px]' />
+                        <ClockCircleOutlined className='pe-[5px] text-green-500' />
                         開催日：2023年11月1日（水）～2023年11月20日（月）
                      </p>
                      <p className='flex items-center'>
-                        <EnvironmentOutlined className='pe-[5px]' />
+                        <EnvironmentOutlined className='pe-[5px] text-green-500' />
                         会場：東京
                      </p>
                      <p className='flex items-center'>
-                        <CreditCardOutlined className='pe-[5px]' />
+                        <CreditCardOutlined className='pe-[5px] text-green-500' />
                         対象職種：ITインフラ
                      </p>
                   </div>

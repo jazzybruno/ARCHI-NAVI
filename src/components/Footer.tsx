@@ -69,7 +69,7 @@ const Footer = () => {
                </button>
             </div>
             <div className='flex w-full justify-center text-[11px] text-[#fff]'>
-               Copyright xxxxxxxxx
+            Copyright © inspire
             </div>
          </div>
       </>

@@ -79,7 +79,7 @@ const HomePage: NextPageWithLayout<Props> = (props) => {
                      <br />
                      <span className='text-[#404040]'>理想の就職を叶えよう！</span>
                   </h2>
-                  <span className='mx-auto mt-[40px] flex w-[180px] justify-center rounded-lg border-[3px] border-[#111] bg-[#fff] px-[18px] py-[10px] text-[12px] text-[#404040] md:w-[350px] md:px-[35px] md:py-[14px] md:text-[22px]'>
+                  <span className=' font-bold text-[#404040] mx-auto mt-[40px] flex w-[180px] justify-center rounded-lg border-[3px] border-[#111] bg-[#fff] px-[18px] py-[10px] text-[12px]  md:w-[350px] md:px-[35px] md:py-[14px] md:text-[22px]'>
                      アチナビでできること。
                   </span>
                </div>
@@ -87,27 +87,28 @@ const HomePage: NextPageWithLayout<Props> = (props) => {
             <div className='mx-auto block w-[90%] max-w-[75rem] justify-between md:flex lg:w-[95%]'>
                <div className='mb-[30px] rounded-[16px] bg-[url("/images/home/top-feature-item-bg.png")] px-[10px] py-[15px] text-[1.2rem] font-bold text-[#fff] md:mb-0 md:w-[32%]'>
                   <h4 className='text-shadow py-[15px] text-center text-[20px]'>イベント検索</h4>
-                  <div className='min-h-[400px] rounded-[16px] bg-[#fff] p-[20px]'>
+                  <div className='min-h-[400px] flex items-end rounded-[16px] bg-[#fff] p-[20px]'>
+{/*                   
                      <img
-                        className='w-full py-[15px]'
+                        className='w-full py-[15px] '
                         src='/images/home/top-feature-1.png'
                         alt='feature'
-                     />
+                     /> */}
                      <p className='text-[15px] text-[#404040]'>
-                        建築系のセミナーやインターン情報が一覧に。
+                     建築系のセミナーやインターン情報が一覧に。テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト
                      </p>
                   </div>
                </div>
                <div className='mb-[30px] rounded-[16px] bg-[url("/images/home/top-feature-item-bg.png")] px-[10px] py-[15px] text-[1.2rem] font-bold text-[#fff] md:mb-0 md:w-[32%]'>
                   <h4 className='text-shadow py-[15px] text-center text-[20px]'>カレンダー</h4>
-                  <div className='min-h-[400px] rounded-[16px] bg-[#fff] p-[20px]'>
-                     <img
+                  <div className='min-h-[400px] flex items-end rounded-[16px] bg-[#fff] p-[20px]'>
+                     {/* <img
                         className='w-full py-[15px]'
                         src='/images/home/top-feature-2.png'
                         alt='feature'
-                     />
+                     /> */}
                      <p className='text-[15px] text-[#404040]'>
-                        お気に入りしたイベントや自分のスケジュールを管理できる！
+                     お気に入りしたイベントや自分のスケジュールを管理できる！テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト
                      </p>
                   </div>
                </div>
@@ -115,28 +116,28 @@ const HomePage: NextPageWithLayout<Props> = (props) => {
                   <h4 className='text-shadow py-[15px] text-center text-[20px]'>
                      就活お役立ち記事
                   </h4>
-                  <div className='min-h-[400px] rounded-[16px] bg-[#fff] p-[20px]'>
-                     <img
+                  <div className='min-h-[400px] rounded-[16px] flex items-end bg-[#fff] p-[20px]'>
+                     {/* <img
                         className='w-full py-[15px]'
                         src='/images/home/top-feature-2.png'
                         alt='feature'
-                     />
+                     /> */}
                      <p className='text-[15px] text-[#404040]'>
-                        就活の基本的なノウハウから、建築系に特化した選考対策など、建築系の就活生に本当に役立つ情報が満載。
+                     就活の基本的なノウハウから、建築系に特化した選考対策など、建築系の就活生に本当に役立つ情報が満載。テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキス
                      </p>
                   </div>
                </div>
             </div>
             <div className='bg-[url("/images/home/top-bg-wave-2.png")] bg-[length:50px_40px] bg-[center_bottom_2.8rem] bg-repeat-x pb-[75px] md:bg-[length:150px_100px] md:bg-[center_bottom_5rem] md:pb-[150px]'>
                <div className='relative bg-[url("/images/home/top-bg-ship-1.png")] bg-[length:6rem_7.5rem] bg-[bottom_left_100px] bg-no-repeat py-[50px] md:bg-[length:12rem_15rem] md:py-[65px] lg:py-[75px]'>
-                  <h2 className='text-center text-[1.2rem] font-black text-[#404040] after:absolute after:bottom-[-0.25rem] after:right-[50px] after:block after:h-[15vw] after:max-h-[180px] after:min-h-[100px] after:w-[30%] after:min-w-[200px] after:max-w-[350px] after:bg-[url("/images/home/top-bg-treasure.png")] after:bg-contain after:bg-no-repeat md:text-[3rem]'>
+                  <h2 className='text-center text-[1.2rem] font-black text-[#404040] after:absolute after:bottom-[-0.25rem] after:right-[50px] after:block after:h-[15vw] after:max-h-[200px] after:min-h-[180px] after:w-[30%] after:min-w-[200px] after:max-w-[350px]  md:text-[3rem]'>
                      あなたの冒険に<br></br>アチナビはきっと役立つ。
                   </h2>
                </div>
             </div>
          </section>
          <section>
-            <div className='relative mx-auto w-[90%] max-w-[75rem] justify-between pt-[3rem] before:absolute before:bottom-[-17rem] before:block before:h-[500px] before:w-full before:max-w-[500px] before:bg-[url("/images/home/top-heading-bg.png")] before:bg-contain before:bg-no-repeat lg:w-[95%]'>
+            <div className='relative mx-auto w-[90%] max-w-[75rem] justify-between pt-[3rem] before:absolute before:bottom-[-17rem] before:block before:h-[500px] before:w-full before:max-w-[500px] before:bg-no-repeat lg:w-[95%]'>
                <h2 className='pb-[40px] text-center text-[24px] font-bold text-[#404040]'>
                   コラム・記事<br></br>
                   <span className='text-[34px] font-black'>COLUMN</span>
@@ -175,7 +176,7 @@ const HomePage: NextPageWithLayout<Props> = (props) => {
             </div>
          </section>
          <section>
-            <div className='relative mx-auto w-[90%] max-w-[75rem] justify-between pt-[8rem] before:absolute before:bottom-[-17rem] before:block before:h-[500px] before:w-full before:max-w-[500px] before:bg-[url("/images/home/top-heading-bg.png")] before:bg-contain before:bg-no-repeat lg:w-[95%]'>
+            <div className='relative mx-auto w-[90%] max-w-[75rem] justify-between pt-[8rem] before:absolute before:bottom-[-17rem] before:block before:h-[500px] before:w-full before:max-w-[500px]  before:bg-no-repeat lg:w-[95%]'>
                <h2 className='pb-[40px] text-center text-[24px] font-bold text-[#404040]'>
                   インターン・イベント<br></br>
                   <span className='text-[34px] font-black'>INTERN・IVENT</span>
@@ -261,7 +262,7 @@ const HomePage: NextPageWithLayout<Props> = (props) => {
                      </Link>
                   </div>
                   <div>
-                     <p className='text-[15px] text-[#404040]'>運営の情報も載せる</p>
+                     <p className='text-[15px] text-[#404040]'>運営の情報も載せるテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテテキストテテキストテテキストテテキストテテキストテテキストテトテテキストテテキストテテキストテテキストテトテテキストテテキストテテキストテテキストテ</p>
                   </div>
                </div>
                <img
@@ -284,11 +285,11 @@ const HomePage: NextPageWithLayout<Props> = (props) => {
                            Q
                         </p>
                         <p className='text-[15px] text-[#fff]'>
-                           質問が入ります質問が入ります質問が入ります
+                        テキストテキストテキストテキストテキストテキストテキストテキストテ
                         </p>
                      </div>
                      <p className='rounded-b-[10px] border-[1px] border-green-700 px-[15px] py-[25px] text-[15px] text-green-700'>
-                        テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト
+                     テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト
                      </p>
                   </div>
                   <div className='mb-[15px]'>
@@ -297,12 +298,11 @@ const HomePage: NextPageWithLayout<Props> = (props) => {
                            Q
                         </p>
                         <p className='text-[15px] text-[#fff]'>
-                           質問が入ります質問が入ります質問が入ります
+                        テキストテキストテキストテキストテキストテキストテキストテキストテ
                         </p>
                      </div>
                      <p className='rounded-b-[10px] border-[1px] border-green-700 px-[15px] py-[25px] text-[15px] text-green-700'>
-                        テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト
-                     </p>
+                     テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト                     </p>
                   </div>
                   <div className='mb-[15px]'>
                      <div className='mb-[3px] flex items-center rounded-t-[10px] bg-green-700 px-[15px] py-[25px]'>
@@ -310,11 +310,11 @@ const HomePage: NextPageWithLayout<Props> = (props) => {
                            Q
                         </p>
                         <p className='text-[15px] text-[#fff]'>
-                           質問が入ります質問が入ります質問が入ります
+                        テキストテキストテキストテキストテキストテキストテキストテキストテ
                         </p>
                      </div>
                      <p className='rounded-b-[10px] border-[1px] border-green-700 px-[15px] py-[25px] text-[15px] text-green-700'>
-                        テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト
+                     テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト
                      </p>
                   </div>
                   <div className='mb-[15px]'>
@@ -332,6 +332,8 @@ const HomePage: NextPageWithLayout<Props> = (props) => {
                   </div>
                </div>
             </div>
+
+
          </section>
       </>
    )

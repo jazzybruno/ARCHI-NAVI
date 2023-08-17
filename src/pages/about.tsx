@@ -48,7 +48,7 @@ const AboutPage: NextPageWithLayout<Props> = (props) => {
             <div className='bg-[#0bc3ff]'>
                <div className='mt-[-1px] border-0 bg-[url("/images/about/about-bg-title.svg")] bg-contain bg-top bg-no-repeat px-[10%] pb-[50px] pt-[130px] lg:px-[130px] lg:pb-[150px] lg:pt-[220px]'>
                   <div className='mx-auto w-[2.5rem] border-[2px] border-green-700'></div>
-                  <h3 className='pt-[30px] text-center text-[25px] text-[30px] leading-relaxed text-[#FFF] lg:text-[35px]'>
+                  <h3 className='pt-[30px] font-bold text-center text-[25px] text-[30px] leading-relaxed text-[#FFF] lg:text-[35px]'>
                      アチナビとは？
                   </h3>
                   <p className='mx-auto mt-[40px] max-w-[810px] text-[15px] leading-relaxed text-[#FFF] lg:text-[20px]'>
@@ -58,7 +58,7 @@ const AboutPage: NextPageWithLayout<Props> = (props) => {
                      アチナビへの登録は、将来の成功への第一歩です。ぜひ、このサイトに登録して、夢の実現に向けたキャリアの始まりをスタートさせましょう！
                   </p>
                </div>
-               <img src='/images/about/about-bg-main.png' alt='' />
+               <img src='/images/about/bg-main-2.png' alt='' />
             </div>
          </section>
          <section>
@@ -90,36 +90,36 @@ const AboutPage: NextPageWithLayout<Props> = (props) => {
                   企業概要
                </h3>
                <div className='mx-auto mt-[35px] max-w-[1080px] px-[10%] xl:px-[0%]'>
-                  <img className='mx-auto' src='/images/about/about-img-company.jpg' alt='' />
+                  {/* <img className='mx-auto' src='/images/about/about-img-company.jpg' alt='' /> */}
                </div>
                <div className='pt-[60px]'>
                   <div className='mx-auto block w-[75%] max-w-[810px] border-y p-[20px] lg:flex xl:w-full'>
                      <p className='w-full pb-[0px] ps-[10px] pt-[10px] text-[14px] font-bold lg:w-[40%] lg:py-[16px] lg:ps-[16px]'>
-                        運営会社
+                     法人名
                      </p>
                      <p className='w-full lg:w-[60%]'>株式会社HorizonXX（ホライズン）</p>
                   </div>
                   <div className='mx-auto block w-[75%] max-w-[810px] border-y p-[20px] lg:flex xl:w-full'>
-                     <p className='w-full text-[14px] font-bold lg:w-[40%]'>代表取締役</p>
-                     <p className='w-full lg:w-[60%]'>尾熨斗(おのし) 啓介</p>
+                     <p className='w-full text-[14px] font-bold lg:w-[40%]'>所在地</p>
+                     <p className='w-full lg:w-[60%]'>〒171-0014 東京都豊島区池袋二丁目24番4号</p>
                   </div>
                   <div className='mx-auto block w-[75%] max-w-[810px] border-y p-[20px] lg:flex xl:w-full'>
-                     <p className='w-full text-[14px] font-bold lg:w-[40%]'>資本金</p>
-                     <p className='w-full lg:w-[60%]'>9,800,000円</p>
+                     <p className='w-full text-[14px] font-bold lg:w-[40%]'>法人名</p>
+                     <p className='w-full lg:w-[60%]'>XXXXXXXXXXXXX</p>
                   </div>
                   <div className='mx-auto block w-[75%] max-w-[810px] border-y p-[20px] lg:flex xl:w-full'>
-                     <p className='w-full text-[14px] font-bold lg:w-[40%]'>取引銀行</p>
-                     <p className='w-full lg:w-[60%]'>三井住友銀行・第一勧業信用組合</p>
+                     <p className='w-full text-[14px] font-bold lg:w-[40%]'>設立日</p>
+                     <p className='w-full lg:w-[60%]'>1990年1月1日</p>
                   </div>
                   <div className='mx-auto block w-[75%] max-w-[810px] border-y p-[20px] lg:flex xl:w-full'>
-                     <p className='w-full text-[14px] font-bold lg:w-[40%]'>電話番号</p>
-                     <p className='w-full lg:w-[60%]'>03-5944-8575</p>
+                     <p className='w-full text-[14px] font-bold lg:w-[40%]'>法人名</p>
+                     <p className='w-full lg:w-[60%]'>XXXXXXXXXXXXX</p>
                   </div>
                   <div className='mx-auto block w-[75%] max-w-[810px] border-y p-[20px] lg:flex xl:w-full'>
-                     <p className='w-full text-[14px] font-bold lg:w-[40%]'>FAX番号</p>
-                     <p className='w-full lg:w-[60%]'>03-5944-8587</p>
+                     <p className='w-full text-[14px] font-bold lg:w-[40%]'>設立日</p>
+                     <p className='w-full lg:w-[60%]'>1990年1月1日</p>
                   </div>
-                  <div className='mx-auto block w-[75%] max-w-[810px] border-y p-[20px] lg:flex xl:w-full'>
+                  {/* <div className='mx-auto block w-[75%] max-w-[810px] border-y p-[20px] lg:flex xl:w-full'>
                      <p className='w-full text-[14px] font-bold lg:w-[40%]'>営業時間</p>
                      <p className='w-full lg:w-[60%]'>平日 9:30～18:30</p>
                   </div>
@@ -142,7 +142,7 @@ const AboutPage: NextPageWithLayout<Props> = (props) => {
                      <p className='w-full lg:w-[60%]'>
                         2025年度に自社が受注するコンサルティング業務のうち、ZEBが占める割合を50％以上
                      </p>
-                  </div>
+                  </div> */}
                </div>
             </div>
          </section>

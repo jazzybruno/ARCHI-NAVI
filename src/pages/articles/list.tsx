@@ -24,6 +24,30 @@ type Props = {
 }
 
 const ArticlesPage: NextPageWithLayout<Props> = (props) => {
+
+   const [articlesData, setArticlesData] = useState([])
+   const [eventsData, setEventsData] = useState([])
+
+   const fetchData = async () => {
+      const responseArticles = await fetch('https://api-stg.archi-navi.com/api/post')
+      const dataArticles = await responseArticles.json()
+      const getMainDataArticles = dataArticles['data']
+      // const sortedDataArticles = getMainDataArticles.sort((a, b) => new Date(b.createAt).getTime() - new Date(a.createAt).getTime());
+      const latestDataArticles = getMainDataArticles.slice(0, 4)
+      const responseEvents = await fetch('https://api-stg.archi-navi.com/api/event')
+      const dataEvents = await responseEvents.json()
+      const getMainDataEvents = dataEvents['data']
+      // const sortedDataEvents = getMainDataEvents.sort((a, b) => new Date(b.createAt).getTime() - new Date(a.createAt).getTime());
+      const latestDataEvents = getMainDataEvents.slice(0, 4)
+      setArticlesData(latestDataArticles)
+      setEventsData(latestDataEvents)
+      console.log(getMainDataArticles)
+   }
+
+   useEffect(() => {
+      fetchData()
+   }, [])
+   
    const itemRender: PaginationProps['itemRender'] = (_, type, originalElement) => {
       if (type === 'prev') {
          return <a>Previous</a>
@@ -43,9 +67,9 @@ const ArticlesPage: NextPageWithLayout<Props> = (props) => {
                      href: '/',
                      title: (
                         <>
-                           <div className='flex items-center text-[12px]'>
+                           <div className='flex text-[#404040] items-center text-[12px] font-bold'>
                               <HomeOutlined className='me-[5px] text-[12px]' />
-                              <span className='text-[12px]'>HOME</span>
+                              <span className='text-[12px] font-bold'>HOME</span>
                            </div>
                         </>
                      ),
@@ -54,7 +78,7 @@ const ArticlesPage: NextPageWithLayout<Props> = (props) => {
                      href: '/about',
                      title: (
                         <>
-                           <span className='flex items-center text-[12px]'>コラム・記事</span>
+                           <span className='flex items-center text-[12px] font-bold text-[#404040]'>コラム・記事</span>
                         </>
                      ),
                   },
@@ -68,18 +92,18 @@ const ArticlesPage: NextPageWithLayout<Props> = (props) => {
             </h3>
          </section>
          <section className='mt-[40px] w-full bg-white px-[5%] py-[15px] text-[#404040] lg:px-[10%] lg:py-[30px] xl:px-[100px]'>
-            <div className='flex justify-between'>
-               <div className='flex max-w-[342px] flex-col rounded-lg p-[10px] shadow-md shadow-gray-300'>
+            <div className='flex flex-row justify-between md:flex-row md:justify-between sm:flex-col sm:justify-center msm:flex-col msm:justify-center'>
+               <div className='flex  max-w-[342px] flex-col rounded-lg p-[10px] shadow-md shadow-gray-300 '>
                   <img className='w-full' src='/images/articles/card.jpg' alt='' />
                   <div>
                      <p className='mb-1 mt-2 w-[70px] bg-[#F2F7FF] px-[6px] py-[4px] text-center text-[11px] font-bold'>
-                        カテゴリー
+                     カテゴリー
                      </p>
                      <h4 className='text-[15px] font-bold text-[#404040] '>
-                        コラムタイトルコラムタイトルコラムタイトルコラムタイトルコラムタイトルコラムタイトル
+                     コラムタイトルコラムタイトルコラムタイトルコラムタイトルコラムタイトルコラムタイトル
                      </h4>
                      <p className='block px-2 py-1 text-[12px] '>
-                        テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト
+                     テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト
                      </p>
                      <button className='round-lg h-[23px] w-[78px] rounded-lg bg-[#E4ECD3] px-3 py-1 text-[11px]'>
                         タグ
@@ -131,7 +155,7 @@ const ArticlesPage: NextPageWithLayout<Props> = (props) => {
                </div>
             </div>
             <div className='mt-[24px] grid grid-cols-2 place-items-center gap-x-[24px] gap-y-[40px]'>
-               <div className='flex max-w-[518px] flex-row rounded-lg p-[10px] shadow-md shadow-gray-300'>
+            <div className='mt-4 grid sm:grid-cols-2 place-items-center sm:flex sm:flex-row sm:space-x-4'>
                   <img className='h-[140px] w-[204px]' src='/images/articles/card.jpg' alt='' />
                   <div className='mx-[16px]'>
                      <p className='mb-1 w-[70px] bg-[#F2F7FF] px-[6px] py-[4px] text-center text-[11px] font-bold'>

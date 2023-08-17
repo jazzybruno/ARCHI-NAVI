@@ -57,7 +57,7 @@ const ArticlesPage: NextPageWithLayout<Props> = (props) => {
             <div className='mx-auto mb-[24px] w-[75%] max-w-[810px] flex-col rounded-sm border-y p-[20px] shadow-md shadow-gray-300 lg:flex xl:w-full'>
                <div className='flex w-full flex-row items-center justify-between'>
                   <span className='text-[13px]'>2021.10.29</span>
-                  <span className='text-[13px]'>カテゴリー</span>
+                  <span className='text-[13px] bg-blue-100 p-2 font-bold text-gray-700'>カテゴリー</span>
                </div>
                <div className='mt-[17px]'>
                   <h2 className='mb-[20px] block text-left text-[24px] font-bold'>
@@ -71,7 +71,7 @@ const ArticlesPage: NextPageWithLayout<Props> = (props) => {
                   </button>
                </div>
                <img className='mt-[20px]' src='/images/articles/top_bg.jpg' alt='' />
-               <p className='mt-[80px] text-[13px] leading-5'>
+               <p className='mt-[80px] text-[16px] leading-5'>
                   臨床研究専門のCROであるメビックス株式会社（以下、メビックス）。この領域では国内No.1の実績を誇るCROだ。
                   <br />
                   <br />
@@ -81,7 +81,7 @@ const ArticlesPage: NextPageWithLayout<Props> = (props) => {
                   治験だけでは、臨床実態下での使用に耐えうるデータがそろっていないことが多く、その不足するエビデンスを確立することで、真に患者さんの役に立つ医薬品に育てていく「育薬」と、その「育薬」のなかで大きな役割を占める「臨床研究」について、わかりやすくご説明いただいたので、ぜひお読みいただきたい。
                </p>
                <h3 className='mt-[60px] block text-left text-[24px] font-bold'>
-                  Ⅰ．臨床研究の本質的な目的と意義 ～治験データと臨床実態のギャップを埋める～
+                  I．臨床研究の本質的な目的と意義 ～治験データと臨床実態のギャップを埋める～
                </h3>
                <p className='mt-[24px]'>
                   インタビュイー：村林 裕貴 様<br />
@@ -92,7 +92,7 @@ const ArticlesPage: NextPageWithLayout<Props> = (props) => {
                   CROへ転職。リーダーおよびマネジメントを経験した後、2015年にメビックス株式会社へ転職。以降、プロジェクトマネジャー、教育責任者等の役割を経て2020年から現職。
                </p>
             </div>
-            <button className='round round-lg mx-auto rounded-full border border-green-700 px-[60px] py-[13px] text-[17px] text-green-700'>
+            <button className='bg-white font-bold round round-lg mx-auto rounded-full border border-green-700 px-[60px] py-[13px] text-[17px] text-green-700'>
                一覧へ戻る
             </button>
          </div>
@@ -191,7 +191,7 @@ const ArticlesPage: NextPageWithLayout<Props> = (props) => {
                         コラムタイトルコラムタイトルコラムタイトルコラムタイトルコラムタイトルコラムタイトル
                      </h4>
                      <p className='block px-2 py-1 text-[12px] '>
-                        テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト
+                     テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト
                      </p>
                      <button className='round-lg h-[23px] w-[78px] rounded-lg bg-[#E4ECD3] px-3 py-1 text-[11px]'>
                         タグ
@@ -203,8 +203,8 @@ const ArticlesPage: NextPageWithLayout<Props> = (props) => {
                </div>
             </div>
          </div>
-         <div className='mt-[144px] bg-[url("/images/articles/footer_bg.jpg")] py-[49px]'>
-            <div className='mx-auto w-[648px] rounded-lg bg-[rgba(255,255,255,0.8)] p-[32px] p-[32px] text-center '>
+         <div className='mt-[144px]  bg-[#F7F9F4] py-[49px]'>
+            <div className='mx-auto w-[648px] rounded-lg bg-white shadow-md p-[32px] p-[32px] text-center '>
                <h4 className='text-[15px] text-[#018443]'>建築系専門だから強い！</h4>
                <h2 className='mt-[24px] text-[24px] font-bold text-[#066435]'>
                   アチナビで就活が楽になる
