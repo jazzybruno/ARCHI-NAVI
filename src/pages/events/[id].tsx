@@ -33,8 +33,8 @@ const EventPage: NextPageWithLayout<Props> = (props) => {
    const getEventDetails = async () => {
       // extract the id from the url
       const id = window.location.pathname.split('/')[2]
-      const response = await fetch(`https://api-stg.archi-navi.com/api/event/${id}`)
-      const responseEvents = await fetch('https://api-stg.archi-navi.com/api/event')
+      const response = await fetch(`https://api-stg.archi-navi.com/api/event/${id}` , {mode: "no-cors",})
+      const responseEvents = await fetch('https://api-stg.archi-navi.com/api/event' , {mode: "no-cors",})
       const dataEvents = await responseEvents.json()
       const data = await response.json()
       const getMainDataEvents = dataEvents['data']

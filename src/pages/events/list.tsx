@@ -12,9 +12,9 @@ import {
    StarOutlined,
    RightOutlined,
 } from '@ant-design/icons'
-import {BiCalendar} from 'react-icons/bi';
 import {MdModeEditOutline} from 'react-icons/md'
 import {AiOutlineRight ,AiOutlineSearch} from 'react-icons/ai';
+import {BiCalendar} from 'react-icons/bi';
 import { Breadcrumb, Form, Input, DatePicker, Button, Select, Space, Calendar } from 'antd'
 import { format } from 'date-fns'
 import type { GetServerSideProps, NextPageWithLayout } from 'next'
@@ -41,12 +41,12 @@ const EventPage: NextPageWithLayout<Props> = (props) => {
    const [eventsData, setEventsData] = useState([])
 
    const fetchData = async () => {
-      const responseArticles = await fetch('https://api-stg.archi-navi.com/api/post')
+      const responseArticles = await fetch('https://api-stg.archi-navi.com/api/post' , {mode: "no-cors",})
       const dataArticles = await responseArticles.json()
       const getMainDataArticles = dataArticles['data']
       // const sortedDataArticles = getMainDataArticles.sort((a, b) => new Date(b.createAt).getTime() - new Date(a.createAt).getTime());
       const latestDataArticles = getMainDataArticles.slice(0, 4)
-      const responseEvents = await fetch('https://api-stg.archi-navi.com/api/event')
+      const responseEvents = await fetch('https://api-stg.archi-navi.com/api/event', {mode: "no-cors",})
       const dataEvents = await responseEvents.json()
       const getMainDataEvents = dataEvents['data']
       // const sortedDataEvents = getMainDataEvents.sort((a, b) => new Date(b.createAt).getTime() - new Date(a.createAt).getTime());
